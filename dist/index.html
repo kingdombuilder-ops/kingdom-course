@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Important: viewport-fit=cover is required for env(safe-area-inset-*) to populate.
+         Without it, iPhone home-indicator overlap is uncovered. -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <!-- PWA / mobile chrome -->
+    <meta name="theme-color" content="#0E0A06" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="The Kingdom Course" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <!-- Favicons -->
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+    <!-- Font preconnect + preload — eliminates the flash of unstyled text by warming
+         the connection to fonts.googleapis.com before the CSS @import resolves. -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+SC:wght@400;500;600;700&display=swap"
+          as="style" />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600&family=EB+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600&family=Cormorant+SC:wght@400;500;600;700&display=swap" />
+
+    <!-- SEO -->
+    <title>The Kingdom Course · A Catholic spiritual formation initiative</title>
+    <meta name="description" content="The Gospel meets you. The Course forms you. The Kingdom holds you. A Catholic spiritual formation initiative." />
+    <meta property="og:title" content="The Kingdom Course" />
+    <meta property="og:description" content="The Gospel meets you. The Course forms you. The Kingdom holds you." />
+    <meta property="og:url" content="https://kingdomcourse.org" />
+    <meta property="og:type" content="website" />
+    <script type="module" crossorigin src="/assets/index-7KupEONL.js"></script>
+    <link rel="modulepreload" crossorigin href="/assets/icons-CgufahHM.js">
+    <link rel="modulepreload" crossorigin href="/assets/react-vendor-BLZv0s6Y.js">
+    <link rel="modulepreload" crossorigin href="/assets/liturgical-CHAxQwFh.js">
+    <link rel="modulepreload" crossorigin href="/assets/field-guide-BGx-K3F2.js">
+    <link rel="stylesheet" crossorigin href="/assets/index-BnxeeEEZ.css">
+  </head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

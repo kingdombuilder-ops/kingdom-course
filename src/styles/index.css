@@ -1,0 +1,1309 @@
+/* =============================================================================
+   src/styles/index.css — Global stylesheet for The Kingdom Course.
+
+   Loaded once at app entry (src/main.jsx imports this file). Provides:
+
+   - CSS custom properties (color palette, design tokens)
+   - Base typography defaults (body font, heading rhythm)
+   - Project-specific utility classes used by inline-style components
+     (paper-bg, ink-bg, btn-gold, btn-ghost, ornament, sc, sc-bold, body,
+     body-lede, display, display-strong, dropcap, scripture, ring-hit,
+     pulse-core, modal-enter, fade, rise + d-N animation delays, etc.)
+   - Animations (rise, viewIn, pulseCore, pulse)
+   - Font face declarations and @import for Cormorant SC + Cormorant Garamond
+
+   The project does NOT use Tailwind. All components use inline `style={{}}`
+   for spacing/layout and these utility classes for typography/theming.
+   The Tailwind toolchain was removed in batch 21 — this file is the
+   single source of truth for the visual system.
+   ============================================================================= */
+
+
+/* =============================================================================
+   THE KINGDOM COURSE — base styles
+   Single source of truth. The original the_kingdom.jsx had three duplicated
+   CSS blocks (Course-tab, Hub-tab, Gospel-tab) accreted from earlier merges;
+   this file collapses them to one canonical declaration.
+   ============================================================================= */
+
+:root {
+  --ink:       #0E0A06;
+  --ink-2:     #1C160D;
+  --paper:     #F6EFDE;
+  --paper-2:   #EFE6CF;
+  --paper-3:   #E6DCC2;
+  --gold:      #B5883F;
+  --gold-2:    #D7B169;
+  --gold-3:    #8A6828;
+  --wine:      #6B1E1E;
+  --wine-2:    #8C2A2A;
+  --mute:      #7A6F58;
+  --line:      #D8CDA8;
+  --line-soft: rgba(20, 14, 6, 0.08);
+  --line-dark: rgba(246, 239, 222, 0.10);
+  --line-dark-soft: rgba(246, 239, 222, 0.06);
+}
+
+/* ----- typography classes ------------------------------------------------- */
+.display {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 400;
+  letter-spacing: -0.005em;
+}
+.display-strong {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.body {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+}
+.body-lede {
+  font-family: 'EB Garamond', serif;
+  font-weight: 400;
+  letter-spacing: 0.005em;
+}
+.sc {
+  font-family: 'Cormorant SC', 'Cormorant Garamond', serif;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.sc-bold {
+  font-family: 'Cormorant SC', 'Cormorant Garamond', serif;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+/* ----- backgrounds -------------------------------------------------------- */
+.paper-bg   { background: var(--paper); }
+.paper-bg-2 { background: var(--paper-2); }
+.ink-bg     { background: var(--ink); }
+
+/* =============================================================================
+   COMPONENT CLASSES
+   Migrated from the_kingdom.jsx — needed by AddIntentionModal, HousesQuiz,
+   CloudOfWitnesses, and (eventually) the rest of the modals. Lives here, not
+   inline, because these classes use ::before/::after pseudo-elements and
+   CSS custom properties that style={{}} cannot express.
+   ============================================================================= */
+
+/* Ornament — a centered decorative rule with gold gradient on either side. */
+.ornament {
+  display: flex; align-items: center; gap: 14px;
+  color: var(--gold); font-size: 12px;
+}
+.ornament::before, .ornament::after {
+  content: ""; flex: 1; height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+
+/* Buttons — gold primary, ghost secondary, ghost-dark for ink backgrounds. */
+.btn-gold {
+  background: linear-gradient(180deg, var(--gold-2), var(--gold));
+  color: var(--ink); border: 1px solid var(--gold-3);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.25), 0 2px 8px rgba(138,104,40,0.25);
+  transition: all 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  cursor: pointer;
+}
+.btn-gold:hover {
+  background: linear-gradient(180deg, var(--gold), var(--gold-3));
+  color: var(--paper);
+  transform: translateY(-1px);
+}
+.btn-gold:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+
+.btn-ghost {
+  background: transparent; color: var(--ink);
+  border: 1px solid var(--line);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.btn-ghost:hover { border-color: var(--gold-3); color: var(--gold-3); }
+.btn-ghost:disabled { opacity: 0.3; cursor: not-allowed; }
+
+.btn-ghost-dark {
+  background: transparent; color: var(--paper);
+  border: 1px solid var(--line-dark);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+.btn-ghost-dark:hover { border-color: var(--gold-2); color: var(--gold-2); }
+
+/* Saint card — used in CloudOfWitnesses. Uses --house-color custom property
+   passed in via inline style to color the bottom border accent. */
+.saint-card {
+  position: relative; padding: 1.25rem;
+  border: 1px solid var(--line-dark);
+  background: rgba(246, 239, 222, 0.04);
+  transition: all 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  text-align: left; cursor: pointer; overflow: hidden;
+}
+.saint-card::after {
+  content: ""; position: absolute; bottom: 0; left: 0; right: 0;
+  height: 3px; background: var(--house-color, var(--gold)); opacity: 0.7;
+}
+.saint-card:hover {
+  transform: translateY(-2px);
+  background: rgba(246, 239, 222, 0.08);
+}
+
+/* Answer card — used in HousesQuiz. Uses --house-color and --house-tint
+   via inline style. The selected state animates the left bar in. */
+.answer-card {
+  position: relative;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.4);
+  padding: 1.25rem 1.4rem;
+  text-align: left; cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  display: flex; gap: 1rem; align-items: flex-start; width: 100%;
+  font-family: inherit; color: inherit;
+}
+.answer-card::before {
+  content: ""; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+  background: var(--house-color);
+  transform: scaleY(0); transform-origin: top;
+  transition: transform 0.35s ease;
+}
+.answer-card:hover {
+  border-color: var(--house-color);
+  background: rgba(255, 255, 255, 0.55);
+  transform: translateX(2px);
+}
+.answer-card:hover::before { transform: scaleY(1); }
+.answer-card.selected {
+  border-color: var(--house-color);
+  background: var(--house-tint);
+}
+.answer-card.selected::before { transform: scaleY(1); }
+.answer-card.selected .answer-check {
+  background: var(--house-color);
+  border-color: var(--house-color);
+  color: var(--paper);
+}
+.answer-check {
+  width: 22px; height: 22px; border-radius: 50%;
+  border: 1.5px solid var(--line);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0; margin-top: 2px;
+  transition: all 0.35s ease;
+  background: rgba(255, 255, 255, 0.5);
+}
+
+/* Progress dot — 6 dots across the bottom of HousesQuiz to show position. */
+.progress-dot {
+  width: 28px; height: 4px;
+  background: var(--paper-3);
+  transition: all 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.progress-dot.active  { background: var(--gold); }
+.progress-dot.current { background: var(--wine); }
+
+/* Result card — the framed reveal at the end of HousesQuiz, with a 4px
+   colored top bar in the discerned House's color. */
+.result-card {
+  position: relative;
+  border: 1.5px solid var(--house-color);
+  background: linear-gradient(180deg, var(--house-tint), rgba(255, 255, 255, 0.4));
+  padding: 2.5rem 2rem;
+  overflow: hidden;
+}
+.result-card::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0;
+  height: 4px; background: var(--house-color);
+}
+.result-icon-disc {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--house-tint);
+  border: 2px solid var(--house-color);
+  box-shadow: 0 0 32px var(--house-glow), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+}
+
+/* Score-bar animation — bars fill from 0 to their --score-width width. */
+@keyframes scoreRise { from { width: 0; } to { width: var(--score-width); } }
+.score-bar { animation: scoreRise 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) 0.4s both; }
+
+/* Breathe — slow scale + opacity pulse on hero discs (AwakenToTheDay,
+   WorkOfMercy). Used to suggest the disc is alive and present without
+   being attention-grabbing. */
+@keyframes breathe {
+  0%, 100% { transform: scale(1);    opacity: 0.85; }
+  50%      { transform: scale(1.06); opacity: 1;    }
+}
+.breathe { animation: breathe 4.5s ease-in-out infinite; }
+
+/* SEE module sections — used by AwakenToTheDay to frame the day's saint,
+   the Holy Father's intention, and the question to carry. Each section
+   gets a thin gold left bar and a small uppercase label. */
+.see-section {
+  border: 1px solid var(--line-dark);
+  background: rgba(246, 239, 222, 0.04);
+  padding: 1.5rem 1.75rem;
+  border-left: 3px solid var(--gold-2);
+  margin-bottom: 1rem;
+}
+.see-section .see-label {
+  font-family: 'Cormorant SC', serif;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 9px;
+  color: var(--gold-2);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+/* SEND apostolic-turn icon disc — used by ReachOut. Twilight-purple
+   ring with a soft glow; matches STEP_COLORS[7]. */
+.send-icon-disc {
+  width: 88px; height: 88px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: rgba(61, 52, 80, 0.12);
+  border: 2px solid #3D3450;
+  box-shadow: 0 0 32px rgba(61, 52, 80, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* Mercy card — used by WorkOfMercy's "show all" view to render each
+   choice from the three circles (Family, Community, Civilization).
+   Uses --mercy-color via inline style for the left bar accent. */
+.mercy-card {
+  position: relative;
+  border: 1px solid var(--line-dark);
+  background: rgba(246, 239, 222, 0.04);
+  padding: 1rem 1.1rem;
+  cursor: pointer;
+  transition: all 0.35s cubic-bezier(0.2, 0.7, 0.2, 1);
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: inherit;
+  color: var(--paper);
+  width: 100%;
+}
+.mercy-card::before {
+  content: ""; position: absolute; top: 0; left: 0; bottom: 0; width: 3px;
+  background: var(--mercy-color, #7A5230);
+  transform: scaleY(0); transform-origin: top;
+  transition: transform 0.35s ease;
+}
+.mercy-card:hover {
+  border-color: var(--mercy-color, #7A5230);
+  background: rgba(246, 239, 222, 0.07);
+  transform: translateY(-1px);
+}
+.mercy-card:hover::before { transform: scaleY(1); }
+.mercy-card.selected {
+  border-color: var(--mercy-color, #7A5230);
+  background: rgba(122, 82, 48, 0.10);
+}
+.mercy-card.selected::before { transform: scaleY(1); }
+.mercy-card .mercy-kind {
+  font-family: 'Cormorant SC', serif;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 8px;
+  color: var(--mercy-color, #7A5230);
+  margin-bottom: 0.25rem;
+}
+.mercy-card .mercy-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.08rem;
+  line-height: 1.25;
+  color: var(--paper);
+  font-weight: 500;
+}
+
+/* =============================================================================
+   LECTIO DIVINA — KNOW · The four-rung ladder.
+   Step nav, passage card, read counter, surfaced-word input, "your word"
+   reminder, contemplatio breathing.
+   ============================================================================= */
+
+/* Step navigation strip — four pills, one per step. */
+.lectio-step-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  flex-wrap: wrap;
+}
+.lectio-step-nav-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+.lectio-step-nav-item:hover { opacity: 0.85; }
+.lectio-step-nav-item.active { opacity: 1; }
+.lectio-step-nav-item.complete { opacity: 1; }
+.lectio-step-nav-item .lectio-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  border: 1.5px solid var(--lectio-color, var(--gold-2));
+  background: transparent;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+.lectio-step-nav-item.active .lectio-dot {
+  background: var(--lectio-color, var(--gold-2));
+  box-shadow: 0 0 10px var(--lectio-glow, rgba(215, 177, 105, 0.45));
+}
+.lectio-step-nav-item.complete .lectio-dot {
+  background: var(--lectio-color, var(--gold-2));
+}
+
+/* Passage card — visible on intro AND throughout the four steps so the
+   user always has the Word in front of them while moving through the ladder. */
+.lectio-passage-card {
+  border: 1px solid var(--line-dark);
+  background: rgba(246, 239, 222, 0.04);
+  padding: 1.5rem 1.75rem;
+  border-left: 3px solid var(--lectio-color, var(--gold-2));
+  position: relative;
+}
+.lectio-passage-card .passage-text {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1rem, 1.8vw, 1.13rem);
+  line-height: 1.7;
+  color: rgba(246, 239, 222, 0.88);
+}
+
+/* Read counter — three circles linked by lines. Tap each to mark a pass. */
+.read-counter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 1.5rem 0;
+}
+.read-counter-circle {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid var(--lectio-color, var(--gold-2));
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 14px;
+  color: var(--lectio-color, var(--gold-2));
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.read-counter-circle:hover { transform: scale(1.08); }
+.read-counter-circle.read {
+  background: var(--lectio-color, var(--gold-2));
+  color: var(--ink);
+  box-shadow: 0 0 12px var(--lectio-glow, rgba(215, 177, 105, 0.45));
+}
+.read-counter-line {
+  width: 24px; height: 1px;
+  background: var(--line-dark);
+  transition: background 0.4s ease;
+}
+.read-counter-line.read { background: var(--lectio-color, var(--gold-2)); }
+
+/* Surfaced-word input — the single word that arrests the reader on
+   meditatio. Italic, large, centered. */
+.surfaced-word-input {
+  width: 100%;
+  background: rgba(246, 239, 222, 0.04);
+  border: 1px solid var(--line-dark);
+  color: var(--paper);
+  padding: 1rem 1.25rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.4rem;
+  text-align: center;
+  outline: none;
+  transition: all 0.3s ease;
+}
+.surfaced-word-input:focus {
+  border-color: var(--lectio-color, var(--gold-2));
+  background: rgba(246, 239, 222, 0.07);
+}
+.surfaced-word-input::placeholder {
+  color: rgba(246, 239, 222, 0.35);
+  font-style: italic;
+}
+
+/* "Your word" reminder pill — surfaces in oratio, contemplatio, and closing. */
+.your-word-reminder {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--lectio-color, var(--gold-2));
+  background: rgba(215, 177, 105, 0.06);
+}
+.your-word-reminder .label {
+  font-family: 'Cormorant SC', serif;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 9px;
+  color: var(--lectio-color, var(--gold-2));
+}
+.your-word-reminder .word {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 1.05rem;
+  color: rgba(246, 239, 222, 0.92);
+}
+
+/* Deep breathe — slower than .breathe (7s vs 4.5s), used on the
+   contemplatio circle for a more contemplative cadence. */
+@keyframes deepBreathe {
+  0%, 100% { transform: scale(1);    opacity: 0.75; }
+  50%      { transform: scale(1.10); opacity: 1;    }
+}
+.deep-breathe { animation: deepBreathe 7s ease-in-out infinite; }
+
+/* Journal field — used by LectioDivina's oratio and (later) by DailyExamen.
+   Themed via the --mvmt-color custom property passed in inline. */
+.journal-field {
+  width: 100%;
+  background: rgba(246, 239, 222, 0.04);
+  border: 1px solid var(--line-dark);
+  color: var(--paper);
+  padding: 1rem 1.1rem;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1.02rem;
+  line-height: 1.55;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.journal-field:focus {
+  outline: none;
+  border-color: var(--mvmt-color, var(--gold-2));
+  background: rgba(246, 239, 222, 0.07);
+}
+.journal-field::placeholder {
+  color: rgba(246, 239, 222, 0.4);
+  font-style: italic;
+}
+
+/* =============================================================================
+   ABIDE — Mass / Adoration locator.
+   Eucharistic hero pulse, locator cards, location search, confirmation
+   toggles, spiritual-communion panel.
+   ============================================================================= */
+
+/* Eucharistic hero disc — slow gold pulse, larger than .breathe so it
+   reads as the source-and-summit. The pulse is a halo expanding outward,
+   not a scale change. */
+@keyframes eucharisticPulse {
+  0%, 100% {
+    box-shadow:
+      0 0 32px rgba(215, 177, 105, 0.45),
+      0 0 0 0 rgba(215, 177, 105, 0.30),
+      inset 0 1px 0 rgba(255, 255, 255, 0.20);
+  }
+  50% {
+    box-shadow:
+      0 0 48px rgba(215, 177, 105, 0.60),
+      0 0 0 16px rgba(215, 177, 105, 0),
+      inset 0 1px 0 rgba(255, 255, 255, 0.20);
+  }
+}
+.eucharistic-hero {
+  width: 124px; height: 124px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: radial-gradient(circle at center, rgba(215, 177, 105, 0.18), rgba(215, 177, 105, 0.06) 70%);
+  border: 2px solid var(--gold-2);
+  position: relative;
+  animation: eucharisticPulse 5s ease-in-out infinite;
+}
+.eucharistic-hero::after {
+  content: ""; position: absolute; inset: 8px;
+  border: 1px solid rgba(215, 177, 105, 0.30);
+  border-radius: 50%;
+}
+
+/* Locator cards — Find Mass + Find Adoration. Equal weight. */
+.locator-card {
+  position: relative;
+  border: 1.5px solid rgba(215, 177, 105, 0.45);
+  background: linear-gradient(180deg, rgba(215, 177, 105, 0.10), rgba(140, 42, 42, 0.04));
+  padding: 1.75rem 1.5rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  text-align: left;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  font-family: inherit;
+  color: inherit;
+  width: 100%;
+}
+.locator-card::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(to right, var(--wine), var(--gold-2), var(--gold));
+}
+.locator-card::after {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at top right, rgba(215, 177, 105, 0.10), transparent 60%);
+  pointer-events: none;
+  opacity: 0; transition: opacity 0.4s ease;
+}
+.locator-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--gold-2);
+  box-shadow: 0 8px 32px rgba(215, 177, 105, 0.18);
+}
+.locator-card:hover::after { opacity: 1; }
+
+/* Location search field — fallback for users who decline geolocation. */
+.location-search {
+  width: 100%;
+  background: rgba(246, 239, 222, 0.04);
+  border: 1px solid var(--line-dark);
+  color: var(--paper);
+  padding: 0.875rem 1.1rem;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.3s ease;
+}
+.location-search:focus {
+  border-color: var(--gold-2);
+  background: rgba(246, 239, 222, 0.07);
+}
+.location-search::placeholder {
+  color: rgba(246, 239, 222, 0.4);
+  font-style: italic;
+}
+
+/* "I went today" toggle — three of them, for Mass / Adoration / Spiritual
+   Communion. The act, not the search, is what marks ABIDE complete. */
+.went-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 1rem 1.25rem;
+  border: 1px solid var(--line-dark);
+  background: rgba(246, 239, 222, 0.04);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: left;
+  width: 100%;
+  font-family: inherit;
+  color: inherit;
+}
+.went-toggle:hover {
+  border-color: var(--gold-2);
+  background: rgba(215, 177, 105, 0.06);
+}
+.went-toggle.confirmed {
+  border-color: var(--gold-2);
+  background: rgba(215, 177, 105, 0.10);
+}
+.went-toggle .check-circle {
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1.5px solid var(--line-dark);
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+  background: rgba(246, 239, 222, 0.04);
+}
+.went-toggle.confirmed .check-circle {
+  background: var(--gold-2);
+  border-color: var(--gold-2);
+  color: var(--ink);
+}
+
+/* Spiritual Communion expanded panel — wine-toned. */
+.spiritual-communion-panel {
+  border: 1px solid rgba(140, 42, 42, 0.40);
+  background: linear-gradient(180deg, rgba(140, 42, 42, 0.06), rgba(107, 30, 30, 0.02));
+  padding: 2rem 1.75rem;
+  position: relative;
+  overflow: hidden;
+}
+.spiritual-communion-panel::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+  background: linear-gradient(to right, transparent, var(--wine), transparent);
+}
+
+/* =============================================================================
+   COMPLINE — The Night Office.
+   Deeper-than-ink palette accented with the blue-purple of evening (#6B5B95),
+   warming to gold only at the closing Marian antiphon. The transition is the
+   structural arc — night, kept watch over, ending in Mary.
+   ============================================================================= */
+
+/* Night background — deeper than .ink-bg, with three soft purple/blue
+   ambient highlights. The whole modal sits on this. */
+.night-bg {
+  background-color: #08070C;
+  background-image:
+    radial-gradient(ellipse at 50% 0%,  rgba(94, 82, 140, 0.18), transparent 65%),
+    radial-gradient(ellipse at 80% 100%, rgba(74, 95, 126, 0.10), transparent 50%),
+    radial-gradient(ellipse at 15% 80%,  rgba(61, 52, 80, 0.10), transparent 60%);
+}
+
+/* Compline section block — flowing single-column liturgical layout, one
+   per section, vertically stacked with a thin purple left bar. */
+.compline-section {
+  border-left: 2px solid var(--compline-color, #6B5B95);
+  padding: 1.75rem 0 1.75rem 1.5rem;
+  margin-bottom: 0.5rem;
+  position: relative;
+}
+.compline-section .compline-label {
+  font-family: 'Cormorant SC', serif;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  font-size: 9px;
+  font-weight: 600;
+  color: var(--compline-color, #6B5B95);
+  margin-bottom: 0.5rem;
+}
+.compline-section .compline-title {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 600;
+  font-size: clamp(1.4rem, 3vw, 1.85rem);
+  line-height: 1.1;
+  color: var(--paper);
+  margin-bottom: 0.875rem;
+  letter-spacing: -0.014em;
+}
+.compline-section .compline-prayer {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: clamp(1.05rem, 1.8vw, 1.18rem);
+  line-height: 1.65;
+  color: rgba(246, 239, 222, 0.88);
+}
+.compline-section .compline-prayer .versicle {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--compline-color, #B8A4D9);
+}
+.compline-section .compline-rubric {
+  font-family: 'EB Garamond', serif;
+  font-style: italic;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgba(246, 239, 222, 0.5);
+  margin-top: 0.625rem;
+}
+
+/* Silent-pause card — used inside the examination section and after the
+   psalm. The silence is part of the liturgy, not a wait. */
+.compline-silence {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2rem 1.5rem;
+  margin: 0.5rem 0;
+  background: rgba(107, 91, 149, 0.04);
+  border-top: 1px solid rgba(107, 91, 149, 0.18);
+  border-bottom: 1px solid rgba(107, 91, 149, 0.18);
+}
+
+/* Night breathe — slower than .breathe, accents in purple. Used on the
+   silence pause and on the intro hero. */
+@keyframes nightBreathe {
+  0%, 100% { transform: scale(1);    opacity: 0.6; box-shadow: 0 0 24px rgba(107, 91, 149, 0.35); }
+  50%      { transform: scale(1.10); opacity: 1;   box-shadow: 0 0 40px rgba(107, 91, 149, 0.55); }
+}
+.night-breathe {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  background: rgba(107, 91, 149, 0.12);
+  border: 2px solid #6B5B95;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+  animation: nightBreathe 6s ease-in-out infinite;
+}
+
+/* Section progress strip — eleven small dots in the sticky header. */
+.compline-progress {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+.compline-progress-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: rgba(246, 239, 222, 0.18);
+  transition: all 0.4s ease;
+  cursor: pointer;
+}
+.compline-progress-dot.read { background: #6B5B95; }
+.compline-progress-dot.current {
+  background: #B8A4D9;
+  box-shadow: 0 0 8px rgba(184, 164, 217, 0.6);
+  width: 8px; height: 8px;
+}
+
+/* Blessing card — final visual climax, larger negative space, a
+   radial halo behind the words. */
+.compline-blessing {
+  text-align: center;
+  padding: 3rem 1.5rem;
+  margin: 1.5rem 0;
+  background: radial-gradient(ellipse at center, rgba(107, 91, 149, 0.10) 0%, transparent 70%);
+  border-top: 1px solid rgba(107, 91, 149, 0.25);
+  border-bottom: 1px solid rgba(107, 91, 149, 0.25);
+}
+
+/* Marian antiphon card — the warm gold close after the night liturgy. */
+.marian-antiphon-card {
+  text-align: center;
+  padding: 2.5rem 1.75rem;
+  border: 1px solid rgba(215, 177, 105, 0.4);
+  background: linear-gradient(180deg, rgba(215, 177, 105, 0.10) 0%, rgba(107, 91, 149, 0.05) 100%);
+  position: relative;
+  overflow: hidden;
+}
+.marian-antiphon-card::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(to right, #6B5B95, var(--gold-2), #6B5B95);
+}
+
+/* Examination input — small, single-line, "what burdened me today". */
+.compline-examination-input {
+  width: 100%;
+  background: rgba(107, 91, 149, 0.06);
+  border: 1px solid rgba(107, 91, 149, 0.30);
+  color: var(--paper);
+  padding: 0.875rem 1.1rem;
+  font-family: 'EB Garamond', Georgia, serif;
+  font-style: italic;
+  font-size: 1rem;
+  line-height: 1.55;
+  resize: none;
+  outline: none;
+  transition: all 0.3s ease;
+}
+.compline-examination-input:focus {
+  border-color: #B8A4D9;
+  background: rgba(107, 91, 149, 0.10);
+}
+.compline-examination-input::placeholder {
+  color: rgba(246, 239, 222, 0.4);
+  font-style: italic;
+}
+
+/* =============================================================================
+   THE ROSARY — Marian prayer for the salvation of souls.
+   Mystery selector cards, day tags, mystery progress strip, mystery scene
+   card, beads (small + large), prayer text.
+   ============================================================================= */
+
+/* Mystery selector — the four cards on the intro screen. Each tinted by
+   its set's color; the suggested set (today's) gets a stronger background. */
+.mystery-set-card {
+  position: relative;
+  border: 1px solid var(--line-dark);
+  background: rgba(246, 239, 222, 0.04);
+  padding: 1.5rem 1.25rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  text-align: left;
+  display: flex; flex-direction: column;
+  overflow: hidden;
+  font-family: inherit;
+  color: inherit;
+  width: 100%;
+}
+.mystery-set-card::before {
+  content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: var(--mystery-color);
+}
+.mystery-set-card.suggested {
+  background: rgba(246, 239, 222, 0.08);
+  border-color: var(--mystery-color);
+}
+.mystery-set-card:hover {
+  transform: translateY(-2px);
+  border-color: var(--mystery-color);
+  background: rgba(246, 239, 222, 0.08);
+}
+.mystery-set-card .day-tag {
+  display: inline-block;
+  font-family: 'Cormorant SC', serif;
+  font-size: 8px; letter-spacing: 0.2em; text-transform: uppercase;
+  padding: 2px 6px;
+  border: 1px solid var(--mystery-color);
+  color: var(--mystery-color);
+  background: rgba(246, 239, 222, 0.04);
+  margin-top: 0.5rem;
+}
+
+/* Bead — the unit of the rosary. Small circle that fills as the user
+   advances through the 10 Hail Marys. */
+.bead {
+  width: 14px; height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid var(--mystery-color, var(--gold-2));
+  background: transparent;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+  padding: 0;
+}
+.bead:hover { transform: scale(1.2); }
+.bead.prayed {
+  background: var(--mystery-color, var(--gold-2));
+  border-color: var(--mystery-color, var(--gold-2));
+}
+.bead.current {
+  background: var(--mystery-color, var(--gold-2));
+  border-color: var(--mystery-color, var(--gold-2));
+  box-shadow: 0 0 12px var(--mystery-glow), 0 0 0 3px rgba(246, 239, 222, 0.1);
+  transform: scale(1.25);
+}
+
+/* Big bead — punctuates the strip with "OF" (Our Father) and "GB"
+   (Glory Be) markers. The traditional rosary has these as larger
+   physical beads between the decade beads. */
+.bead-large {
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--mystery-color, var(--gold-2));
+  background: transparent;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 10px;
+  color: var(--mystery-color, var(--gold-2));
+  cursor: pointer;
+  transition: all 0.3s ease;
+  flex-shrink: 0;
+}
+.bead-large.prayed {
+  background: var(--mystery-color, var(--gold-2));
+  color: var(--ink);
+}
+.bead-large.current {
+  background: var(--mystery-color, var(--gold-2));
+  color: var(--ink);
+  box-shadow: 0 0 12px var(--mystery-glow), 0 0 0 3px rgba(246, 239, 222, 0.1);
+  transform: scale(1.15);
+}
+
+/* Bead strip — the 10 Hail Marys flanked by Our Father + Glory Be markers. */
+.bead-strip {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  flex-wrap: wrap;
+}
+
+/* Mystery progress strip — the five mysteries shown across the top header
+   during the prayer. Tap a dot to jump back/forward to that mystery. */
+.mystery-strip-dot {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.3s ease;
+}
+.mystery-strip-dot:hover { opacity: 0.85; }
+.mystery-strip-dot.active { opacity: 1; }
+.mystery-strip-dot.complete { opacity: 1; }
+.mystery-strip-dot .dot {
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 1.5px solid var(--mystery-color, var(--gold-2));
+  background: transparent;
+  flex-shrink: 0;
+  transition: all 0.3s ease;
+}
+.mystery-strip-dot.active .dot {
+  background: var(--mystery-color, var(--gold-2));
+  box-shadow: 0 0 8px var(--mystery-glow);
+}
+.mystery-strip-dot.complete .dot {
+  background: var(--mystery-color, var(--gold-2));
+}
+
+/* Mystery scene card — the framed Scripture scene that stays visible
+   above the bead strip and prayer text throughout all sub-phases of a
+   single mystery. */
+.mystery-scene-card {
+  border: 1px solid var(--line-dark);
+  background: rgba(246, 239, 222, 0.04);
+  padding: 1.25rem 1.5rem;
+  border-left: 3px solid var(--mystery-color);
+}
+
+/* Prayer text card — the words being prayed in the current sub-phase.
+   Centered, large italic Garamond, with the opening words emphasized. */
+.prayer-text-card {
+  text-align: center;
+  padding: 2.5rem 1.5rem;
+}
+.prayer-text-card .prayer-words {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(1.25rem, 2.6vw, 1.6rem);
+  line-height: 1.55;
+  font-style: italic;
+  color: rgba(246, 239, 222, 0.9);
+  max-width: 36rem;
+  margin: 0 auto;
+}
+.prayer-text-card .prayer-emph {
+  font-style: normal;
+  font-weight: 500;
+  color: var(--gold-2);
+}
+
+/* =============================================================================
+   DAILY EXAMEN — HEAL · The Ignatian five-movement prayer.
+   Movement disc with Roman numeral badge, scripture verse pull, three-input
+   gratitude grid (with letter labels I/II/III).
+   ============================================================================= */
+
+/* Movement disc — the 64×64 emblem at the top of each movement, tinted by
+   the movement's own color. The Roman numeral badge sits at the bottom-right
+   like a Pope's seal. */
+.movement-disc {
+  width: 64px; height: 64px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--mvmt-tint);
+  border: 2px solid var(--mvmt-color);
+  box-shadow: 0 0 24px var(--mvmt-glow), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  position: relative;
+}
+.movement-disc-roman {
+  position: absolute; bottom: -4px; right: -4px;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: var(--mvmt-color);
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--paper);
+  border: 1.5px solid var(--ink);
+}
+
+/* Verse pull (dark variant) — italic scripture quote with a colored
+   left rule. Used on every movement to show the scripture verse. */
+.verse-pull-dark {
+  border-left: 2px solid var(--mvmt-color, var(--gold-2));
+  padding-left: 18px;
+}
+
+/* Gratitude inputs — three rows, each with a Roman-numeral letter label
+   and a single-line text input. Used only on the Gratitude movement. */
+.gratitude-input {
+  display: flex; align-items: center; gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--line-dark);
+  background: rgba(246, 239, 222, 0.04);
+  transition: all 0.3s ease;
+}
+.gratitude-input:focus-within {
+  border-color: var(--mvmt-color, var(--gold-2));
+  background: rgba(246, 239, 222, 0.07);
+}
+.gratitude-input input {
+  flex: 1;
+  background: transparent;
+  border: 0;
+  color: var(--paper);
+  font-family: 'EB Garamond', Georgia, serif;
+  font-size: 1rem;
+  outline: none;
+}
+.gratitude-input input::placeholder {
+  color: rgba(246, 239, 222, 0.4);
+  font-style: italic;
+}
+.gratitude-input .gnum {
+  font-family: 'Cormorant Garamond', serif;
+  color: var(--mvmt-color, var(--gold-2));
+  font-size: 1.1rem;
+  font-weight: 500;
+  width: 1.5rem;
+  flex-shrink: 0;
+}
+
+/* ----- selection / focus -------------------------------------------------- */
+::selection { background: rgba(215, 177, 105, 0.35); color: var(--ink); }
+:focus-visible {
+  outline: 2px solid var(--gold-2);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+/* ----- animations --------------------------------------------------------- */
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.fade-in { animation: fadeIn 0.5s ease both; }
+
+/* =============================================================================
+   MOBILE OPTIMIZATIONS
+   Safe-area insets, prevent input zoom on iOS, momentum scroll, tap highlight.
+   ============================================================================= */
+
+@supports (padding: env(safe-area-inset-bottom)) {
+  body {
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left:   env(safe-area-inset-left);
+    padding-right:  env(safe-area-inset-right);
+  }
+  .safe-bottom { padding-bottom: max(1rem, env(safe-area-inset-bottom)); }
+  .safe-top    { padding-top:    max(1rem, env(safe-area-inset-top)); }
+}
+
+/* iOS Safari input zoom prevention — inputs must be ≥16px to stop auto-zoom */
+input, textarea, select { font-size: 16px; }
+
+html { scroll-behavior: smooth; }
+
+body.modal-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+.scrollable, [data-scrollable] {
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+}
+
+* { -webkit-tap-highlight-color: rgba(181, 136, 63, 0.20); }
+button, a { -webkit-tap-highlight-color: rgba(181, 136, 63, 0.30); }
+
+button, nav, [role="button"] {
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+/* ----- baseline reset ---------------------------------------------------- */
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'EB Garamond', serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* { box-sizing: border-box; }
+
+button {
+  font-family: inherit;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+  color: inherit;
+}
+
+a { color: inherit; text-decoration: none; }
+
+/* =============================================================================
+   COURSE — overview surface visuals (HorizontalJourney, SevenStepsList,
+   StepRibbon, CourseHero). Migrated from the_kingdom.jsx lines 1162-1277.
+   ============================================================================= */
+
+/* Journey SVG: medallion buttons positioned absolute over the SVG */
+.journey-medallion {
+  width: 76px; height: 76px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid;
+  box-shadow: 0 0 28px var(--step-glow, rgba(215, 177, 105, 0.4)), inset 0 1px 0 rgba(255, 255, 255, 0.16);
+  transition: all 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  cursor: pointer;
+}
+.journey-medallion:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 44px var(--step-glow, rgba(215, 177, 105, 0.6)), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+}
+.journey-medallion:active { transform: scale(1.05); }
+
+/* Pentecost terminus pulsing mark */
+@keyframes pentecostPulse {
+  0%, 100% { transform: scale(1);    box-shadow: 0 0 22px rgba(215, 177, 105, 0.45); }
+  50%      { transform: scale(1.08); box-shadow: 0 0 36px rgba(215, 177, 105, 0.7); }
+}
+.pentecost-mark { animation: pentecostPulse 3.2s ease-in-out infinite; }
+
+/* Hover tooltip on journey medallions */
+.journey-tooltip {
+  position: absolute;
+  bottom: calc(100% + 14px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--ink);
+  color: var(--paper);
+  border: 1px solid var(--step-color, var(--gold));
+  padding: 10px 14px;
+  min-width: 180px;
+  max-width: 240px;
+  text-align: center;
+  pointer-events: none;
+  z-index: 10;
+  white-space: nowrap;
+}
+.journey-tooltip::after {
+  content: ""; position: absolute;
+  top: 100%; left: 50%; transform: translateX(-50%);
+  width: 0; height: 0;
+  border-left: 6px solid transparent;
+  border-right: 6px solid transparent;
+  border-top: 6px solid var(--step-color, var(--gold));
+}
+
+/* Step cards in SevenStepsList */
+.step-card {
+  position: relative;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.22);
+  transition: all 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+  overflow: hidden;
+}
+.step-card.dark {
+  background: rgba(246, 239, 222, 0.04);
+  border-color: var(--line-dark);
+}
+.step-card::before {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(135deg, transparent 50%, var(--step-tint, transparent));
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+.step-card:hover { transform: translateY(-2px); border-color: var(--step-color, var(--gold)); }
+.step-card:hover::before { opacity: 0.7; }
+.step-card:hover .step-arrow { transform: translate(4px, -4px); opacity: 1; }
+.step-card:hover .step-ghost { opacity: 0.18; }
+.step-arrow { transition: all 0.4s cubic-bezier(0.2, 0.7, 0.2, 1); opacity: 0.35; }
+.step-ghost {
+  font-family: 'Cormorant Garamond', serif;
+  font-weight: 300;
+  font-size: 9.5rem;
+  line-height: 0.85;
+  color: var(--step-color, var(--gold));
+  opacity: 0.10;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+  user-select: none;
+}
+@media (max-width: 768px) { .step-ghost { font-size: 6.5rem; } }
+
+.step-medallion {
+  width: 60px; height: 60px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  border: 2px solid var(--step-color, var(--gold));
+  background: var(--step-color, var(--gold));
+  box-shadow: 0 0 24px var(--step-glow, rgba(181, 136, 63, 0.4)), inset 0 1px 0 rgba(255, 255, 255, 0.18);
+  flex-shrink: 0;
+  transition: all 0.5s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.step-card:hover .step-medallion { transform: scale(1.04); }
+@media (max-width: 768px) { .step-medallion { width: 50px; height: 50px; } }
+
+/* Stage divider (Via Purgativa / Illuminativa / Unitiva) */
+.stage-divider {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin: 56px 0 32px;
+}
+.stage-divider .line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, var(--gold), transparent);
+}
+.stage-divider .label { text-align: center; }
+
+/* Animations: rise, pulseGold, drawPath */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.rise { animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.d-1 { animation-delay: 0.05s; }
+.d-2 { animation-delay: 0.16s; }
+.d-3 { animation-delay: 0.28s; }
+.d-4 { animation-delay: 0.42s; }
+.d-5 { animation-delay: 0.58s; }
+
+@keyframes pulseGold {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(181, 136, 63, 0.45); }
+  50%      { box-shadow: 0 0 0 10px rgba(181, 136, 63, 0); }
+}
+.pulse-gold { animation: pulseGold 2.6s ease-in-out infinite; }
+
+@keyframes drawPath {
+  from { stroke-dashoffset: 1500; }
+  to   { stroke-dashoffset: 0; }
+}
+.path-draw {
+  stroke-dasharray: 1500;
+  animation: drawPath 2.5s cubic-bezier(0.4, 0, 0.2, 1) 0.4s both;
+}
+
+/* =============================================================================
+   COURSE — day card visuals (used by WeekDetail's day list).
+   Migrated from the_kingdom.jsx lines 1450-1459.
+   ============================================================================= */
+
+.day-card {
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.25);
+  transition: border-color 0.3s ease, background 0.3s ease;
+}
+.day-card:hover { border-color: var(--gold-3); }
+.sabbath-card {
+  background: rgba(181, 136, 63, 0.08);
+  border-style: dashed;
+}
+
+/* =============================================================================
+   GOSPEL TAB — Gate-specific styles (Nine Circles SVG, ring hit areas,
+   pulsing core for the Bridge component, modal animation).
+   Migrated from the_kingdom.jsx lines 1361-1405.
+   ============================================================================= */
+
+@keyframes pulseCore {
+  0%, 100% { r: 24; opacity: 0.9; }
+  50%      { r: 28; opacity: 1; }
+}
+.pulse-core { animation: pulseCore 3.2s ease-in-out infinite; }
+
+.ring-hit {
+  transition: all 0.4s cubic-bezier(0.2, 0.7, 0.2, 1);
+  cursor: pointer;
+}
+.ring-hit:hover { filter: brightness(1.05); }
+
+/* Modal entrance animation (used by CircleModal) */
+.modal-enter { animation: rise 0.45s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+
+/* =============================================================================
+   COMPANION — pulsing dot for the "Listening…" indicator.
+   ============================================================================= */
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}

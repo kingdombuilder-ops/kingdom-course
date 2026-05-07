@@ -1,0 +1,27 @@
+{
+  "name": "kingdom-course",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "description": "The Kingdom Course — a Catholic spiritual formation initiative. kingdomcourse.org.",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview --port 4173",
+    "lint": "echo 'Add eslint when ready'"
+  },
+  "dependencies": {
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "lucide-react": "^0.383.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.39",
+    "vite": "^5.3.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
