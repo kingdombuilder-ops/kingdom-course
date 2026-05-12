@@ -1,4 +1,5 @@
-import { useState, lazy, Suspense } from 'react';
+import { useState, useEffect, lazy, Suspense } from 'react';
+import { useUser, useSignUp, useClerk } from '@clerk/clerk-react';
 import {
   CHURCH_TODAY,
   HOUSES,
@@ -26,8 +27,8 @@ import {
   PassItOn,
   ReachOut,
   SignupModal,
-  SIGNUP_STORAGE_KEY,
   TheRosary,
+  VerifyEmailModal,
   WorkOfMercy,
 } from '@modals';
 import {
@@ -148,27 +149,73 @@ export default function App() {
   const [passItOnOpen, setPassItOnOpen] = useState(false);
   const [companionOpen, setCompanionOpen] = useState(false);
   const [signupOpen, setSignupOpen] = useState(false);
-  // Hydrate currentUser from localStorage on mount (SignupModal's stub
-  // persists there — same key constant exposed via SIGNUP_STORAGE_KEY)
-  const [currentUser, setCurrentUser] = useState(() => {
-    if (typeof localStorage === 'undefined') return null;
+// Auth — Clerk's useUser() is the source of truth for who is signed in.
+  // The `user` object Clerk returns has a different shape than our previous
+  // stub user, so we adapt it here into the shape the rest of the app
+  // expects: { email, name?, parish?, signedUpAt }.
+  const { user: clerkUser, isSignedIn, isLoaded: clerkLoaded } = useUser();
+  const { signOut } = useClerk();
+  const { signUp, isLoaded: signUpLoaded, setActive } = useSignUp();
+  const currentUser = (isSignedIn && clerkUser) ? {
+    email: clerkUser.primaryEmailAddress?.emailAddress || '',
+    name: clerkUser.firstName || null,
+    parish: clerkUser.unsafeMetadata?.startingFrom || null,
+    signedUpAt: clerkUser.createdAt ? new Date(clerkUser.createdAt).toISOString() : null,
+  } : null;
+  const handleSignOut = async () => {
     try {
-      const raw = localStorage.getItem(SIGNUP_STORAGE_KEY);
-      return raw ? JSON.parse(raw) : null;
+      await signOut();
     } catch {
-      return null;
+      // ignore — signout failures are non-fatal
     }
-  });
-  const handleSignOut = () => {
-    if (typeof localStorage !== 'undefined') {
-      try { localStorage.removeItem(SIGNUP_STORAGE_KEY); } catch { /* ignore */ }
-    }
-    setCurrentUser(null);
   };
-  const handleSignupSuccess = (user) => {
-    setCurrentUser(user);
+  // After verification completes, Clerk auto-sets the user as signed-in via
+  // setActive(). This callback closes the signup flow. The `user` arg comes
+  // from SignupModal's onSuccess; it's the unverified user from step 1 of
+  // the two-step flow, but we don't actually use it here — we just close.
+  const handleSignupSuccess = () => {
     setSignupOpen(false);
   };
+  // The actual Clerk-wired submit handler passed to <SignupModal>.
+  // Step 1 of the two-step flow: creates the user record (unverified)
+  // and triggers Clerk's email-verification code send. The modal closes
+  // on resolve; the second step (collecting the code) happens in the
+  // VerifyEmailModal that mounts after this resolves.
+  const handleClerkSignup = async ({ email, name, parish }) => {
+    if (!signUpLoaded) {
+      throw new Error('Auth is still loading. Please try again in a moment.');
+    }
+    try {
+      console.log('[handleClerkSignup] calling signUp.create with:', { email, firstName: name, parish });
+      const createResult = await signUp.create({
+        emailAddress: email,
+        firstName: name || undefined,
+        unsafeMetadata: parish ? { startingFrom: parish } : {},
+      });
+      console.log('[handleClerkSignup] signUp.create result:', createResult);
+      console.log('[handleClerkSignup] signUp.status after create:', signUp.status);
+      console.log('[handleClerkSignup] signUp.missingFields:', signUp.missingFields);
+      console.log('[handleClerkSignup] signUp.unverifiedFields:', signUp.unverifiedFields);
+      const prepareResult = await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
+      console.log('[handleClerkSignup] prepareEmailAddressVerification result:', prepareResult);
+      setVerifyEmailOpen(true);
+      return {
+        email,
+        name: name || null,
+        parish: parish || null,
+        signedUpAt: new Date().toISOString(),
+      };
+    } catch (err) {
+      console.error('[handleClerkSignup] error:', err);
+      console.error('[handleClerkSignup] err.errors:', err?.errors);
+      const message = err?.errors?.[0]?.message || 'Could not start signup. Please try again.';
+      throw new Error(message);
+    }
+  };
+  // VerifyEmailModal is opened after handleClerkSignup completes step 1.
+  // It collects the 6-digit code and calls Clerk's
+  // attemptEmailAddressVerification to complete signup.
+  const [verifyEmailOpen, setVerifyEmailOpen] = useState(false);
 
   const goToHub = () => {
     setKingdomView('hub');
@@ -391,8 +438,29 @@ export default function App() {
             open={signupOpen}
             onClose={() => setSignupOpen(false)}
             onSuccess={handleSignupSuccess}
-            // No submitHandler — uses the default localStorage stub.
-            // When real auth lands, pass: submitHandler={authProviderSignup}
+            submitHandler={handleClerkSignup}
+          />
+          <VerifyEmailModal
+            open={verifyEmailOpen}
+            onClose={() => setVerifyEmailOpen(false)}
+            onVerified={async (createdSessionId) => {
+              try {
+                // If we have a sessionId, activate it. If not, fall back
+                // to letting Clerk pick the most recently created session
+                // for this signUp resource.
+                if (createdSessionId) {
+                  await setActive({ session: createdSessionId });
+                } else if (signUp?.createdSessionId) {
+                  await setActive({ session: signUp.createdSessionId });
+                }
+              } catch {
+                // Non-fatal: the user is verified on Clerk's side even if
+                // setActive failed; a page reload would pick up the session.
+              }
+              setVerifyEmailOpen(false);
+              setSignupOpen(false);
+            }}
+            signUp={signUp}
           />
           <Companion
             open={companionOpen}

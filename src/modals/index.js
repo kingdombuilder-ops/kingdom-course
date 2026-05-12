@@ -37,4 +37,5 @@ export { default as PassItOn }          from './PassItOn.jsx';
 export { default as ReachOut }          from './ReachOut.jsx';
 export { default as SignupModal, SIGNUP_STORAGE_KEY } from './SignupModal.jsx';
 export { default as TheRosary }         from './TheRosary.jsx';
+export { default as VerifyEmailModal } from './VerifyEmailModal.jsx';
 export { default as WorkOfMercy }       from './WorkOfMercy.jsx';
