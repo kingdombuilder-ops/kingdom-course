@@ -1,5 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react';
-import { useUser, useSignUp, useClerk } from '@clerk/clerk-react';
+import { useUser, useSignUp, useSignIn, useClerk, AuthenticateWithRedirectCallback } from '@clerk/clerk-react';
 import {
   CHURCH_TODAY,
   HOUSES,
@@ -156,6 +156,7 @@ export default function App() {
   const { user: clerkUser, isSignedIn, isLoaded: clerkLoaded } = useUser();
   const { signOut } = useClerk();
   const { signUp, isLoaded: signUpLoaded, setActive } = useSignUp();
+  const { signIn, isLoaded: signInLoaded } = useSignIn();
   const currentUser = (isSignedIn && clerkUser) ? {
     email: clerkUser.primaryEmailAddress?.emailAddress || '',
     name: clerkUser.firstName || null,
@@ -175,29 +176,57 @@ export default function App() {
   // the two-step flow, but we don't actually use it here — we just close.
   const handleSignupSuccess = () => {
     setSignupOpen(false);
+    // After signup completes, route the new user straight to The Course.
+    // The signed-in Course view greets them ("Hello, Aaron.") and surfaces
+    // their starting point — fulfilling the modal's "Begin the Course" CTA.
+    setProductionTab('course');
+    if (typeof window !== 'undefined') window.scrollTo(0, 0);
   };
   // The actual Clerk-wired submit handler passed to <SignupModal>.
   // Step 1 of the two-step flow: creates the user record (unverified)
   // and triggers Clerk's email-verification code send. The modal closes
   // on resolve; the second step (collecting the code) happens in the
   // VerifyEmailModal that mounts after this resolves.
+  // Initiates Clerk's Google OAuth redirect flow. Clerk handles both
+  // sign-up (first time) and sign-in (returning user) automatically —
+  // we use signIn's authenticateWithRedirect which Clerk routes to
+  // signUp under the hood when no account exists for the Google email.
+  //
+  // On success, Google redirects back to `/sso-callback` where Clerk's
+  // AuthenticateWithRedirectCallback component completes the flow and
+  // returns the user to `/`. Both URLs are relative to the current
+  // origin (localhost in dev, kingdomcourse.org in production).
+  const handleGoogleSignup = async () => {
+    if (!signInLoaded) {
+      // eslint-disable-next-line no-console
+      console.warn('[handleGoogleSignup] Clerk signIn resource not yet loaded');
+      return;
+    }
+    try {
+      await signIn.authenticateWithRedirect({
+        strategy: 'oauth_google',
+        redirectUrl: '/sso-callback',
+        redirectUrlComplete: '/',
+      });
+      // Note: code below this point never runs in the normal case —
+      // authenticateWithRedirect navigates the browser away from our app.
+      // The user comes back through `/sso-callback` once Google completes.
+    } catch (err) {
+      // eslint-disable-next-line no-console
+      console.error('[handleGoogleSignup] failed to start OAuth:', err);
+    }
+  };
   const handleClerkSignup = async ({ email, name, parish }) => {
     if (!signUpLoaded) {
       throw new Error('Auth is still loading. Please try again in a moment.');
     }
     try {
-      console.log('[handleClerkSignup] calling signUp.create with:', { email, firstName: name, parish });
-      const createResult = await signUp.create({
+      await signUp.create({
         emailAddress: email,
         firstName: name || undefined,
         unsafeMetadata: parish ? { startingFrom: parish } : {},
       });
-      console.log('[handleClerkSignup] signUp.create result:', createResult);
-      console.log('[handleClerkSignup] signUp.status after create:', signUp.status);
-      console.log('[handleClerkSignup] signUp.missingFields:', signUp.missingFields);
-      console.log('[handleClerkSignup] signUp.unverifiedFields:', signUp.unverifiedFields);
-      const prepareResult = await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
-      console.log('[handleClerkSignup] prepareEmailAddressVerification result:', prepareResult);
+      await signUp.prepareEmailAddressVerification({ strategy: 'email_code' });
       setVerifyEmailOpen(true);
       return {
         email,
@@ -206,8 +235,6 @@ export default function App() {
         signedUpAt: new Date().toISOString(),
       };
     } catch (err) {
-      console.error('[handleClerkSignup] error:', err);
-      console.error('[handleClerkSignup] err.errors:', err?.errors);
       const message = err?.errors?.[0]?.message || 'Could not start signup. Please try again.';
       throw new Error(message);
     }
@@ -256,6 +283,16 @@ export default function App() {
 
   return (
     <>
+      {/* OAuth redirect callback — when Google sends the user back to
+          /sso-callback, this component completes the auth flow then
+          navigates to the redirectUrl we set in authenticateWithRedirect.
+          On any other path it renders nothing. */}
+      {typeof window !== 'undefined' && window.location.pathname === '/sso-callback' && (
+        <AuthenticateWithRedirectCallback
+          afterSignInUrl="/"
+          afterSignUpUrl="/"
+        />
+      )}
       {/* Dev preview mode toggle — only visible in development. Production
           builds always run in "live" mode and never see this toggle. */}
       {IS_DEV && (
@@ -439,6 +476,7 @@ export default function App() {
             onClose={() => setSignupOpen(false)}
             onSuccess={handleSignupSuccess}
             submitHandler={handleClerkSignup}
+            googleHandler={handleGoogleSignup}
           />
           <VerifyEmailModal
             open={verifyEmailOpen}

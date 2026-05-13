@@ -75,6 +75,7 @@ export default function SignupModal({
   // eslint-disable-next-line no-unused-vars
   intent,
   submitHandler,
+  googleHandler,
 }) {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
@@ -255,7 +256,7 @@ export default function SignupModal({
           >
             Seven steps.
             <span style={{ display: 'block', fontStyle: 'italic', marginTop: '0.25rem', color: 'var(--gold-3)' }}>
-              Forty-nine days.
+              Fifty days.
             </span>
           </h2>
 
@@ -285,6 +286,85 @@ export default function SignupModal({
           >
             The standard is not information. The standard is fire.
           </p>
+
+          {/* Google OAuth — one-tap path. Clerk handles the redirect to
+              Google's consent screen (showing "Sign in to Kingdom Course"
+              thanks to the OAuth credentials configured in Google Cloud)
+              and the callback. Renders only when a googleHandler is wired. */}
+          {googleHandler && (
+            <>
+              <button
+                type="button"
+                onClick={googleHandler}
+                disabled={submitting}
+                className="sc"
+                style={{
+                  fontSize: 11,
+                  padding: '0.875rem 1.5rem',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  gap: '0.75rem',
+                  width: '100%',
+                  background: 'transparent',
+                  border: '1px solid var(--line)',
+                  color: 'var(--ink)',
+                  cursor: submitting ? 'default' : 'pointer',
+                  opacity: submitting ? 0.6 : 1,
+                  fontFamily: 'inherit',
+                  letterSpacing: '0.18em',
+                  transition: 'background 0.2s ease, border-color 0.2s ease',
+                  marginBottom: '1.5rem',
+                }}
+                onMouseEnter={(e) => {
+                  if (!submitting) {
+                    e.currentTarget.style.background = 'var(--paper-2)';
+                    e.currentTarget.style.borderColor = 'var(--gold-3)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.borderColor = 'var(--line)';
+                }}
+                aria-label="Continue with Google"
+              >
+                {/* Google logo as inline SVG — keeps the brand mark crisp
+                    at any size without an extra asset request. */}
+                <svg width="18" height="18" viewBox="0 0 18 18" aria-hidden="true">
+                  <path fill="#4285F4" d="M17.64 9.205c0-.639-.057-1.252-.164-1.841H9v3.481h4.844a4.14 4.14 0 0 1-1.796 2.716v2.259h2.908c1.702-1.567 2.684-3.875 2.684-6.615z"/>
+                  <path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/>
+                  <path fill="#FBBC05" d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z"/>
+                  <path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.958L3.964 7.29C4.672 5.163 6.656 3.58 9 3.58z"/>
+                </svg>
+                Continue with Google
+              </button>
+
+              {/* Divider — "or with email" centered on a hairline rule.
+                  The line is split into two flexed spans so the text sits
+                  in the gap rather than overlapping. */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '1rem',
+                  marginBottom: '1.5rem',
+                }}
+              >
+                <span style={{ flex: 1, height: 1, background: 'var(--line)' }} />
+                <span
+                  className="sc"
+                  style={{
+                    fontSize: 10,
+                    color: 'var(--gold-3)',
+                    letterSpacing: '0.2em',
+                  }}
+                >
+                  or with email
+                </span>
+                <span style={{ flex: 1, height: 1, background: 'var(--line)' }} />
+              </div>
+            </>
+          )}
 
           <form onSubmit={onFormSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div>
