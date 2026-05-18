@@ -2,7 +2,7 @@
 
 *This file is read at the start of every Claude Code session in this repo.
 Canonical decisions encoded here govern every implementation choice. Do not
-relitigate. Updated 18 May 2026.*
+relitigate. Updated 18 May 2026 (v2).*
 
 ---
 
@@ -37,8 +37,8 @@ All reference docs live in `docs/`:
   - `KINGDOM_BUILD_FROM_SCRATCH.md` — from-scratch reference
 - `docs/execution/` — the operational documents
   - `MASTER_SPECIFICATION.md` — what to build (20 systems, 80 items, status-tagged)
-  - `STRATEGIC_ARCHITECTURE_v2.md` — principles, surfaces, tools, governance
-  - `FINAL_CONTENT_REVISION_PLAN.md` — next 8 days of revision work
+  - `STRATEGIC_ARCHITECTURE.md` — principles, surfaces, tools, governance
+  - `FINAL_CONTENT_REVISION_PLAN.md` — pre-launch revision work, organized by tier
   - `COMPREHENSIVE_REVIEW.md` — multi-disciplinary critical review
 - `docs/handoff/PHASE_3_HANDOFF.md` — current state-of-build
 - `docs/archive/` — superseded docs kept for history
@@ -156,22 +156,160 @@ The verbs: SEE · KNOW · HEAL · ABIDE · GO · BUILD · SEND
   as Carlo Acutis). Feast: July 4
 - Never use "Blessed Carlo Acutis" or "Blessed Pier Giorgio Frassati"
 
-### AI methodology (per STRATEGIC_ARCHITECTURE_v2 Parts I and II)
+### AI methodology — six features (per STRATEGIC_ARCHITECTURE Part I)
 
-- **Citation-based authority.** Every catechetical claim cites its source
-  (CCC §, Scripture, conciliar document, encyclical, Doctor, Magisterial
-  source)
-- **Transparent AI disclosure.** Every AI-assisted surface displays the
-  disclosure footer: *"This content was prepared with AI assistance,
-  grounded in the Catechism and Sacred Tradition. AI can make mistakes."*
-- **Methodology mark in footer:** *AI-presented · Magisterium-grounded ·
-  Citation-verified · Theologically reviewed* (or short Latin form:
-  *Per machinas, per Magisterium*)
-- **Engineered citation verification** — reference databases + automated
-  lookup + manual spot check. Build before Companion ships
-- **Iconographic frame.** Stylized illustration over photorealistic faces.
-  No AI-generated face of Christ. No AI speaking *as* a saint. No AI
-  simulating sacraments. See STRATEGIC_ARCHITECTURE_v2 §2.6 for hard lines
+All six required for AI-speed Catholic ministry. Three or four is not
+sufficient.
+
+1. **Citation-based authority.** Every catechetical claim cites its source
+   (CCC §, Scripture, conciliar document, encyclical, Doctor, Magisterial
+   source). Visible to the reader. Format consistent across surfaces
+2. **Transparent AI disclosure.** Every AI-assisted surface displays the
+   footer: *"This content was prepared with AI assistance, grounded in the
+   Catechism and Sacred Tradition. AI can make mistakes. Verify what
+   matters; consult your priest; read the cited sources."*
+3. **Theological advisory** — small named advisory (initially 3 members:
+   priest/religious, academic theologian, lay catechist), regular review
+   of sampled content, does not gate publication, public withdrawal as
+   structural backstop
+4. **Ecclesial integration** — the project maintains transparent
+   communication with appropriate Catholic authorities (a bishop or
+   bishops, where willing relationships exist). Authorities are *informed*,
+   not asked to pre-approve content. Briefings on a regular cadence. The
+   relationship is transparency and accountability, not gating
+5. **No personality cult** — no operator name or bio in chrome. No founder
+   page. Voice is liturgical and institutional, not personal. Video
+   defaults to voice-over or animation; no founder-on-camera. The
+   project's authority rests on the Magisterium, the saints, the cited
+   sources — not on any individual
+6. **Engineered citation verification** — reference databases (CCC,
+   Scripture, conciliar docs, encyclicals, Doctors, verified saint
+   quotations) + automated lookup + manual spot check. Build before
+   Companion ships
+
+### AI methodology — six hard lines (per STRATEGIC_ARCHITECTURE §2.6)
+
+**These are absolute. Never violated regardless of request or framing.**
+
+1. **The face of Jesus Christ is never AI-generated.** Existing Catholic
+   artistic tradition (Shroud, icons, Pantocrator, contemporary Catholic
+   art) is used when visual reference to the Lord is needed
+2. **AI never speaks *as* a saint.** No first-person voice of named saints.
+   Quotation with verified citation only
+3. **AI never performs or simulates sacraments.** No AI absolution,
+   blessing, consecration, marriage, ordination, or any sacramental act
+4. **AI never claims pastoral or spiritual authority of its own.** The
+   Companion refers users to: priest for Confession, spiritual director for
+   direction, mental-health professional for crisis
+5. **AI never represents real living Catholics without explicit consent.**
+   No deepfakes. No impersonations. No "what Bishop X would say" simulations
+6. **All AI-generated content is versioned and correctable.** No "set and
+   forget"; every piece is part of a living, accountable corpus
+
+Methodology mark in chrome footer: *AI-presented · Magisterium-grounded ·
+Citation-verified · Theologically reviewed* (or short Latin form:
+*Per machinas, per Magisterium*)
+
+### Aesthetic — the iconographic frame
+
+AI-generated visuals operate in the iconographic tradition. Stylized,
+openly non-photorealistic, pointing beyond themselves to the truth
+transmitted. Window, not photograph.
+
+- **No AI-generated photorealistic human faces** in regular content
+- **Stylized illustration is primary visual language.** Brand-aligned
+  illustration style; references: Daniel Mitsui woodcut sensibility, Mary
+  Fleeson contemporary Catholic illustration, Eric Gill late-Romantic
+  Catholic illustrative tradition
+- **Saint imagery** — prefer existing public-domain art over AI-generated
+  images of named saints
+- **Symbolic / typographic visuals** are safest and brand-aligned
+- **Atmospheric/environmental video** OK (Veo 3.1, Seedance 2.0, Sora 2)
+  — cathedral interiors, candle light, ocean horizons, the Shroud in slow
+  motion — no faces, no human likeness required
+- **AI talking-head avatars** not used as primary voice of the project
+- **One consistent Kingdom Course voice** via ElevenLabs Multilingual v2.
+  Warm. Clearly synthetic. Never named, never given a personality
+
+### Catholic vocabulary lock-list (preventing Protestantization)
+
+Avoid these phrasings in generated content. Use the Catholic terms instead.
+
+| Avoid | Use |
+|---|---|
+| "personal relationship with Jesus" (as primary frame) | "communion with the King" or simply "relationship with Christ" |
+| "service" (instead of "Mass") | "Mass" |
+| "saved" (as one-time decision) | "in a state of grace" or "saved by Christ's work, walking in grace" |
+| "fellowship" (as primary community term) | "communion" or "common life" |
+| "preacher" (in normal usage about priests) | "priest" |
+| "Christ-follower" | "Christian" or "Catholic" |
+| "do life together" | "walk together" or "live in communion" |
+| "doing church" | "the parish" or "the Mass" |
+| "altar call" | "the kerygma" or "the invitation" |
+| "ask Jesus into your heart" | "open yourself to Christ" or "receive Him" |
+| "biblical" (alone, as adjective meaning "good") | "rooted in Scripture and Tradition," or omit |
+
+Apply during content generation and as a post-generation lint check.
+
+### Hero copy direction (per FINAL_CONTENT_REVISION_PLAN §1.1-1.4)
+
+- **"Most important," not "greatest"** — for the Gate (Gospel page). The
+  Gate is stakes-raising for the unaffiliated seeker; "most important"
+  carries weight that "greatest" does not. "Greatest" may be used in
+  post-signup surfaces where the user has already crossed the threshold
+- **Parallel construction** — two short declarations: *"The single most
+  important announcement in history. And the most rigorously verified."*
+- **"Kingdom of Eternal Life"** appears prominently — eyebrow and body
+  reinforcement. The substantive claim of the entire movement
+- **"Hinge of history"** — preserved as central metaphor for Christ
+- **Tagline** *"The Gospel meets you. The Course forms you. The Kingdom
+  holds you."* — promoted to subhead position beneath the Hero declaration
+
+### Authentication gating (per FINAL_CONTENT_REVISION_PLAN §1.8)
+
+- **Gospel page:** fully open, no signup
+- **Course overview / preview:** fully open, no signup
+- **Day 1 reading:** open without signup (low-friction try)
+- **Day 2-50 readings:** require signup (Clerk modal)
+- **Progress tracking, streaks, Companion:** require signup
+
+### Surface priority and sequencing (per STRATEGIC_ARCHITECTURE Part VIII)
+
+**Build doctrine: text first, audio second, video third, developer/
+ecosystem fourth, accessibility surfaces fifth.**
+
+The seeker is in a search bar before they are in any other surface. Build
+in that order.
+
+| Priority | Surface | Status |
+|---|---|---|
+| 1 | Web / PWA (formation home) | [BUILT — core] |
+| 2 | **SEO question-page library** (highest seeker-acquisition leverage) | [NOT STARTED — high priority] |
+| 3 | Daily audio podcast (Bible-in-a-Year pattern) | [NOT STARTED] |
+| 4 | YouTube channel (long-form discovery) | [NOT STARTED] |
+| 5 | Short-form video (Reels / Shorts / TikTok) | [NOT STARTED] |
+| 6 | Native app wrapper (Capacitor) | [NOT STARTED] |
+| 7 | MCP server (developer ecosystem; value-positive but not lead) | [NOT STARTED] |
+| 8 | Voice-first surfaces (Watch, CarPlay, Alexa, Google Home) | [NOT STARTED] |
+| 9 | Phone-callable Companion | [NOT STARTED] |
+| 10 | Multilingual (Spanish, then per priority order) | [NOT STARTED] |
+
+**Do not propose building MCP server, voice surfaces, or multilingual
+ahead of the SEO library + audio podcast + YouTube.**
+
+### Open content licensing (per STRATEGIC_ARCHITECTURE Part VII)
+
+When LICENSE files are added or content is exported:
+
+- **Course content (Day readings, Field Guide, Academy):** CC BY-SA 4.0
+- **SEO question-page library:** CC BY-SA 4.0
+- **Software (web app code):** AGPL-3.0
+- **Brand and trademarks:** standard copyright; attribution required
+- **Companion responses:** not separately licensed (service, not
+  redistributable)
+
+The catechetical content is *transmission of the deposit of faith*. Open
+where possible.
 
 ### Verification
 
@@ -222,7 +360,7 @@ The verbs: SEE · KNOW · HEAL · ABIDE · GO · BUILD · SEND
 - Earth-as-5th-House bug fix
 - Seven Keys terminology standardization
 
-### Pending — Tier 2+ (per FINAL_CONTENT_REVISION_PLAN and STRATEGIC_ARCHITECTURE_v2)
+### Pending — Tier 2+ (per FINAL_CONTENT_REVISION_PLAN and STRATEGIC_ARCHITECTURE)
 - Hub daily tasks audit and Marian dimension
 - BUILD rotation logic (family/community/civilization by day of week)
 - Confession affordance
@@ -232,17 +370,22 @@ The verbs: SEE · KNOW · HEAL · ABIDE · GO · BUILD · SEND
 - Vocabulary audit (Gate, DTS, REST, Peace, Benedict)
 - Grammar polish pass
 
-### Pending — Tier 3+ (per STRATEGIC_ARCHITECTURE_v2 Part VIII sequencing)
-- Companion backend (api/companion.js)
-- SEO question-page library
-- Daily audio podcast
-- YouTube channel
-- Short-form video
-- Native app wrapper
-- MCP server
-- Voice-first surfaces
-- Phone-callable Companion
-- Multilingual expansion (Spanish first)
+### Pending — Tier 3+ (per STRATEGIC_ARCHITECTURE Part VIII sequencing)
+
+Build in priority order (per Surface priority table above):
+
+1. SEO question-page library (Surface 2) — highest priority after core product ships
+2. Daily audio podcast (Surface 3)
+3. YouTube channel (Surface 4)
+4. Short-form video (Surface 5)
+5. Native app wrapper (Surface 6)
+6. MCP server (Surface 7)
+7. Voice-first surfaces (Surface 8)
+8. Phone-callable Companion (Surface 9)
+9. Multilingual expansion — Spanish first (Surface 10)
+
+Plus: Companion backend (`api/companion.js`) — built as Surface 2-5
+develop, since those surfaces benefit from a working Companion
 
 ---
 
@@ -255,11 +398,13 @@ execution doc:
 > all factual corrections. Show diffs before applying.*
 
 For larger batches, work through the FINAL_CONTENT_REVISION_PLAN's
-8-day sequenced implementation (see its §6.2).
+tier-by-tier implementation (see its §6.2).
 
 For new feature work past the soft launch, work from
-MASTER_SPECIFICATION.md and STRATEGIC_ARCHITECTURE_v2.md.
+MASTER_SPECIFICATION.md and STRATEGIC_ARCHITECTURE.md, respecting the
+surface priority order above.
 
 ---
 
 *Salus animarum suprema lex.*
+*Per machinas, per Magisterium.*
