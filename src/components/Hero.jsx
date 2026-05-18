@@ -113,32 +113,65 @@ export default function Hero({ onEnter, onToPrologue }) {
               display: 'block',
               fontStyle: 'italic',
               fontSize: 'clamp(2rem, 5.2vw, 4.2rem)',
-              lineHeight: 0.88,
+              lineHeight: 0.95,
               color: 'var(--gold-3)',
               fontWeight: 600,
               letterSpacing: '-0.01em',
             }}
           >
-            The single greatest announcement in history
+            The single most important announcement in history.
           </span>
           <span
             className="display-strong"
             style={{
               display: 'block',
-              fontSize: 'clamp(1.25rem, 2.9vw, 1.95rem)',
-              lineHeight: 1.05,
+              fontSize: 'clamp(1.5rem, 3.4vw, 2.3rem)',
+              lineHeight: 1.1,
               color: 'var(--ink)',
               fontWeight: 600,
               letterSpacing: '-0.01em',
               marginTop: '0.625rem',
             }}
           >
-            has also been the most rigorously verified.
+            And the most rigorously verified.
           </span>
         </h1>
 
         <p
-          className="body-lede rise d-3"
+          className="display rise d-2"
+          style={{
+            fontStyle: 'italic',
+            fontSize: 'clamp(1.05rem, 1.85vw, 1.2rem)',
+            lineHeight: 1.5,
+            marginTop: '1.5rem',
+            color: 'var(--ink-2)',
+          }}
+        >
+          The Gospel meets you. The Course forms you. The Kingdom holds you.
+        </p>
+
+        <p
+          className="display-strong rise d-3"
+          style={{
+            fontStyle: 'italic',
+            fontSize: 'clamp(1.32rem, 2.4vw, 1.55rem)',
+            marginTop: 'clamp(2rem, 3vw, 2.5rem)',
+            lineHeight: 1.4,
+            color: 'var(--wine)',
+            fontWeight: 500,
+          }}
+        >
+          <span style={{ display: 'block' }}>The most important message in history.</span>
+          <span style={{ display: 'block', marginTop: '0.375rem' }}>
+            From the hinge on which all history turns.
+          </span>
+          <span style={{ display: 'block', marginTop: '0.375rem' }}>
+            Verified by the greatest body of evidence on earth.
+          </span>
+        </p>
+
+        <p
+          className="body-lede rise d-4"
           style={{
             fontSize: 'clamp(1.2rem, 2vw, 1.32rem)',
             lineHeight: 1.6,
@@ -154,7 +187,7 @@ export default function Hero({ onEnter, onToPrologue }) {
         </p>
 
         <p
-          className="body rise d-3"
+          className="body rise d-4"
           style={{
             fontSize: 'clamp(1.16rem, 1.9vw, 1.26rem)',
             lineHeight: 1.6,
@@ -162,42 +195,27 @@ export default function Hero({ onEnter, onToPrologue }) {
             color: 'var(--ink-2)',
           }}
         >
-          That announcement has since become the most rigorously investigated supernatural assertion
+          That announcement has been the most rigorously investigated supernatural claim
           in human history — confirmed by Eucharistic hosts that become living cardiac tissue, by
           apparitions with measurable physical evidence, by bodies of saints that do not decay, by
           healings verified by panels of secular physicians, and — most staggering of all — by
           thousands of canonized saints who continue to heal, appear, and intercede from beyond
-          their own deaths. Not only the kingdom. Eternal life itself, verified.
+          their own deaths.
         </p>
 
         <p
-          className="display-strong rise d-4"
+          className="display-strong rise d-5"
           style={{
             fontStyle: 'italic',
-            fontSize: 'clamp(1.32rem, 2.4vw, 1.55rem)',
+            fontSize: 'clamp(1.2rem, 2.1vw, 1.4rem)',
             marginTop: '2rem',
-            lineHeight: 1.4,
-            color: 'var(--wine)',
-            fontWeight: 500,
+            lineHeight: 1.45,
+            color: 'var(--ink)',
+            fontWeight: 600,
           }}
         >
-          The greatest message in history. From the central figure of history — the hinge on which
-          all of it turns.
-          <span style={{ display: 'block', marginTop: '0.375rem' }}>
-            Verified by the greatest body of evidence on earth.
-          </span>
-        </p>
-
-        <p
-          className="display rise d-4"
-          style={{
-            fontStyle: 'italic',
-            fontSize: 'clamp(1.1rem, 1.9vw, 1.22rem)',
-            marginTop: '1.25rem',
-            color: 'var(--ink-2)',
-          }}
-        >
-          The kingdom is not invisible. Follow it inward. The gate is open.
+          Not only the kingdom. Eternal life itself, verified — and visible in the saints who
+          continue to live in it.
         </p>
 
         <div
