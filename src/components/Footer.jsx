@@ -210,8 +210,26 @@ export default function Footer({ onTab, onOpenFieldGuide }) {
           }}
         >
           <p className="sc" style={{ fontSize: 10, color: 'var(--mute)' }}>
-            © {year} · The Kingdom Course
-          </p>
+  © {year} · The Kingdom Course
+  {' · '}
+  <a
+    href="/privacy"
+    style={{ color: 'var(--mute)', textDecoration: 'none', borderBottom: '1px solid transparent', transition: 'border-color 0.2s' }}
+    onMouseEnter={(e) => (e.currentTarget.style.borderBottomColor = 'var(--gold-3)')}
+    onMouseLeave={(e) => (e.currentTarget.style.borderBottomColor = 'transparent')}
+  >
+    Privacy
+  </a>
+  {' · '}
+  <a
+    href="/terms"
+    style={{ color: 'var(--mute)', textDecoration: 'none', borderBottom: '1px solid transparent', transition: 'border-color 0.2s' }}
+    onMouseEnter={(e) => (e.currentTarget.style.borderBottomColor = 'var(--gold-3)')}
+    onMouseLeave={(e) => (e.currentTarget.style.borderBottomColor = 'transparent')}
+  >
+    Terms
+  </a>
+</p>
           <p
             className="display"
             style={{ fontStyle: 'italic', fontSize: '0.95rem', color: 'var(--gold-3)' }}

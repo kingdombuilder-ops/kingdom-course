@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0E0A06" />
+    <meta name="robots" content="index, follow" />
+
+    <title>Privacy · The Kingdom Course</title>
+    <meta name="description" content="Privacy practices for The Kingdom Course — what we collect, what we don't, and what is yours." />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+SC:wght@500;600;700&display=swap" />
+
+    <style>
+      :root {
+        --ink:     #0E0A06;
+        --ink-2:   #1C160D;
+        --paper:   #F6EFDE;
+        --paper-2: #EFE6CF;
+        --gold:    #B5883F;
+        --gold-3:  #8C6A30;
+        --wine:    #6B1E1E;
+        --line:    rgba(14, 10, 6, 0.12);
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; }
+      body {
+        background: var(--paper);
+        color: var(--ink-2);
+        font-family: 'EB Garamond', Georgia, serif;
+        font-size: 18px;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 42rem;
+        margin: 0 auto;
+        padding: 3.5rem clamp(1.25rem, 4vw, 2.5rem) 5rem;
+      }
+      header.brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 3rem;
+      }
+      header.brand a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: var(--ink);
+      }
+      header.brand svg { display: block; }
+      header.brand .wordmark {
+        font-family: 'Cormorant SC', 'EB Garamond', serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: var(--ink);
+      }
+      h1 {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-weight: 500;
+        font-size: clamp(2rem, 5vw, 2.75rem);
+        line-height: 1.15;
+        color: var(--ink);
+        margin: 0 0 0.5rem;
+        letter-spacing: -0.005em;
+      }
+      .eyebrow {
+        font-family: 'Cormorant SC', serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        color: var(--gold-3);
+        margin: 0 0 1rem;
+      }
+      .updated {
+        font-style: italic;
+        color: var(--gold-3);
+        font-size: 0.95rem;
+        margin: 0.25rem 0 2.5rem;
+      }
+      h2 {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: var(--ink);
+        margin: 2.5rem 0 0.75rem;
+        line-height: 1.2;
+      }
+      h3 {
+        font-family: 'Cormorant SC', serif;
+        font-weight: 600;
+        font-size: 0.8rem;
+        letter-spacing: 0.12em;
+        color: var(--gold-3);
+        margin: 1.75rem 0 0.5rem;
+      }
+      p, ul { margin: 0 0 1rem; }
+      ul { padding-left: 1.25rem; }
+      li { margin-bottom: 0.4rem; }
+      a { color: var(--wine); text-decoration: underline; text-underline-offset: 2px; }
+      a:hover { color: var(--gold-3); }
+      em { font-style: italic; color: var(--ink); }
+      hr {
+        border: 0;
+        border-top: 1px solid var(--line);
+        margin: 3rem 0 2rem;
+      }
+      footer.foot {
+        font-family: 'Cormorant SC', serif;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        color: var(--gold-3);
+        text-align: center;
+        margin-top: 3rem;
+      }
+      footer.foot .motto {
+        font-family: 'Cormorant Garamond', serif;
+        font-style: italic;
+        font-size: 0.95rem;
+        letter-spacing: 0;
+        color: var(--gold-3);
+        display: block;
+        margin-top: 0.5rem;
+      }
+      .back {
+        display: inline-block;
+        margin-top: 2rem;
+        font-family: 'Cormorant SC', serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-decoration: none;
+        color: var(--gold-3);
+      }
+      .back:hover { color: var(--wine); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="brand">
+        <a href="/" aria-label="The Kingdom Course — home">
+          <svg width="24" height="24" viewBox="0 0 40 40" aria-hidden="true">
+            <circle cx="20" cy="20" r="18" fill="none" stroke="#B5883F" stroke-width="1.5"/>
+            <circle cx="20" cy="20" r="12" fill="none" stroke="#B5883F" stroke-width="1.5"/>
+            <circle cx="20" cy="20" r="6"  fill="none" stroke="#B5883F" stroke-width="1.5"/>
+            <circle cx="20" cy="20" r="2.5" fill="#6B1E1E"/>
+          </svg>
+          <span class="wordmark">The Kingdom</span>
+        </a>
+      </header>
+
+      <p class="eyebrow">The Kingdom Course</p>
+      <h1>Privacy</h1>
+      <p class="updated">Last updated: May 13, 2026</p>
+
+      <p>
+        The Kingdom Course is a Catholic spiritual formation web application. We respect
+        that what brings a person to this kind of work is often quiet, sometimes raw, and
+        always personal. This page explains plainly what we collect, what we do with it,
+        and what is yours.
+      </p>
+
+      <p>
+        We collect as little as possible. We do not sell your data. We do not run
+        third-party advertising trackers. We do not profile you for resale.
+      </p>
+
+      <h2>What we collect</h2>
+
+      <h3>When you create an account</h3>
+      <p>
+        To know you across visits and personalize your formation walk, we collect:
+      </p>
+      <ul>
+        <li>Your <strong>first name</strong> (used for the personal greeting)</li>
+        <li>Your <strong>email address</strong> (used to identify your account and, occasionally, to send service messages such as a verification code)</li>
+        <li>A free-text answer to <em>"where you are starting from"</em> (used to orient the journey to your situation; you may leave this blank)</li>
+        <li>The date you signed up</li>
+      </ul>
+
+      <h3>If you sign in with Google</h3>
+      <p>
+        Google sends us your name, email address, and (optionally) profile picture for
+        the sole purpose of creating your account. We request only what Google's standard
+        sign-in scopes provide. We do not access your contacts, calendar, Drive, or any
+        other Google data.
+      </p>
+
+      <h3>Server logs</h3>
+      <p>
+        Like any website, our hosting provider records standard request logs (IP address,
+        user agent, page requested, timestamp) for security and operational purposes.
+        These are typically retained for a short period and are not joined to your
+        account profile.
+      </p>
+
+      <h3>What stays on your device</h3>
+      <p>
+        Reflective practices such as journal entries in the Daily Examen or Lectio
+        Divina are stored only in your browser's local memory and are not transmitted
+        to our servers. Clearing your browser data clears these notes.
+      </p>
+
+      <h2>How we use it</h2>
+      <p>
+        We use the small amount of data we hold for one purpose: <em>to let you walk
+        the Course as a known person rather than as a stranger</em>. That includes
+        signing you in when you return, greeting you by name, and saving your progress.
+      </p>
+      <p>
+        We do not send marketing emails. If that ever changes, you will be asked to
+        opt in explicitly.
+      </p>
+
+      <h2>Who handles your data</h2>
+      <p>
+        We use a small set of trusted vendors to run the service. Each handles only what
+        they need to do their job:
+      </p>
+      <ul>
+        <li><strong>Clerk</strong> &middot; authentication provider; stores your account record (name, email, sign-in method) and handles password-free login.</li>
+        <li><strong>Vercel</strong> &middot; hosting provider; serves the website and records standard server logs.</li>
+        <li><strong>Google</strong> &middot; only when you choose to sign in with Google; sends us your name and email to create your account.</li>
+      </ul>
+      <p>
+        We do not use third-party analytics, advertising networks, or session-replay
+        tools.
+      </p>
+
+      <h2>Your rights</h2>
+      <p>
+        Whatever applicable privacy law you fall under &mdash; British Columbia's PIPA
+        and Canada's PIPEDA, the EU's GDPR, California's CCPA, or others &mdash; the
+        following are true here regardless:
+      </p>
+      <ul>
+        <li>You can ask what we have on file for your account.</li>
+        <li>You can correct anything that is wrong.</li>
+        <li>You can delete your account and the personal data tied to it.</li>
+        <li>You can export a copy of your account data.</li>
+      </ul>
+      <p>
+        To exercise any of these, email <a href="mailto:hello@kingdomcourse.org">hello@kingdomcourse.org</a>.
+        We aim to respond within seven days.
+      </p>
+
+      <h2>Children</h2>
+      <p>
+        The Kingdom Course is intended for adults. We do not knowingly collect personal
+        data from anyone under 13 (or under 16 where local law sets the higher threshold).
+        If you believe a minor has created an account, please write to us and we will
+        delete it.
+      </p>
+
+      <h2>Security</h2>
+      <p>
+        Authentication is handled by Clerk and protected by industry-standard
+        practices. All traffic to the site is encrypted in transit (HTTPS). No system is
+        perfectly secure; if we ever discover a breach affecting your account, we will
+        notify you as required by law and as a matter of basic respect.
+      </p>
+
+      <h2>Changes</h2>
+      <p>
+        If we make a material change to this policy, we will update the date above and,
+        for changes that affect what data we collect or how we use it, notify account
+        holders directly.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        The Kingdom Course is operated from Sidney, British Columbia, Canada. Questions,
+        requests, or concerns about privacy go to
+        <a href="mailto:hello@kingdomcourse.org">hello@kingdomcourse.org</a>.
+      </p>
+
+      <hr />
+
+      <a class="back" href="/">&larr; Return to The Kingdom</a>
+
+      <footer class="foot">
+        &copy; 2026 &middot; The Kingdom Course
+        <span class="motto">Salus animarum suprema lex.</span>
+      </footer>
+    </div>
+  </body>
+</html>
