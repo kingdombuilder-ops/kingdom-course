@@ -66,7 +66,7 @@ export const CIRCLES = [
     essence: "The King did not leave. He remains — bread, become flesh; wine, become blood. The evidence for this is not theological. It is pathological. It has been examined under microscopes.",
     pillars: [
       { k: "Lanciano, 750 AD", v: "Consecrated host transformed into flesh and blood during Mass. In 1970, Dr. Odoardo Linoli identified it: human cardiac muscle, left ventricle. Blood type AB. After 1,250 years — unpreserved, unembalmed — still present." },
-      { k: "Buenos Aires, 1996", v: "Under Cardinal Bergoglio — now Pope Francis. Forensic pathologist Dr. Frederick Zugibe analyzed the tissue blind. His conclusion: inflamed myocardium from a man tortured to death — who was still alive when sampled." },
+      { k: "Buenos Aires, 1996", v: "Under Cardinal Jorge Bergoglio — later Pope Francis (2013–2025). Forensic pathologist Dr. Frederick Zugibe analyzed the tissue blind. His conclusion: inflamed myocardium from a man tortured to death — who was still alive when sampled." },
       { k: "Sokółka & Tixtla", v: "Poland, 2008. Mexico, 2006. Independent forensic analyses, different continents, same result: human cardiac tissue, intertwined with the bread fibers at a cellular level. Impossible to fake. Impossible to explain." },
     ],
     evidence: [

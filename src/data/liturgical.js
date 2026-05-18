@@ -13,16 +13,22 @@
    ======================================================================== */
 
 
+// Source: Pope's Worldwide Prayer Network — Prayer Intentions of the Holy
+// Father entrusted to his Worldwide Prayer Network for the year 2026.
+// Signed Leo XIV, Vatican, July 1, 2025.
 export const LITURGICAL_PAPAL_INTENTIONS_2026 = {
-  4:  { month: "April",     text: "For all who suffer war and conflict — that the Risen Lord may be their hope and the Church their refuge." },
-  5:  { month: "May",       text: "For families — that they may be schools of holiness, hospitality, and the everyday love that mirrors the Trinity." },
-  6:  { month: "June",      text: "For an end to torture and abuse — that the dignity of every human person made in God's image may be honored everywhere." },
-  7:  { month: "July",      text: "For workers and the unemployed — that the dignity of work may be defended and that all may find labor that sustains body and soul." },
-  8:  { month: "August",    text: "For political leaders — that they govern with wisdom, courage, and a heart for the poor." },
-  9:  { month: "September", text: "For Christians facing persecution — that the testimony of the martyrs may strengthen the whole Church." },
-  10: { month: "October",   text: "For the missions — that the Church may go out to the peripheries with the joy of the Gospel." },
-  11: { month: "November",  text: "For the deceased — and for those who grieve them — that the hope of the resurrection may comfort every loss." },
-  12: { month: "December",  text: "For the unborn and their mothers — that the Lord of life may protect every life from its first moment." },
+  1:  { month: "January",   text: "For prayer with the Word of God — that praying with the Word may nourish our lives and be a source of hope in our communities, helping us build a more fraternal and missionary Church." },
+  2:  { month: "February",  text: "For children with incurable diseases — that they and their families may receive the medical care and support they need, never losing strength and hope." },
+  3:  { month: "March",     text: "For disarmament and peace — that nations may move toward effective disarmament, particularly nuclear, and that world leaders may choose dialogue and diplomacy over violence." },
+  4:  { month: "April",     text: "For priests in crisis — that those passing through vocational crisis may find the accompaniment they need, and that communities may support them with understanding and prayer." },
+  5:  { month: "May",       text: "That everyone might have food — that all, from large producers to small consumers, may commit to ending food waste and ensure access to quality food for every person." },
+  6:  { month: "June",      text: "For the values of sports — that sport may be an instrument of peace, encounter, and dialogue among cultures and nations, promoting respect, solidarity, and personal growth." },
+  7:  { month: "July",      text: "For respect for human life — for the respect and protection of human life in all its stages, recognized as a gift from God." },
+  8:  { month: "August",    text: "For evangelization in the city — that in large cities marked by anonymity and loneliness we may find new ways to proclaim the Gospel and creative paths to build community." },
+  9:  { month: "September", text: "For the care of water — for the just and sustainable management of water, a vital resource, so that everyone may have equal access to it." },
+  10: { month: "October",   text: "For mental health ministry — that this ministry may be established throughout the Church, helping to overcome the stigma and discrimination of persons with mental illnesses." },
+  11: { month: "November",  text: "For the proper use of wealth — that, resisting the temptation of selfishness, wealth may always be put at the service of the common good and the solidarity of those who have less." },
+  12: { month: "December",  text: "For single-parent families — that families experiencing the absence of a mother or father may find support and accompaniment in the Church, with strength in the Faith through difficult times." },
 };
 
 export const LITURGICAL_DAYS = {
@@ -992,7 +998,7 @@ export function getLiturgicalDay(date = new Date()) {
     rank: day.rank,
     feast: day.feast,
     readings: day.readings,
-    papalIntention: { month: intention.month, text: intention.text, issuer: "Pope Francis" },
+    papalIntention: { month: intention.month, text: intention.text, issuer: "Pope Leo XIV" },
     office: {
       name: "Sext", time: "Noon",
       verse: "At noon I will pray and cry aloud, and he will hear my voice.",
