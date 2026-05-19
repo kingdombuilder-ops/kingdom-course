@@ -2,7 +2,7 @@
    src/data/quiz.js — the House discernment quiz.
 
    Six questions. Each has five answers, one weighted toward each of the
-   five Houses (Light · Fire · Earth · Joy · Glory). Some
+   five Houses (Light · Fire · Joy · Glory · Earth). Some
    answers carry small secondary weights to other Houses (e.g. an answer
    that's primarily Carmelite-coded but also resonates with Franciscan
    simplicity gets fire:3 + peace:1).

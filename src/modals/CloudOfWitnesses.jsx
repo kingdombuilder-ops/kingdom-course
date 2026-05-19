@@ -22,9 +22,9 @@ const FILTERS = [
   { id: 'all',      label: 'All',   color: '#D7B169' },
   { id: 'light',    label: 'Light' },
   { id: 'fire',     label: 'Fire' },
-  { id: 'benedict', label: 'Earth' },
   { id: 'peace',    label: 'Joy' },
   { id: 'glory',    label: 'Glory' },
+  { id: 'benedict', label: 'Earth' },
 ];
 
 export default function CloudOfWitnesses() {

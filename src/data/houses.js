@@ -39,14 +39,6 @@ export const HOUSES = {
     charism: "Love · Contemplation",
     line: "For hearts pulled toward the silence where God speaks. The interior castle, the dark night, the bridal mystery.",
   },
-  benedict: {
-    slug: "benedict", name: "Earth",
-    color: "#5C4A2E", tint: "rgba(92,74,46,0.10)", glow: "rgba(92,74,46,0.40)",
-    patron: "St. Benedict of Nursia",
-    tradition: "Benedictine",
-    charism: "Work · Ora et labora",
-    line: "For those whose prayer is bound up with their work. Stability, hospitality, the sanctification of ordinary life. The lay vocation made holy.",
-  },
   peace: {
     slug: "peace", name: "Joy",
     color: "#5C7A3A", tint: "rgba(92,122,58,0.10)", glow: "rgba(92,122,58,0.35)",
@@ -62,6 +54,14 @@ export const HOUSES = {
     tradition: "Ignatian",
     charism: "Mission · Leadership",
     line: "For those built to lead, build, send. Discernment, mission, the magis. Saints who form saints.",
+  },
+  benedict: {
+    slug: "benedict", name: "Earth",
+    color: "#5C4A2E", tint: "rgba(92,74,46,0.10)", glow: "rgba(92,74,46,0.40)",
+    patron: "St. Benedict of Nursia",
+    tradition: "Benedictine",
+    charism: "Work · Ora et labora",
+    line: "For those whose prayer is bound up with their work. Stability, hospitality, the sanctification of ordinary life. The lay vocation made holy.",
   },
 };
 export const HOUSE_LIST = Object.values(HOUSES);
@@ -83,14 +83,6 @@ export const HOUSES_HUB = {
     body: "The Fire is where the wounded heart is healed and the purified heart catches flame. The Interior Castle. The dark night walked through, not around.",
     fitWhy: "You long for intimacy with God. The interior life is the real life for you. You have known the dark night, or sense it coming, and refuse to flinch. The kingdom needs your heart.",
   },
-  benedict: {
-    name: "Earth", color: "#5C4A2E", tint: "rgba(92,74,46,0.10)", glow: "rgba(92,74,46,0.45)",
-    icon: Hammer, motto: "Ora et labora",
-    patron: "St. Benedict of Nursia", tradition: "Benedictine",
-    charism: "Work · Stability", faculty: "the hands",
-    body: "The House of Earth forms saints whose prayer and work have become one act. Grounded. The Rule. Stability of place. Hospitality at the threshold. The sanctification of ordinary life — the lay vocation of the worker, the parent, the maker, the host. The Benedictine charism: God met in the soil, in the hours, in the daily bread.",
-    fitWhy: "You suspect the kingdom is built in the small loyalties of ordinary work. You want to make your day a single offering — your craft, your home, your hours. You believe stability is a virtue. The kingdom needs your hands.",
-  },
   peace: {
     name: "Joy", color: "#5C7A3A", tint: "rgba(92,122,58,0.10)", glow: "rgba(92,122,58,0.45)",
     icon: Hand, motto: "Pax et bonum",
@@ -106,6 +98,14 @@ export const HOUSES_HUB = {
     charism: "Mission · Leadership", faculty: "courage in action",
     body: "The Glory is where the calling ignites. Discernment, courage, apostolic fire. Ignatius's Spiritual Exercises — strategy meets surrender.",
     fitWhy: "You feel the pull of mission. You want your life to count for something — concretely, for the kingdom. You discern, then you go. The kingdom needs your courage.",
+  },
+  benedict: {
+    name: "Earth", color: "#5C4A2E", tint: "rgba(92,74,46,0.10)", glow: "rgba(92,74,46,0.45)",
+    icon: Hammer, motto: "Ora et labora",
+    patron: "St. Benedict of Nursia", tradition: "Benedictine",
+    charism: "Work · Stability", faculty: "the hands",
+    body: "The House of Earth forms saints whose prayer and work have become one act. Grounded. The Rule. Stability of place. Hospitality at the threshold. The sanctification of ordinary life — the lay vocation of the worker, the parent, the maker, the host. The Benedictine charism: God met in the soil, in the hours, in the daily bread.",
+    fitWhy: "You suspect the kingdom is built in the small loyalties of ordinary work. You want to make your day a single offering — your craft, your home, your hours. You believe stability is a virtue. The kingdom needs your hands.",
   },
 };
 
@@ -132,15 +132,6 @@ export const HOUSE_QUOTES = {
     { text: "Pray, hope, and don't worry.",                                                                                   saint: "St. Padre Pio" },
     { text: "What we are is God's gift to us. What we become is our gift to God.",                                            saint: "St. Edith Stein" },
   ],
-  benedict: [
-    { text: "Ora et labora — pray and work.",                                                                                  saint: "St. Benedict of Nursia" },
-    { text: "Listen carefully, my son, to the master's instructions, and attend to them with the ear of your heart.",         saint: "Rule of St. Benedict, Prologue" },
-    { text: "Let all guests who arrive be received like Christ, for he is going to say, 'I came as a guest, and you received me.'", saint: "Rule of St. Benedict, ch. 53" },
-    { text: "Idleness is the enemy of the soul. Therefore, the brothers and sisters should be occupied at certain times in manual labor, and at other times in spiritual reading.", saint: "Rule of St. Benedict, ch. 48" },
-    { text: "Receive in silence, and answer in fewer words than you are asked.",                                              saint: "St. Benedict of Nursia" },
-    { text: "Through work, the human being shares in the act of the Creator, and continues to develop it.",                  saint: "St. John Paul II, Laborem exercens" },
-    { text: "Whatever you do, in word or in deed, do everything in the name of the Lord Jesus.",                              saint: "St. Paul, Colossians 3:17" },
-  ],
   peace: [
     { text: "Start by doing what is necessary, then what is possible — and suddenly you are doing the impossible.",          saint: "St. Francis of Assisi" },
     { text: "Preach the Gospel at all times. When necessary, use words.",                                                     saint: "St. Francis of Assisi" },
@@ -158,6 +149,15 @@ export const HOUSE_QUOTES = {
     { text: "Be not afraid! Open wide the doors for Christ.",                                                                 saint: "St. John Paul II" },
     { text: "Have courage and do not be afraid.",                                                                             saint: "St. Francis Xavier" },
     { text: "Whatever you do, work at it with all your heart, as working for the Lord, not for human masters.",               saint: "St. Paul, Colossians 3:23" },
+  ],
+  benedict: [
+    { text: "Ora et labora — pray and work.",                                                                                  saint: "St. Benedict of Nursia" },
+    { text: "Listen carefully, my son, to the master's instructions, and attend to them with the ear of your heart.",         saint: "Rule of St. Benedict, Prologue" },
+    { text: "Let all guests who arrive be received like Christ, for he is going to say, 'I came as a guest, and you received me.'", saint: "Rule of St. Benedict, ch. 53" },
+    { text: "Idleness is the enemy of the soul. Therefore, the brothers and sisters should be occupied at certain times in manual labor, and at other times in spiritual reading.", saint: "Rule of St. Benedict, ch. 48" },
+    { text: "Receive in silence, and answer in fewer words than you are asked.",                                              saint: "St. Benedict of Nursia" },
+    { text: "Through work, the human being shares in the act of the Creator, and continues to develop it.",                  saint: "St. John Paul II, Laborem exercens" },
+    { text: "Whatever you do, in word or in deed, do everything in the name of the Lord Jesus.",                              saint: "St. Paul, Colossians 3:17" },
   ],
 };
 export const TODAY_HOUSE_QUOTE_INDEX = (new Date()).getDate() % 7;

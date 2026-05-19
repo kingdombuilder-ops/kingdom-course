@@ -167,7 +167,7 @@ export default function KingdomMoreGrid({
                     }}
                   >
                     Five traditions, one Church — charisms not divisions. Find the saint whose path
-                    matches yours: Light · Fire · Earth · Joy · Glory.
+                    matches yours: Light · Fire · Joy · Glory · Earth.
                   </p>
                 </>
               )}

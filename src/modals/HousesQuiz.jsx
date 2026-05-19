@@ -11,8 +11,8 @@
      1. The intro's litany line previously read "Light · Fire · Peace · Glory."
         That predates two architectural decisions: Earth becoming a co-equal
         fifth House, and the Franciscan re-label from Peace to Joy. The
-        canonical post-rename litany per HANDOFF.md is "Light · Fire · Earth ·
-        Joy · Glory." Fixed.
+        canonical litany per HANDOFF.md and FINAL_CONTENT_REVISION_PLAN §1.11
+        is "Light · Fire · Joy · Glory · Earth" — Earth is the fifth House.
      2. The result-card's --house-color, --house-tint, --house-glow CSS
         custom properties are merged into a single `style` object rather than
         spread across both className-binding and style — same effect, simpler
@@ -147,7 +147,7 @@ export default function HousesQuiz({ onSave, onClose }) {
                 color: 'var(--mute)',
               }}
             >
-              Light · Fire · Earth · Joy · Glory.
+              Light · Fire · Joy · Glory · Earth.
               Most souls are formed by two of these — one primary, one secondary.
             </p>
 
