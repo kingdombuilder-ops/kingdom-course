@@ -140,7 +140,7 @@ export default function CourseHero({
               color: 'var(--gold-3)',
             }}
           >
-            Seven Keys to the Kingdom of Heaven
+            Seven Steps to the Kingdom of Heaven
           </div>
           <div style={{ height: 1, marginTop: '1.25rem', maxWidth: '5rem', background: 'var(--gold)' }} />
           <div
@@ -323,9 +323,9 @@ export default function CourseHero({
                 color: 'var(--ink-2)',
               }}
             >
-              Two thousand years of Catholic formation, distilled to its seven keys —
-              walked in seven steps, one each week. One short reading each day. Fifty
-              days from where you are to where the Spirit makes you new.
+              Two thousand years of Catholic formation, distilled to seven steps,
+              one each week. One short reading each day. Fifty days from where you
+              are to where the Spirit makes you new.
             </p>
 
             <p

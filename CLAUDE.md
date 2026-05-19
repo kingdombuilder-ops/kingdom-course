@@ -134,13 +134,18 @@ what and how).
   (= Joy), `glory`, `benedict` (= Earth)
 - **Earth is the 5th House** — always — both in display and in array order
 
-### The Seven Keys (canonical frame, per FINAL_CONTENT_REVISION_PLAN §1.12)
+### The Seven Steps (canonical frame)
 
-- **Seven Keys** — primary unifying frame (Matthew 16:19 — keys of the
-  kingdom)
-- **Seven essentials** — substance language (what each key unlocks)
-- **Seven steps** — journey language (the user's walking metaphor)
-- All three are used deliberately, never as synonyms
+- **Seven Steps** — the canonical name for the seven verbs of the Course.
+  Used everywhere the seven are referenced collectively or individually
+- **Step N — VERB** — the canonical form for naming a specific step
+  (e.g., "Step 4 — ABIDE")
+- **Seven essentials** — used only where the substance (what is learned
+  at each step) is named, not the journey. Rare. Prefer "steps" when in
+  doubt
+- **Seven Keys** — retired from consumer-facing copy. The Matthew 16:19
+  reference belongs in the chapter on the Church and Peter, not as the
+  project's top-level frame
 
 The verbs: SEE · KNOW · HEAL · ABIDE · GO · BUILD · SEND
 
@@ -358,7 +363,7 @@ where possible.
 - Step button height reduction
 - Course content reading width to 720px
 - Earth-as-5th-House bug fix
-- Seven Keys terminology standardization
+- Seven Steps terminology standardization
 
 ### Pending — Tier 2+ (per FINAL_CONTENT_REVISION_PLAN and STRATEGIC_ARCHITECTURE)
 - Hub daily tasks audit and Marian dimension

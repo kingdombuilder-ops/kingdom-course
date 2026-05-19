@@ -963,8 +963,8 @@ function HarnessShell({
           </section>
         )}
 
-        {/* ──── Seven Keys ───────────────────────────────────────────────── */}
-        <h3 style={h3}>The Seven Keys</h3>
+        {/* ──── Seven Steps ──────────────────────────────────────────────── */}
+        <h3 style={h3}>The Seven Steps</h3>
         <ul style={list}>
           {DAILY_PRACTICES.map((p) => {
             const complete = completedToday.includes(p.n);
