@@ -10,6 +10,25 @@
 
    When Universalis is wired post-traction: swap getLiturgicalDay()'s body
    to fetch from the cached API endpoint. The rest of the app does not change.
+
+   ----------------------------------------------------------------------
+   TODO (catechetical accuracy, structural cleanup):
+   The May 2026 entries are shifted ~2 weeks from the true Catholic
+   calendar. Easter 2026 is April 5, which means:
+     - 4th Sunday of Easter (Good Shepherd Sunday) = April 26, not May 3
+     - 5th Sunday of Easter = May 3, not May 17
+     - Ascension Thursday = May 14, not May 21
+     - 7th Sunday of Easter = May 17 (currently labeled "Fifth Sunday")
+     - Pentecost = May 24 ✓ (correct)
+   The May 18 backfill entry was deliberately matched to the existing
+   (drifted) neighbor labeling — "Monday of the Sixth Week of Easter"
+   — for internal consistency. The true label is "Monday of the
+   Seventh Week of Easter."
+   The fix requires (a) recomputing Easter for each year covered, then
+   (b) re-labeling every Sunday-of-Easter and movable feast across the
+   whole file. Not a per-entry edit — proper structural pass using the
+   easterSundayFor() helper now living below.
+   ----------------------------------------------------------------------
    ======================================================================== */
 
 
