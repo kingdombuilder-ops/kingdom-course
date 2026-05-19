@@ -177,6 +177,24 @@ export const LITURGICAL_DAYS = {
                 text: "Jesus said: \"I give you a new commandment: love one another. As I have loved you, so you also should love one another. This is how all will know that you are my disciples, if you have love for one another.\"" },
     },
   },
+  "2026-05-18": {
+    weekday: "Monday", liturgicalDate: "Monday of the Sixth Week of Easter",
+    season: "Easter", rank: "Ferial",
+    feast: {
+      name: "The Saint of the Day",
+      years: "—",
+      feastDay: "May 18",
+      line: "Today the Church remembers a saint who walked this path before you. Open the Hub's Cloud of Witnesses to meet them, or pray for the courage to live today as faithfully as they did.",
+      verse: "Be faithful in small things, for it is in them that your strength lies.",
+      verseRef: "St. Mother Teresa",
+    },
+    readings: {
+      first:  { ref: "Acts 16:11–15",         blurb: "The Lord opened her heart to pay attention to what was being said by Paul." },
+      psalm:  { ref: "Psalm 149",             blurb: "The Lord takes delight in his people." },
+      gospel: { ref: "John 15:26–16:4a",      blurb: "The Spirit of truth will testify to me; and you also testify.",
+                text: "Jesus said: \"When the Advocate comes whom I will send you from the Father, the Spirit of truth who proceeds from the Father, he will testify to me. And you also testify, because you have been with me from the beginning.\"" },
+    },
+  },
   "2026-05-21": {
     weekday: "Thursday", liturgicalDate: "The Ascension of the Lord",
     season: "Easter", rank: "Solemnity",
@@ -951,6 +969,55 @@ export const LITURGICAL_DAYS = {
    ordinary days there is a saint of the day, a Gospel, an intention.
    This fallback names the season and offers a generic Gospel reference.
    Better than nothing; replaceable by Universalis when wired. */
+/* ============================================================================
+   Liturgical season inference — Easter / Pentecost only.
+
+   Most date-keyed entries in LITURGICAL_DAYS carry their own `season`.
+   When a date falls through to LITURGICAL_FALLBACK, the season needs to
+   be inferred from the date itself; without this, the Hub renders
+   "Ordinary Time" during the 50-day Easter cycle, which is liturgically
+   wrong. The implementation is intentionally minimal — Easter and
+   Pentecost only. Lent / Advent / Christmas are typically served by
+   explicit data file entries on their major days; this is a stopgap
+   until Universalis API integration covers the full calendar.
+   ============================================================================ */
+
+// Western Easter Sunday for a given year (Gauss / Anonymous Gregorian).
+function easterSundayFor(year) {
+  const a = year % 19;
+  const b = Math.floor(year / 100);
+  const c = year % 100;
+  const d = Math.floor(b / 4);
+  const e = b % 4;
+  const f = Math.floor((b + 8) / 25);
+  const g = Math.floor((b - f + 1) / 3);
+  const h = (19 * a + b - d - g + 15) % 30;
+  const i = Math.floor(c / 4);
+  const k = c % 4;
+  const L = (32 + 2 * e + 2 * i - h - k) % 7;
+  const m = Math.floor((a + 11 * h + 22 * L) / 451);
+  const month = Math.floor((h + L - 7 * m + 114) / 31); // 3 = March, 4 = April
+  const day = ((h + L - 7 * m + 114) % 31) + 1;
+  return new Date(year, month - 1, day);
+}
+
+// Pentecost = Easter Sunday + 49 days (the 50-day cycle ends on Pentecost).
+function pentecostFor(year) {
+  const easter = easterSundayFor(year);
+  return new Date(easter.getFullYear(), easter.getMonth(), easter.getDate() + 49);
+}
+
+// Returns "Easter" if the date falls in the 50-day Easter cycle, else
+// "Ordinary Time" — conservative; not aware of Lent / Advent / Christmas.
+export function inferSeason(date) {
+  const year = date.getFullYear();
+  const t = date.getTime();
+  if (t >= easterSundayFor(year).getTime() && t <= pentecostFor(year).getTime()) {
+    return "Easter";
+  }
+  return "Ordinary Time";
+}
+
 export const LITURGICAL_FALLBACK = {
   weekday: "Today",
   liturgicalDate: "An ordinary day in the Church's year",
@@ -986,15 +1053,23 @@ export function getLiturgicalDay(date = new Date()) {
   const monthIdx = date.getMonth() + 1;
   const intention = LITURGICAL_PAPAL_INTENTIONS_2026[monthIdx] ||
                     { month: "This month", text: "Pray with the universal Church for the Pope's monthly intention." };
-  // Format date display
   const monthNames = ["January","February","March","April","May","June","July","August","September","October","November","December"];
   const dateDisplay = `${monthNames[date.getMonth()]} ${date.getDate()}, ${yyyy}`;
   const dayName = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"][date.getDay()];
+
+  // When the date keyed into LITURGICAL_FALLBACK, infer season from the
+  // date itself and synthesize a sensible liturgicalDate string instead
+  // of letting `undefined` render in the Hub.
+  const isFallback = day === LITURGICAL_FALLBACK;
+  const season = isFallback ? inferSeason(date) : day.season;
+  const liturgicalDate = day.liturgicalDate ||
+    `${dayName} in ${season === "Easter" ? "Easter Time" : "Ordinary Time"}`;
+
   return {
     weekday: day.weekday || dayName,
     date: dateDisplay,
-    liturgicalDate: day.liturgicalDate,
-    season: day.season,
+    liturgicalDate,
+    season,
     rank: day.rank,
     feast: day.feast,
     readings: day.readings,

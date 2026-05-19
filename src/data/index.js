@@ -74,11 +74,21 @@ export {
 export { QUIZ_QUESTIONS } from './quiz.js';
 
 // ----------------------------------------------------------------------------
-// Computed singletons — read once at module load. The whole app reads these
-// exactly as before. If a consumer needs the *current* day mid-session
-// (e.g. after midnight), call getLiturgicalDay() directly.
+// CHURCH_TODAY — exposed as a Proxy so every property access re-resolves
+// today's liturgical day via getLiturgicalDay(). A tab left open overnight
+// no longer renders stale data; the cost is one cheap synchronous lookup
+// per property access. Callers who prefer an explicit function shape can
+// use getChurchToday() instead. Per FINAL_CONTENT_REVISION_PLAN item 5
+// module-load fix — previously `const CHURCH_TODAY = getLiturgicalDay()`
+// captured a single snapshot at module load that never refreshed.
 // ----------------------------------------------------------------------------
 
 import { getLiturgicalDay } from './liturgical.js';
 
-export const CHURCH_TODAY = getLiturgicalDay();
+export const CHURCH_TODAY = new Proxy({}, {
+  get(_, prop) {
+    return getLiturgicalDay()[prop];
+  },
+});
+
+export const getChurchToday = () => getLiturgicalDay();
