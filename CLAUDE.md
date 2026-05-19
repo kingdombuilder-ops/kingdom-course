@@ -320,7 +320,9 @@ where possible.
 
 - **`npm run dev`** for local development
 - **`npm run build`** must complete with zero warnings
-- **`npm test`** — 176/176 tests passing as of last verified state
+- **`npm test`** — not wired in this repo (planned; not yet
+  implemented). Verification is by `npm run build` (must complete
+  with zero warnings) and manual production smoke test
 - **Do not use the broken `verify/` harness** with hardcoded
   `/home/claude/` paths
 
