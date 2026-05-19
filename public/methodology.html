@@ -1,0 +1,281 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0E0A06" />
+    <meta name="robots" content="index, follow" />
+
+    <title>How This Is Made · The Kingdom Course</title>
+    <meta name="description" content="How The Kingdom Course is made — AI methodology, the limits we commit to without exception, and what we're still working toward." />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/manifest.webmanifest" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=EB+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+SC:wght@500;600;700&display=swap" />
+
+    <style>
+      :root {
+        --ink:     #0E0A06;
+        --ink-2:   #1C160D;
+        --paper:   #F6EFDE;
+        --paper-2: #EFE6CF;
+        --gold:    #B5883F;
+        --gold-3:  #8C6A30;
+        --wine:    #6B1E1E;
+        --line:    rgba(14, 10, 6, 0.12);
+      }
+      * { box-sizing: border-box; }
+      html, body { margin: 0; padding: 0; overflow-x: hidden; }
+      body {
+        background: var(--paper);
+        color: var(--ink-2);
+        font-family: 'EB Garamond', Georgia, serif;
+        font-size: 18px;
+        line-height: 1.7;
+        -webkit-font-smoothing: antialiased;
+      }
+      .wrap {
+        max-width: 42rem;
+        margin: 0 auto;
+        padding: 3.5rem clamp(1.25rem, 4vw, 2.5rem) 5rem;
+      }
+      header.brand {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 3rem;
+      }
+      header.brand a {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        text-decoration: none;
+        color: var(--ink);
+      }
+      header.brand svg { display: block; }
+      header.brand .wordmark {
+        font-family: 'Cormorant SC', 'EB Garamond', serif;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        color: var(--ink);
+      }
+      h1 {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-weight: 500;
+        font-size: clamp(2rem, 5vw, 2.75rem);
+        line-height: 1.15;
+        color: var(--ink);
+        margin: 0 0 0.5rem;
+        letter-spacing: -0.005em;
+      }
+      .eyebrow {
+        font-family: 'Cormorant SC', serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.16em;
+        color: var(--gold-3);
+        margin: 0 0 1rem;
+      }
+      .updated {
+        font-style: italic;
+        color: var(--gold-3);
+        font-size: 0.95rem;
+        margin: 0.25rem 0 2.5rem;
+      }
+      h2 {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-weight: 600;
+        font-size: 1.5rem;
+        color: var(--ink);
+        margin: 2.75rem 0 1rem;
+        line-height: 1.25;
+      }
+      p, ul { margin: 0 0 1rem; }
+      ul { padding-left: 1.25rem; }
+      li { margin-bottom: 0.4rem; }
+      a { color: var(--wine); text-decoration: underline; text-underline-offset: 2px; }
+      a:hover { color: var(--gold-3); }
+      em { font-style: italic; color: var(--ink); }
+      strong { color: var(--ink); font-weight: 600; }
+      hr {
+        border: 0;
+        border-top: 1px solid var(--line);
+        margin: 3rem 0 2rem;
+      }
+
+      /* Hard-lines block — each commitment as h3 (Cormorant Garamond,
+         readable size, not the small-caps section-label h3 used by
+         privacy/terms) followed by qualifier paragraph. Generous
+         margin-top between commitments so the list breathes on mobile. */
+      .commits h3 {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-weight: 600;
+        font-size: 1.2rem;
+        line-height: 1.35;
+        letter-spacing: 0;
+        text-transform: none;
+        color: var(--ink);
+        margin: 2.5rem 0 0.75rem;
+      }
+      .commits h3:first-child {
+        margin-top: 1.25rem;
+      }
+      .commits p {
+        margin-bottom: 0;
+      }
+      .commits p + h3 {
+        margin-top: 2.5rem;
+      }
+
+      /* Latin couplet block at the foot of the page content. */
+      .motto-block {
+        margin-top: 3rem;
+        padding-top: 2rem;
+        border-top: 1px solid var(--line);
+        text-align: center;
+      }
+      .motto-block .latin {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-style: italic;
+        font-size: 1.15rem;
+        color: var(--gold-3);
+        margin: 0 0 0.25rem;
+      }
+      .motto-block .gloss {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-style: italic;
+        font-size: 0.95rem;
+        color: var(--ink-2);
+        opacity: 0.75;
+        margin: 0 0 1.5rem;
+      }
+      .motto-block .lex {
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-style: italic;
+        font-size: 0.95rem;
+        color: var(--gold-3);
+        margin: 0;
+      }
+
+      footer.foot {
+        font-family: 'Cormorant SC', serif;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        color: var(--gold-3);
+        text-align: center;
+        margin-top: 3rem;
+      }
+      .back {
+        display: inline-block;
+        margin-top: 2rem;
+        font-family: 'Cormorant SC', serif;
+        font-size: 11px;
+        font-weight: 600;
+        letter-spacing: 0.14em;
+        text-decoration: none;
+        color: var(--gold-3);
+      }
+      .back:hover { color: var(--wine); }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header class="brand">
+        <a href="/" aria-label="The Kingdom Course — home">
+          <svg width="22" height="22" viewBox="0 0 40 40" aria-hidden="true">
+            <circle cx="20" cy="20" r="18" fill="none" stroke="#B5883F" stroke-width="1" />
+            <circle cx="20" cy="20" r="12" fill="none" stroke="#B5883F" stroke-width="1" />
+            <circle cx="20" cy="20" r="6" fill="none" stroke="#B5883F" stroke-width="1" />
+            <circle cx="20" cy="20" r="2" fill="#6B1E1E" />
+          </svg>
+          <span class="wordmark">The Kingdom</span>
+        </a>
+      </header>
+
+      <p class="eyebrow">How This Is Made</p>
+      <h1>How The Kingdom Course Is Made</h1>
+      <p class="updated">Updated 19 May 2026</p>
+
+      <p>
+        The Kingdom Course is prepared with AI assistance, grounded in the
+        Catechism of the Catholic Church and Sacred Tradition. AI can make
+        mistakes. We design for that — every theological claim is cited,
+        every piece of content is versioned and correctable.
+      </p>
+
+      <h2>The limits we commit to, without exception</h2>
+
+      <section class="commits">
+        <h3>1. The face of Jesus Christ is never AI-generated in this project.</h3>
+        <p>
+          We use existing Catholic artistic tradition when visual reference
+          to the Lord is needed.
+        </p>
+
+        <h3>2. AI never speaks <em>as</em> a saint.</h3>
+        <p>
+          We quote saints with cited attribution; we do not put words in
+          their mouths.
+        </p>
+
+        <h3>3. AI never performs or simulates sacraments.</h3>
+        <p>
+          No AI absolution, blessing, consecration, marriage, ordination, or
+          any sacramental act. Sacraments require a priest, a parish, a Body.
+        </p>
+
+        <h3>4. AI never claims pastoral or spiritual authority of its own.</h3>
+        <p>
+          The Companion refers you to a priest for Confession, a spiritual
+          director for direction, a mental-health professional for crisis.
+        </p>
+
+        <h3>5. AI never represents real living Catholics without their explicit consent.</h3>
+        <p>
+          No deepfakes. No impersonations. No “what Bishop X would say”
+          simulations.
+        </p>
+
+        <h3>6. Every piece of AI-generated content is versioned and correctable.</h3>
+        <p>
+          When you report an error, we investigate within seven days and
+          correct within fourteen if warranted.
+        </p>
+      </section>
+
+      <h2>The authority does not rest on AI</h2>
+      <p>
+        The authority of this project does not rest on AI. It rests on the
+        Magisterium, the saints, the cited sources, and the human ecclesial
+        structure that holds the project accountable.
+      </p>
+
+      <h2>What we're working toward</h2>
+      <p>
+        Two parts of the methodology aren't yet in place: an engineered
+        citation verification system (CCC, Scripture, conciliar documents,
+        encyclicals, Doctors), and a theological advisory board to review
+        the corpus. Both are committed and forthcoming. Until those land,
+        this page describes the state of the project as it actually is.
+      </p>
+
+      <div class="motto-block">
+        <p class="latin"><strong style="font-weight:inherit">Per machinas, per Magisterium.</strong></p>
+        <p class="gloss">Through machines, through the Magisterium.</p>
+        <p class="lex">Salus animarum suprema lex.</p>
+      </div>
+
+      <a class="back" href="/">← Back to The Kingdom</a>
+
+      <footer class="foot">
+        © The Kingdom Course
+      </footer>
+    </div>
+  </body>
+</html>
