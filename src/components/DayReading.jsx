@@ -387,6 +387,47 @@ export default function DayReading({
         </section>
       )}
 
+      {/* AI disclosure footer — per FINAL_CONTENT_REVISION_PLAN §4.3 and
+          STRATEGIC_ARCHITECTURE Appendix E. Sits below the day's content
+          (after Reflection/Prayer) so the disclosure travels WITH the
+          reading rather than with the navigation chrome below. */}
+      <section className="paper-bg">
+        <div
+          style={{
+            maxWidth: '45rem',
+            margin: '0 auto',
+            padding: '0 clamp(1.5rem, 3vw, 2.5rem)',
+          }}
+        >
+          <p
+            style={{
+              fontSize: 13,
+              fontStyle: 'italic',
+              lineHeight: 1.6,
+              color: 'var(--mute)',
+              borderTop: '1px solid var(--line)',
+              paddingTop: '1.5rem',
+              marginTop: '3rem',
+              marginBottom: 0,
+            }}
+          >
+            This content was prepared with AI assistance, grounded in the
+            Catechism and Sacred Tradition. AI can make mistakes. Verify what
+            matters; consult your priest; read the cited sources.{' '}
+            <a
+              href="/methodology"
+              style={{
+                color: 'var(--gold-3)',
+                textDecoration: 'none',
+                borderBottom: '1px solid var(--gold-3)',
+              }}
+            >
+              How this is made
+            </a>
+          </p>
+        </div>
+      </section>
+
       {/* Mark complete + navigation */}
       <section
         className="paper-bg"
