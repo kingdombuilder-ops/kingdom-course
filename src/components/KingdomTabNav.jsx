@@ -33,7 +33,7 @@
                          a signup modal wired
    ============================================================================= */
 
-import { MessageCircleMore, Share2 } from 'lucide-react';
+import { MessageCircleMore, Share2, LogIn, LogOut } from 'lucide-react';
 
 const TAB_LABEL = {
   gate: 'The Gospel',
@@ -109,13 +109,8 @@ export default function KingdomTabNav({
             <circle cx="20" cy="20" r="2" fill="var(--wine)" />
           </svg>
           <span
-            className="sc-bold"
-            style={{
-              fontSize: 10,
-              color: 'var(--ink)',
-              // Hidden on narrow viewports — mark remains visible
-              display: 'inline',
-            }}
+            className="sc-bold nav-label"
+            style={{ fontSize: 10, color: 'var(--ink)' }}
           >
             The Kingdom
           </span>
@@ -176,6 +171,7 @@ export default function KingdomTabNav({
             <button
               onClick={onShare}
               className="btn-ghost sc"
+              aria-label="Pass it on"
               title="Pass it on"
               style={{
                 fontSize: 10,
@@ -186,12 +182,14 @@ export default function KingdomTabNav({
                 fontFamily: 'inherit',
               }}
             >
-              <Share2 size={13} /> Pass it on
+              <Share2 size={13} /> <span className="nav-label">Pass it on</span>
             </button>
           )}
           <button
             onClick={onOpenCompanion}
             className="btn-gold sc"
+            aria-label="Ask the Companion"
+            title="Ask"
             style={{
               fontSize: 10,
               padding: '0.5rem 0.75rem',
@@ -201,12 +199,13 @@ export default function KingdomTabNav({
               fontFamily: 'inherit',
             }}
           >
-            <MessageCircleMore size={13} /> Ask
+            <MessageCircleMore size={13} /> <span className="nav-label">Ask</span>
           </button>
           {currentUser ? (
             <button
               onClick={onSignOut}
               className="btn-ghost sc"
+              aria-label="Sign out"
               title={`Signed in as ${currentUser.name || currentUser.email}`}
               style={{
                 fontSize: 10,
@@ -217,7 +216,7 @@ export default function KingdomTabNav({
                 fontFamily: 'inherit',
               }}
             >
-              Sign out
+              <LogOut size={13} /> <span className="nav-label">Sign out</span>
             </button>
           ) : (
             <button
@@ -226,15 +225,18 @@ export default function KingdomTabNav({
                 else if (onTab) onTab('course');
               }}
               className="btn-ghost sc"
+              aria-label="Sign in"
+              title="Sign in"
               style={{
                 fontSize: 10,
                 padding: '0.5rem 0.75rem',
                 display: 'inline-flex',
                 alignItems: 'center',
+                gap: '0.5rem',
                 fontFamily: 'inherit',
               }}
             >
-              Sign in
+              <LogIn size={13} /> <span className="nav-label">Sign in</span>
             </button>
           )}
         </div>
