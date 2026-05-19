@@ -20,9 +20,9 @@
      onToPrologue() — invoked by the secondary "Begin with the message" link
    ============================================================================= */
 
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 
-export default function Hero({ onEnter, onToPrologue }) {
+export default function Hero({ onEnter }) {
   return (
     <section
       id="top"
@@ -101,81 +101,76 @@ export default function Hero({ onEnter, onToPrologue }) {
       >
         <div
           className="ornament rise d-1"
+          aria-hidden
           style={{ maxWidth: '18rem', marginBottom: 'clamp(2.5rem, 4vw, 3rem)' }}
-        >
-          <span className="sc-bold" style={{ fontSize: 10 }}>The Kingdom of Eternal Life</span>
-        </div>
+        />
 
-        <h1 className="rise d-2">
-          <span
-            className="display-strong"
-            style={{
-              display: 'block',
-              fontStyle: 'italic',
-              fontSize: 'clamp(2rem, 5.2vw, 4.2rem)',
-              lineHeight: 0.95,
-              color: 'var(--gold-3)',
-              fontWeight: 600,
-              letterSpacing: '-0.01em',
-            }}
-          >
-            The single most important announcement in history.
-          </span>
-          <span
-            className="display-strong"
-            style={{
-              display: 'block',
-              fontSize: 'clamp(1.5rem, 3.4vw, 2.3rem)',
-              lineHeight: 1.1,
-              color: 'var(--ink)',
-              fontWeight: 600,
-              letterSpacing: '-0.01em',
-              marginTop: '0.625rem',
-            }}
-          >
-            And the most rigorously verified.
-          </span>
+        <h1
+          className="display-strong rise d-2"
+          style={{
+            fontStyle: 'italic',
+            fontSize: 'clamp(2rem, 5.2vw, 4.2rem)',
+            lineHeight: 0.95,
+            color: 'var(--wine)',
+            fontWeight: 600,
+            letterSpacing: '-0.01em',
+            margin: 0,
+          }}
+        >
+          The Kingdom of Eternal Life.
         </h1>
 
         <p
-          className="display rise d-2"
+          className="display-strong rise d-3"
           style={{
-            fontStyle: 'italic',
-            fontSize: 'clamp(1.05rem, 1.85vw, 1.2rem)',
-            lineHeight: 1.5,
+            fontSize: 'clamp(1.5rem, 3.4vw, 2.3rem)',
+            lineHeight: 1.15,
+            color: 'var(--ink)',
+            fontWeight: 600,
+            letterSpacing: '-0.01em',
             marginTop: '1.5rem',
-            color: 'var(--ink-2)',
           }}
         >
-          The Gospel meets you. The Course forms you. The Kingdom holds you.
+          The single most important announcement in history.
         </p>
 
         <p
           className="display-strong rise d-3"
           style={{
-            fontStyle: 'italic',
-            fontSize: 'clamp(1.32rem, 2.4vw, 1.55rem)',
-            marginTop: 'clamp(2rem, 3vw, 2.5rem)',
-            lineHeight: 1.4,
-            color: 'var(--wine)',
-            fontWeight: 500,
+            fontSize: 'clamp(1.5rem, 3.4vw, 2.3rem)',
+            lineHeight: 1.15,
+            color: 'var(--ink)',
+            fontWeight: 600,
+            letterSpacing: '-0.01em',
+            marginTop: '0.625rem',
           }}
         >
-          <span style={{ display: 'block' }}>The most important message in history.</span>
-          <span style={{ display: 'block', marginTop: '0.375rem' }}>
-            From the hinge on which all history turns.
-          </span>
-          <span style={{ display: 'block', marginTop: '0.375rem' }}>
-            Verified by the greatest body of evidence on earth.
-          </span>
+          And the most rigorously verified.
         </p>
+
+        <div className="rise d-4" style={{ marginTop: 'clamp(2rem, 3vw, 2.5rem)' }}>
+          <button
+            onClick={onEnter}
+            className="btn-gold sc pulse-gold"
+            style={{
+              fontSize: 11,
+              padding: '1rem 1.75rem',
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.75rem',
+              fontFamily: 'inherit',
+            }}
+          >
+            BEGIN <ArrowRight size={14} />
+          </button>
+        </div>
 
         <p
           className="body-lede rise d-4"
           style={{
             fontSize: 'clamp(1.2rem, 2vw, 1.32rem)',
             lineHeight: 1.6,
-            marginTop: 'clamp(1.5rem, 2.5vw, 2rem)',
+            marginTop: 'clamp(4rem, 7vw, 6rem)',
             color: 'var(--ink-2)',
           }}
         >
@@ -214,56 +209,8 @@ export default function Hero({ onEnter, onToPrologue }) {
             fontWeight: 600,
           }}
         >
-          Not only the kingdom. Eternal life itself, verified — and visible in the saints who
-          continue to live in it.
+          Not only the kingdom. Eternal life itself, verified.
         </p>
-
-        <div
-          className="rise d-5"
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'flex-start',
-            gap: '1rem',
-            marginTop: '2.5rem',
-          }}
-        >
-          <button
-            onClick={onEnter}
-            className="btn-gold sc pulse-gold"
-            style={{
-              fontSize: 11,
-              padding: '1rem 1.75rem',
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.75rem',
-              fontFamily: 'inherit',
-            }}
-          >
-            Enter the course <ArrowRight size={14} />
-          </button>
-          <button
-            onClick={onToPrologue}
-            className="sc"
-            style={{
-              fontSize: 11,
-              display: 'inline-flex',
-              alignItems: 'center',
-              gap: '0.5rem',
-              minHeight: 44,
-              padding: '0.75rem 0.5rem',
-              marginLeft: '-0.5rem',
-              color: 'var(--ink-2)',
-              background: 'transparent',
-              border: 0,
-              cursor: 'pointer',
-              fontFamily: 'inherit',
-              transition: 'color 0.2s ease',
-            }}
-          >
-            Begin with the message <ChevronDown size={14} />
-          </button>
-        </div>
 
         <div
           className="rise d-6"
