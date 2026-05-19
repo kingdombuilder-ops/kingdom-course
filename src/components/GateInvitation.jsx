@@ -47,6 +47,7 @@ export default function GateInvitation({ onToCourse, onShare }) {
         paddingTop: 'clamp(6rem, 10vw, 9rem)',
         paddingBottom: 'clamp(6rem, 10vw, 9rem)',
         color: 'var(--paper)',
+        overflow: 'hidden',
       }}
     >
       <div

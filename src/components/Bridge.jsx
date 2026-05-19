@@ -34,6 +34,7 @@ export default function Bridge() {
         paddingTop: 'clamp(6rem, 10vw, 8rem)',
         paddingBottom: 'clamp(6rem, 10vw, 8rem)',
         borderTop: '1px solid var(--line)',
+        overflow: 'hidden',
       }}
     >
       <div

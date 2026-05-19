@@ -25,6 +25,7 @@ export default function Prologue() {
         paddingTop: 'clamp(6rem, 10vw, 9rem)',
         paddingBottom: 'clamp(6rem, 10vw, 9rem)',
         borderTop: '1px solid var(--line)',
+        overflow: 'hidden',
       }}
     >
       <div

@@ -32,6 +32,7 @@ export default function LivingEvidence() {
         position: 'relative',
         paddingTop: 'clamp(5rem, 9vw, 7rem)',
         paddingBottom: 'clamp(5rem, 9vw, 7rem)',
+        overflow: 'hidden',
       }}
     >
       <div
