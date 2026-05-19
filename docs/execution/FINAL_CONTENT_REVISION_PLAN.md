@@ -523,50 +523,60 @@ display surface
 **Acceptance:** Earth consistently appears as the 5th House across
 all surfaces; tests assert the order.
 
-## 1.12 Seven Essentials vs Seven Steps vs Seven Keys
+## 1.12 Seven Steps — single canonical frame
 
 **Issue:** Inconsistency across copy. Sometimes "7 Essentials,"
 sometimes "Seven Steps," occasionally "Seven Keys."
 
-**Recommendation: standardize on "Seven Keys" as the primary frame.
-Use "essentials" and "steps" deliberately as secondary terms.**
+**Decision (locked in CLAUDE.md):** standardize on "Seven Steps" as
+the single canonical frame for the seven verbs of the Course (SEE ·
+KNOW · HEAL · ABIDE · GO · BUILD · SEND). "Seven Keys" is retired
+from consumer-facing copy — the Matthew 16:19 reference belongs in
+the chapter on the Church and Peter, not as the project's top-level
+frame. This reverses an earlier draft of this section that proposed
+"Seven Keys" as the primary frame.
 
 **Rationale:**
-- Master Vision uses "Seven Keys" as the canonical term
-- "Keys" unify "essentials" (substance — keys unlock) and "steps"
-  (journey — keys are turned in sequence)
-- "Keys to the Kingdom" is also Scriptural (Matthew 16:19 — the keys
-  of the kingdom of heaven given to Peter)
+- A single canonical term reduces cognitive load and brand drift
+- "Step" is concrete (you walk one) and unifies with the Course's
+  walking metaphor and the Easter→Pentecost arc
+- "Keys" was load-bearing only under a Petrine reading that does not
+  belong as the framing of every consumer surface
 
 **Standardized usage:**
 
 | Context | Use this term |
 |---|---|
-| Primary frame, brand surface | "Seven Keys" |
-| Substance of formation | "Seven essential dimensions" or "the seven essentials" |
-| The user's journey | "Walked over fifty days in seven steps" |
+| Primary frame, brand surface, journey, individual reference | "Seven Steps" |
+| A specific step | "Step N — VERB" (e.g., "Step 4 — ABIDE") |
+| Substance (what is learned at each step) — rare | "Seven essentials" |
 | Generic reference | "The seven" (when context is clear) |
+
+When in doubt, prefer "steps."
 
 **Copy revisions:**
 
 | Old | New |
 |---|---|
-| "7 Essentials of the Kingdom of Heaven" | "Seven Keys to the Kingdom of Heaven" |
-| "The 7 Essentials" | "The Seven Keys" |
-| "seven essential keys" | "seven keys" (the word "essential" is redundant when "keys" is the frame) |
-| "the seven-step walk" | "the seven-step walk" (keep; this describes journey) |
+| "7 Essentials of the Kingdom of Heaven" | "Seven Steps to the Kingdom of Heaven" |
+| "The 7 Essentials" | "The Seven Steps" |
+| "Seven Keys" (any consumer-facing usage) | "Seven Steps" |
+| "the seven-step walk" | "the seven-step walk" (keep; this is the canonical journey phrasing) |
 
 **Files affected:**
 - `src/data/course.js`
 - `src/components/CourseHero.jsx`
+- `src/modals/SignupModal.jsx`
+- `src/App.jsx` (Hub h3)
 - All Day reading content
 - Footer "Walk" column
 - Any Field Guide cross-references
 - Marketing meta description and Open Graph copy
 
-**Acceptance:** "Seven Keys" is the primary brand term across all
-surfaces; "essentials" and "steps" appear only in their specific
-contexts above.
+**Acceptance:** "Seven Steps" is the single canonical term across all
+consumer surfaces; "Seven Keys" appears nowhere except in internal
+notes documenting its retirement; "essentials" appears only in the
+rare substance context above.
 
 ---
 
@@ -766,9 +776,8 @@ The following are *canonical*. Use exactly. Never substitute.
 | The whole movement | The Kingdom |
 | The 50-day arc | "Fifty days" / "Seven weeks to Pentecost" |
 | The step verbs | SEE · KNOW · HEAL · ABIDE · GO · BUILD · SEND |
-| The unifying frame | Seven Keys |
-| The substance | Seven essentials |
-| The journey | Seven steps |
+| The canonical frame (and journey) | Seven Steps |
+| The substance (rare; prefer "steps") | Seven essentials |
 | The houses (display) | Light · Fire · Joy · Glory · Earth |
 | The houses (internal slugs) | `light` · `fire` · `peace` · `glory` · `benedict` |
 | The classical movements | Via Purgativa · Via Illuminativa · Via Unitiva |
@@ -875,7 +884,7 @@ To be filled in as the audit proceeds. Initial known items:
 |---|---|---|
 | Hero | "central figure of history — the hinge on which all of it turns" | Tighten per 1.4 |
 | Hero | Subheader unclear what role it plays | Promote tagline per 1.2 |
-| Course tab | "7 Essentials of the Kingdom of Heaven" | "Seven Keys to the Kingdom of Heaven" per 1.12 |
+| Course tab | "7 Essentials of the Kingdom of Heaven" | "Seven Steps to the Kingdom of Heaven" per 1.12 |
 | Hub | "The day as a kingdom day" | Add brief gloss for first-time users |
 | Various | "Blessed Carlo Acutis" | "Saint Carlo Acutis" per 0.2 |
 | Various | "now Pope Francis" | "Pope Francis (2013–2025)" per 0.1 |
@@ -965,7 +974,7 @@ AI methodology statement.
 - [ ] Render in Gospel page flow
 
 ### `src/components/CourseHero.jsx`
-- [ ] "Seven Keys" framing replacing "7 Essentials" (1.12)
+- [ ] "Seven Steps" framing replacing "7 Essentials" (1.12)
 - [ ] Reduce step button height (1.9)
 - [ ] Increase vertical spacing between steps (1.9)
 
@@ -986,7 +995,7 @@ AI methodology statement.
   occurred
 
 ### `src/data/course.js`
-- [ ] "Seven Keys" framing (1.12)
+- [ ] "Seven Steps" framing (1.12)
 - [ ] Audit Pope Francis references (0.1)
 - [ ] Audit Carlo Acutis references (0.2)
 - [ ] Add AI disclosure footer to each Day reading (4.3)
@@ -1033,7 +1042,7 @@ AI methodology statement.
 ### `CLAUDE.md`
 - [ ] Update saint schema example: Carlo Acutis as Saint (0.2)
 - [ ] Verify Houses canonical order (1.11)
-- [ ] Update "Seven Keys" framing (1.12)
+- [ ] Update "Seven Steps" framing (1.12)
 - [ ] Note Pope Leo XIV as current pope (0.1)
 
 ## 6.2 Sequential implementation order
@@ -1057,7 +1066,7 @@ AI methodology statement.
 12. Step button heights (1.9)
 13. Reading content width (1.10)
 14. Earth ordering bug (1.11)
-15. Seven Keys standardization (1.12)
+15. Seven Steps standardization (1.12)
 
 **Day 4 (Hub):**
 16. Daily tasks audit (2.1)
@@ -1101,8 +1110,8 @@ The revision is complete when:
 - [ ] Three reader-types render in 3-column row on desktop
 - [ ] Day 1 accessible without signup; Day 2+ gates to SignupModal
 - [ ] Earth consistently appears as 5th House
-- [ ] "Seven Keys" is the primary frame; "essentials" and "steps" used
-  in their specific contexts
+- [ ] "Seven Steps" is the canonical frame across all surfaces;
+  "Seven Keys" fully retired from consumer copy
 - [ ] Hub shows BUILD rotation per day of week
 - [ ] Hub shows Marian dimension every day
 - [ ] Methodology page live at `/methodology`
