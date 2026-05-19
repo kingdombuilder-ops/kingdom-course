@@ -69,7 +69,6 @@ export default function KingdomTabNav({
         style={{
           maxWidth: '64rem',
           margin: '0 auto',
-          padding: '1rem clamp(1.5rem, 3vw, 2.5rem)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
@@ -135,10 +134,9 @@ export default function KingdomTabNav({
                 role="tab"
                 aria-selected={isActive}
                 onClick={() => onTab && onTab(id)}
-                className="sc-bold"
+                className="sc-bold nav-tab"
                 style={{
                   position: 'relative',
-                  padding: '0.5rem clamp(0.75rem, 1.5vw, 1rem)',
                   fontSize: 'clamp(10px, 1.4vw, 11px)',
                   color: isActive ? 'var(--ink)' : 'var(--mute)',
                   background: 'transparent',
@@ -172,12 +170,11 @@ export default function KingdomTabNav({
           {onShare && (
             <button
               onClick={onShare}
-              className="btn-ghost sc"
+              className="btn-ghost sc nav-action"
               aria-label="Pass it on"
               title="Pass it on"
               style={{
                 fontSize: 10,
-                padding: '0.5rem 0.75rem',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
@@ -189,12 +186,11 @@ export default function KingdomTabNav({
           )}
           <button
             onClick={onOpenCompanion}
-            className="btn-gold sc"
+            className="btn-gold sc nav-action"
             aria-label="Ask the Companion"
             title="Ask"
             style={{
               fontSize: 10,
-              padding: '0.5rem 0.75rem',
               display: 'inline-flex',
               alignItems: 'center',
               gap: '0.5rem',
@@ -206,12 +202,11 @@ export default function KingdomTabNav({
           {currentUser ? (
             <button
               onClick={onSignOut}
-              className="btn-ghost sc"
+              className="btn-ghost sc nav-action"
               aria-label="Sign out"
               title={`Signed in as ${currentUser.name || currentUser.email}`}
               style={{
                 fontSize: 10,
-                padding: '0.5rem 0.75rem',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',
@@ -226,12 +221,11 @@ export default function KingdomTabNav({
                 if (onOpenSignup) onOpenSignup();
                 else if (onTab) onTab('course');
               }}
-              className="btn-ghost sc"
+              className="btn-ghost sc nav-action"
               aria-label="Sign in"
               title="Sign in"
               style={{
                 fontSize: 10,
-                padding: '0.5rem 0.75rem',
                 display: 'inline-flex',
                 alignItems: 'center',
                 gap: '0.5rem',

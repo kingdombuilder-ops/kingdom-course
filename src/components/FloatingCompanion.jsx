@@ -22,10 +22,14 @@ export default function FloatingCompanion({ onClick }) {
     <button
       onClick={onClick}
       aria-label="Open Companion"
+      title="Ask"
       className="btn-gold sc-bold"
       style={{
         position: 'fixed',
-        bottom: '1.5rem',
+        // Respect iOS safe-area-inset-bottom so the FAB rises above the
+        // home-indicator zone on notched iPhones (env() falls back to 0
+        // when unset; on non-iOS the effective bottom remains 1.5rem).
+        bottom: 'calc(1.5rem + env(safe-area-inset-bottom, 0px))',
         right: '1.5rem',
         zIndex: 30,
         display: 'inline-flex',
@@ -38,15 +42,7 @@ export default function FloatingCompanion({ onClick }) {
       }}
     >
       <MessageCircleMore size={15} />
-      <span
-        style={{
-          // Hide the label on narrow viewports — visually-hidden via media
-          // query in CSS would be cleaner, but inline-style media queries
-          // aren't supported. Compromise: show always; the FAB is small.
-        }}
-      >
-        Ask
-      </span>
+      <span className="nav-label">Ask</span>
     </button>
   );
 }

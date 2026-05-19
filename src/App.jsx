@@ -531,7 +531,12 @@ export default function App() {
             // No apiEndpoint — runs in stub mode (returns the placeholder
             // reply). Wire to a backend proxy when ready.
           />
-          <FloatingCompanion onClick={() => setCompanionOpen(true)} />
+          {/* FloatingCompanion intentionally not rendered here: the
+              KingdomTabNav's right-actions already exposes "Ask" on every
+              production tab, so the FAB is redundant and was overlapping
+              content cards on mobile. Restore this render if the nav is
+              ever simplified to drop "Ask" — the component itself remains
+              imported and ready (icon-only on mobile + iOS safe-area-aware). */}
         </>
       ) : previewMode === 'gate' ? (
         <Suspense
