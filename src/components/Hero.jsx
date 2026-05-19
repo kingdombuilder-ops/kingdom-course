@@ -105,13 +105,13 @@ export default function Hero({ onEnter }) {
           style={{ maxWidth: '18rem', marginBottom: 'clamp(2.5rem, 4vw, 3rem)' }}
         />
 
+        {/* Line 2 — the naming. Display-size ink, regular (not italic). */}
         <h1
           className="display-strong rise d-2"
           style={{
-            fontStyle: 'italic',
             fontSize: 'clamp(2rem, 5.2vw, 4.2rem)',
             lineHeight: 0.95,
-            color: 'var(--wine)',
+            color: 'var(--ink)',
             fontWeight: 600,
             letterSpacing: '-0.01em',
             margin: 0,
@@ -120,35 +120,41 @@ export default function Hero({ onEnter }) {
           The Kingdom of Eternal Life.
         </h1>
 
+        {/* Line 3 — the reframing. Italic gold-3, medium-large. Mirrors the
+            "He came to inaugurate a kingdom." pattern in Prologue.jsx. */}
         <p
-          className="display-strong rise d-3"
+          className="display rise d-3"
           style={{
-            fontSize: 'clamp(1.5rem, 3.4vw, 2.3rem)',
-            lineHeight: 1.15,
-            color: 'var(--ink)',
-            fontWeight: 600,
-            letterSpacing: '-0.01em',
-            marginTop: '1.5rem',
+            fontStyle: 'italic',
+            fontSize: 'clamp(1.5rem, 3vw, 2rem)',
+            lineHeight: 1.2,
+            color: 'var(--gold-3)',
+            marginTop: '0.75rem',
           }}
         >
           The single most important announcement in history.
         </p>
 
+        {/* Line 4 — the grounding. Medium ink, weight 300 — the visually
+            quietest line. Two axes of differentiation from line 3
+            (non-italic + lighter) keep the hierarchy clear. */}
         <p
-          className="display-strong rise d-3"
+          className="display rise d-3"
           style={{
-            fontSize: 'clamp(1.5rem, 3.4vw, 2.3rem)',
-            lineHeight: 1.15,
+            fontSize: 'clamp(1.3rem, 2.5vw, 1.65rem)',
+            lineHeight: 1.3,
             color: 'var(--ink)',
-            fontWeight: 600,
-            letterSpacing: '-0.01em',
-            marginTop: '0.625rem',
+            fontWeight: 300,
+            marginTop: '0.5rem',
           }}
         >
           And the most rigorously verified.
         </p>
 
-        <div className="rise d-4" style={{ marginTop: 'clamp(2rem, 3vw, 2.5rem)' }}>
+        {/* BEGIN — left-aligned with the text block (no flex centering);
+            generous top margin (48-64px) creates breathing room between
+            the headline block and the CTA. */}
+        <div className="rise d-4" style={{ marginTop: 'clamp(3rem, 6vw, 4rem)' }}>
           <button
             onClick={onEnter}
             className="btn-gold sc pulse-gold"
