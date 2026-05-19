@@ -40,6 +40,14 @@ import CourseJourney from './CourseJourney.jsx';
 import WeekDetail from './WeekDetail.jsx';
 import DayReading from './DayReading.jsx';
 import SendingDay from './SendingDay.jsx';
+import CourseDayGate from './CourseDayGate.jsx';
+
+// Per FINAL_CONTENT_REVISION_PLAN §1.8 — Week 1 Day 1 and the Week 1
+// Prologue are open to anonymous visitors as the low-friction try.
+// Every other day (Day 2..50) and the Sending Day require an account.
+function isDayFree(weekN, dayKey) {
+  return weekN === 1 && (dayKey === 'prologue' || dayKey === 1);
+}
 
 // ---- Day navigation helpers ----------------------------------------------
 // All logic that needs SEVEN_WEEKS data lives here, inside the lazy-loaded
@@ -108,6 +116,7 @@ export default function CourseTabView({
   onShare = () => {},
   onStartJourney,
   onBeginToday,
+  onOpenSignup = () => {},
 }) {
   const scrollTop = () => {
     if (typeof window !== 'undefined') window.scrollTo(0, 0);
@@ -170,10 +179,16 @@ export default function CourseTabView({
   const hasPrev = !!prevPosition(activeWeekN, activeDayKey);
 
   if (view === 'sending') {
+    if (!currentUser) {
+      return <CourseDayGate onOpenSignup={onOpenSignup} onBackToOverview={goToOverview} />;
+    }
     return <SendingDay onBack={goToOverview} onShare={onShare} />;
   }
 
   if (view === 'day') {
+    if (!currentUser && !isDayFree(activeWeekN, activeDayKey)) {
+      return <CourseDayGate onOpenSignup={onOpenSignup} onBackToOverview={goToOverview} />;
+    }
     const isCompleted = activeDayKey === 'prologue'
       ? !!progress[`w${activeWeekN}-prologue`]
       : !!progress[`w${activeWeekN}-d${activeDayKey}`];

@@ -149,6 +149,10 @@ export default function App() {
   const [passItOnOpen, setPassItOnOpen] = useState(false);
   const [companionOpen, setCompanionOpen] = useState(false);
   const [signupOpen, setSignupOpen] = useState(false);
+  // Per FINAL_CONTENT_REVISION_PLAN §1.8 — when SignupModal opens via the
+  // Day 2..50 gate, this flag tells handleSignupSuccess to land the user
+  // on Day 2 (the next reading) rather than the Course overview.
+  const [signupAfterGate, setSignupAfterGate] = useState(false);
 // Auth — Clerk's useUser() is the source of truth for who is signed in.
   // The `user` object Clerk returns has a different shape than our previous
   // stub user, so we adapt it here into the shape the rest of the app
@@ -180,7 +184,19 @@ export default function App() {
     // The signed-in Course view greets them ("Hello, Aaron.") and surfaces
     // their starting point — fulfilling the modal's "Begin the Course" CTA.
     setProductionTab('course');
+    // If signup was triggered by the Course Day 2 gate, land the user on
+    // Day 2 (the next reading) instead of the overview. Per §1.8.
+    if (signupAfterGate) {
+      setSignupAfterGate(false);
+      setActiveWeekN(1);
+      setActiveDayKey(2);
+      setCourseView('day');
+    }
     if (typeof window !== 'undefined') window.scrollTo(0, 0);
+  };
+  const openSignupFromCourseGate = () => {
+    setSignupAfterGate(true);
+    setSignupOpen(true);
   };
   // The actual Clerk-wired submit handler passed to <SignupModal>.
   // Step 1 of the two-step flow: creates the user record (unverified)
@@ -411,6 +427,7 @@ export default function App() {
                   progress={courseProgress}
                   onMarkComplete={courseToggleComplete}
                   onShare={() => setPassItOnOpen(true)}
+                  onOpenSignup={openSignupFromCourseGate}
                 />
               </Suspense>
             )}
