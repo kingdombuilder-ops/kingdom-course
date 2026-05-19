@@ -31,6 +31,7 @@
 
 import HubHero from './HubHero.jsx';
 import SevenEssentials from './SevenEssentials.jsx';
+import ConfessionPrompt from './ConfessionPrompt.jsx';
 import KingdomMoreGrid from './KingdomMoreGrid.jsx';
 
 export default function KingdomHubView({
@@ -44,6 +45,8 @@ export default function KingdomHubView({
   onOpenIntention,
   onOpenWitnesses,
   onGoToFieldGuide,
+  lastConfessionDate = null,
+  onMarkConfession,
 }) {
   return (
     <div className="view-enter">
@@ -53,6 +56,10 @@ export default function KingdomHubView({
         onPracticeStart={onPracticeStart}
         onCompline={onCompline}
         complineDone={complineDone}
+      />
+      <ConfessionPrompt
+        lastConfessionDate={lastConfessionDate}
+        onMarkConfession={onMarkConfession}
       />
       <KingdomMoreGrid
         houseKey={houseKey}

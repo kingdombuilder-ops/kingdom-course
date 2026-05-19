@@ -98,6 +98,11 @@ export default function App() {
 
   // Intentions — list of names the user is carrying in prayer (persisted).
   const [intentions, setIntentions] = useKingdomStorage('intentions', []);
+  // Per FINAL_CONTENT_REVISION_PLAN §2.4. ISO string of the user's most
+  // recently recorded Confession; null until they've marked one. The
+  // Hub surfaces a gentle 35-day prompt off this value.
+  const [lastConfessionDate, setLastConfessionDate] = useKingdomStorage('lastConfessionDate', null);
+  const markConfessionToday = () => setLastConfessionDate(new Date().toISOString());
 
   // Modal state — exactly one modal open at a time, or none.
   const [activeModal, setActiveModal] = useState(null);
@@ -472,6 +477,8 @@ export default function App() {
                   onOpenIntention={() => setActiveModal('intention')}
                   onOpenWitnesses={() => setActiveModal('witnesses')}
                   onGoToFieldGuide={goToFieldGuide}
+                  lastConfessionDate={lastConfessionDate}
+                  onMarkConfession={markConfessionToday}
                 />
               )
             )}
@@ -628,6 +635,8 @@ export default function App() {
             onOpenIntention={() => setActiveModal('intention')}
             onOpenWitnesses={() => setActiveModal('witnesses')}
             onGoToFieldGuide={goToFieldGuide}
+            lastConfessionDate={lastConfessionDate}
+            onMarkConfession={markConfessionToday}
           />
         )
       ) : IS_DEV ? (
