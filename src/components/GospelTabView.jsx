@@ -32,6 +32,7 @@ import Prologue from './Prologue.jsx';
 import Trail from './Trail.jsx';
 import Circles from './Circles.jsx';
 import Bridge from './Bridge.jsx';
+import LivingEvidence from './LivingEvidence.jsx';
 import GateInvitation from './GateInvitation.jsx';
 import CircleModal from './CircleModal.jsx';
 
@@ -83,6 +84,7 @@ export default function GospelTabView({ onToCourse = () => {}, onShare = () => {
       <Trail />
       <Circles onSelect={openCircle} openedCircles={openedCircles} />
       <Bridge />
+      <LivingEvidence />
       <GateInvitation onToCourse={onToCourse} onShare={onShare} />
 
       {activeCircle && (
