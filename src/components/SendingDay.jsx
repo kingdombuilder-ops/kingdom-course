@@ -128,7 +128,7 @@ export default function SendingDay({ onBack, onShare }) {
               color: 'rgba(246,239,222,0.88)',
             }}
           >
-            Seven steps walked. Forty-nine days of walking — inward, abiding, outward. The same
+            Seven steps walked. Fifty days of walking — inward, abiding, outward. The same
             shape the Church's calendar itself traces from Easter to Pentecost, when the first
             disciples were sent from a locked room into the streets, and nothing has been the same
             since.

@@ -424,7 +424,7 @@ export const PRACTICES = [
       { t: "p", d: "<b>Safety.</b> People must feel free to be honest. No mockery, no gossip, no judgment, no performance pressure. This takes conscious cultivation." },
       { t: "p", d: "<b>Honesty.</b> No pretending. Transformation requires truth. Surface-level religious talk does not form anyone. Someone has to go first — be honest about something real — and the depth rises or falls from there." },
       { t: "p", d: "<b>Prayer.</b> A conversation that discusses the faith without praying becomes a book club. Pray together at the start. Pray for each other by name at the close. The Spirit does the work; you only create the space." },
-      { t: "p", d: "<b>Consistency.</b> A friendship that meets once never forms anyone. A friendship that holds for years forms profoundly. Commit to the next forty-nine days at minimum, and let the form continue from there." },
+      { t: "p", d: "<b>Consistency.</b> A friendship that meets once never forms anyone. A friendship that holds for years forms profoundly. Commit to the next fifty days at minimum, and let the form continue from there." },
       { t: "h", d: "What Kills It" },
       { t: "p", d: "<b>Inconsistency.</b> Cancellations, reschedules, skipped weeks. Walking-together dies in the gaps. Commit to a rhythm and hold it." },
       { t: "p", d: "<b>Gossip.</b> A conversation that turns to talking about people outside the conversation eats itself. Discuss the reading. Discuss your own lives. Not anyone else." },

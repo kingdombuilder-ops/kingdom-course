@@ -101,9 +101,9 @@ export default function GateInvitation({ onToCourse, onShare }) {
             color: 'rgba(246,239,222,0.82)',
           }}
         >
-          Seven steps of kingdom life. Forty-nine days, one reading each morning. And on the
-          fiftieth day, the Sending. Free, for every soul on earth. No prerequisites. No
-          gatekeepers. Only the gate.
+          Seven steps of kingdom life. Fifty days, one reading each morning, ending in the
+          Sending. Free, for every soul on earth. No prerequisites. No gatekeepers. Only the
+          gate.
         </p>
 
         <div

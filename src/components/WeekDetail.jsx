@@ -630,7 +630,7 @@ export default function WeekDetail({
                   color: 'var(--wine)',
                 }}
               >
-                Forty-nine days walked.
+                Fifty days walked.
               </p>
               <p
                 className="display"
