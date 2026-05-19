@@ -107,12 +107,8 @@ export default function GateInvitation({ onToCourse, onShare }) {
         </p>
 
         <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(100%, 14rem), 1fr))',
-            gap: '1.5rem',
-            margin: '3.5rem 0',
-          }}
+          className="reader-types-grid"
+          style={{ margin: '3.5rem 0' }}
         >
           {PATHS.map((c, i) => (
             <div

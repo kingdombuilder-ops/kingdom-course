@@ -184,7 +184,7 @@ export default function Prologue() {
             color: 'var(--ink)',
           }}
         >
-          That trail is what this course follows.
+          The Course walks this trail.
           <span
             style={{
               display: 'block',

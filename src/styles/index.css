@@ -1307,3 +1307,20 @@ a { color: inherit; text-decoration: none; }
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
 }
+
+/* =============================================================================
+   READER-TYPES GRID — Gospel page closing CTA cards (GateInvitation.jsx).
+   Three reader-type cards render in one row on desktop and tablet, stacked
+   on mobile. Per FINAL_CONTENT_REVISION_PLAN §1.7.
+   ============================================================================= */
+
+.reader-types-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+@media (max-width: 768px) {
+  .reader-types-grid {
+    grid-template-columns: 1fr;
+  }
+}
