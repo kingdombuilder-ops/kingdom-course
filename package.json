@@ -11,7 +11,9 @@
     "lint": "echo 'Add eslint when ready'"
   },
   "dependencies": {
+    "@anthropic-ai/sdk": "^0.97.1",
     "@clerk/clerk-react": "^5.61.6",
+    "@vercel/kv": "^3.0.0",
     "lucide-react": "^0.383.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
