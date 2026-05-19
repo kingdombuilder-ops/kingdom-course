@@ -37,7 +37,12 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { createClerkClient } from '@clerk/backend';
 
-export const runtime = 'edge';
+// Canonical Edge runtime declaration for pure Vercel API routes
+// (non-Next.js). The `vercel.json` functions block does NOT support
+// `"runtime": "edge"` — that block is for Node serverless versioned
+// runtime strings only. Edge is declared in-file via this config
+// object, per Vercel's documented Edge Function setup.
+export const config = { runtime: 'edge' };
 
 const COMPANION_MODEL = 'claude-sonnet-4-6';
 const MAX_TOKENS = 2048;

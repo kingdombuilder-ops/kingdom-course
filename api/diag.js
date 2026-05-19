@@ -12,7 +12,10 @@
    Returns env-presence booleans only (no values, no leak).
    ============================================================================= */
 
-export const runtime = 'edge';
+// Canonical Edge runtime declaration — see api/companion.js for
+// the explanation. `vercel.json` functions block does not support
+// Edge; in-file `config` object is the way.
+export const config = { runtime: 'edge' };
 
 export default function handler() {
   return new Response(

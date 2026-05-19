@@ -3,9 +3,5 @@
   "trailingSlash": false,
   "rewrites": [
     { "source": "/api/companion/health", "destination": "/api/companion?_route=health" }
-  ],
-  "functions": {
-    "api/companion.js": { "runtime": "edge" },
-    "api/diag.js": { "runtime": "edge" }
-  }
+  ]
 }
