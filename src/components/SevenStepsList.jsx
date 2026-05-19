@@ -46,7 +46,7 @@ export default function SevenStepsList({ onEnterWeek, progress = {} }) {
         for (let d = 1; d <= 7; d++) if (progress[`w${w.n}-d${d}`]) completed++;
 
         return (
-          <div key={w.n} style={{ marginBottom: 'clamp(1.25rem, 2vw, 1.5rem)' }}>
+          <div key={w.n} style={{ marginBottom: 'clamp(1.75rem, 2.75vw, 2.25rem)' }}>
             {STAGE_BREAKS[w.n] && (
               <div className="stage-divider">
                 <div className="line" />
@@ -107,8 +107,8 @@ export default function SevenStepsList({ onEnterWeek, progress = {} }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    minWidth: 76,
-                    minHeight: 76,
+                    minWidth: 60,
+                    minHeight: 60,
                   }}
                 >
                   <span
@@ -134,7 +134,7 @@ export default function SevenStepsList({ onEnterWeek, progress = {} }) {
                     <span
                       className="display"
                       style={{
-                        fontSize: 'clamp(1.5rem, 2.4vw, 1.8rem)',
+                        fontSize: 'clamp(1.25rem, 2vw, 1.5rem)',
                         fontWeight: 300,
                         color: '#F6EFDE',
                       }}
@@ -214,7 +214,7 @@ export default function SevenStepsList({ onEnterWeek, progress = {} }) {
                   <h3
                     className="display-strong"
                     style={{
-                      fontSize: 'clamp(1.6rem, 2.6vw, 2rem)',
+                      fontSize: 'clamp(1.4rem, 2.2vw, 1.7rem)',
                       lineHeight: 1.15,
                       marginBottom: '0.5rem',
                       fontWeight: 600,

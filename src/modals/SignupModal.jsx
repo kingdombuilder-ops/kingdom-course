@@ -241,7 +241,7 @@ export default function SignupModal({
                 color: 'var(--gold-3)',
               }}
             >
-              7 Essentials of the Kingdom of Heaven
+              Seven Keys to the Kingdom of Heaven
             </div>
           </div>
 

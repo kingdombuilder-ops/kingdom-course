@@ -161,7 +161,7 @@ export default function PracticeGuide({
       <section className="paper-bg" style={{ paddingBottom: 'clamp(4rem, 6vw, 5rem)' }}>
         <div
           style={{
-            maxWidth: '36rem',
+            maxWidth: '45rem',
             margin: '0 auto',
             padding: '0 clamp(1.5rem, 3vw, 2.5rem)',
           }}
@@ -275,7 +275,7 @@ export default function PracticeGuide({
         >
           <div
             style={{
-              maxWidth: '36rem',
+              maxWidth: '45rem',
               margin: '0 auto',
               padding: '0 clamp(1.5rem, 3vw, 2.5rem)',
             }}
@@ -356,7 +356,7 @@ export default function PracticeGuide({
       >
         <div
           style={{
-            maxWidth: '36rem',
+            maxWidth: '45rem',
             margin: '0 auto',
             padding: '0 clamp(1.5rem, 3vw, 2.5rem)',
             display: 'flex',
