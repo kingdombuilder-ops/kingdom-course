@@ -237,6 +237,45 @@ export default function Footer({ onTab, onOpenFieldGuide }) {
             Salus animarum suprema lex.
           </p>
         </div>
+
+        {/* Methodology mark — per FINAL_CONTENT_REVISION_PLAN §4.4 and
+            STRATEGIC_ARCHITECTURE Appendix E. Links to the /methodology
+            page where the AI methodology hard lines are published in full.
+
+            TODO — restore the omitted credentialing beats when each is
+            actually true, not before:
+              · "Citation-verified"      add when engineered citation
+                                          verification + spot-check log
+                                          land (CLAUDE.md §6 feature 6;
+                                          "build before Companion ships")
+              · "Theologically reviewed" add when the named theological
+                                          advisory (CLAUDE.md §3) has
+                                          reviewed and signed off on the
+                                          content corpus
+            False credentialing claims, if discovered, retroactively
+            undermine the surviving beats. Beats are only added back
+            with the receipts. */}
+        <div
+          style={{
+            marginTop: '1.5rem',
+            paddingTop: '1.5rem',
+            borderTop: '1px solid var(--line)',
+            textAlign: 'center',
+          }}
+        >
+          <a
+            href="/methodology"
+            className="sc-bold"
+            style={{
+              fontSize: 10,
+              letterSpacing: '0.14em',
+              color: 'var(--gold-3)',
+              textDecoration: 'none',
+            }}
+          >
+            AI-presented · Magisterium-grounded
+          </a>
+        </div>
       </div>
     </footer>
   );
