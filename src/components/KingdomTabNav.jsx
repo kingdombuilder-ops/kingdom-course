@@ -35,10 +35,12 @@
 
 import { MessageCircleMore, Share2, LogIn, LogOut } from 'lucide-react';
 
+// Tab base labels (the "The " prefix is rendered separately so it can
+// hide on mobile via .tab-prefix — see src/styles/index.css).
 const TAB_LABEL = {
-  gate: 'The Gospel',
-  course: 'The Course',
-  kingdom: 'The Kingdom',
+  gate: 'Gospel',
+  course: 'Course',
+  kingdom: 'Kingdom',
 };
 
 const TABS = ['gate', 'course', 'kingdom'];
@@ -63,6 +65,7 @@ export default function KingdomTabNav({
       }}
     >
       <div
+        className="nav-bar"
         style={{
           maxWidth: '64rem',
           margin: '0 auto',
@@ -70,7 +73,6 @@ export default function KingdomTabNav({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          gap: '1.5rem',
         }}
       >
         {/* Brand mark */}
@@ -146,7 +148,7 @@ export default function KingdomTabNav({
                   transition: 'color 0.2s ease',
                 }}
               >
-                {TAB_LABEL[id]}
+                <span className="tab-prefix">The </span>{TAB_LABEL[id]}
                 {isActive && (
                   <span
                     aria-hidden="true"

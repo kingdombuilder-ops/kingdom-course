@@ -1327,15 +1327,24 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* =============================================================================
-   NAV-LABEL — chrome label visibility for KingdomTabNav.
+   NAV — chrome compaction for KingdomTabNav below 768px.
 
-   Hides text labels (brand name, action-button text) below 768px so the
-   sticky header fits a mobile viewport. The icon for each action button
-   remains visible; the button's aria-label / title preserve accessibility
-   for screen readers. Tabs themselves keep their text labels — they are
-   the primary nav and need to read.
+   .nav-label   hides action-button text labels and the brand text label
+                on mobile (icons + aria-label carry the meaning).
+   .tab-prefix  hides the "The " prefix on each tab on mobile, so the
+                tabs read "Gospel" / "Course" / "Kingdom" instead of
+                "The Gospel" / "The Course" / "The Kingdom". Saves
+                ~30px per tab — the tabs are the biggest space hog at
+                375px CSS pixels.
+   .nav-bar     tightens the inter-slot flex gap on mobile (1.5rem →
+                0.5rem) so the brand + tabs + actions can breathe in a
+                327px content slot.
    ============================================================================= */
 .nav-label { display: inline; }
+.tab-prefix { display: inline; }
+.nav-bar { gap: 1.5rem; }
 @media (max-width: 768px) {
   .nav-label { display: none; }
+  .tab-prefix { display: none; }
+  .nav-bar { gap: 0.5rem; }
 }
