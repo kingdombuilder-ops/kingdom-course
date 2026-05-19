@@ -140,7 +140,7 @@ export default function CourseHero({
               color: 'var(--gold-3)',
             }}
           >
-            Seven Steps to the Kingdom of Heaven
+            Seven Steps of the Kingdom of Heaven
           </div>
           <div style={{ height: 1, marginTop: '1.25rem', maxWidth: '5rem', background: 'var(--gold)' }} />
           <div

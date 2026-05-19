@@ -241,7 +241,7 @@ export default function SignupModal({
                 color: 'var(--gold-3)',
               }}
             >
-              Seven Steps to the Kingdom of Heaven
+              Seven Steps of the Kingdom of Heaven
             </div>
           </div>
 
