@@ -58,13 +58,37 @@ const SYSTEM_PROMPT_V0 =
   "briefly; refer users to a priest for any catechetical or pastoral " +
   "question.";
 
-const clerkClient = createClerkClient({
-  secretKey: process.env.CLERK_SECRET_KEY,
-});
+/* Lazy-init clients inside handlers (NOT at module top-level). Top-level
+   construction causes FUNCTION_INVOCATION_FAILED at module load if either
+   SDK throws synchronously on an undefined/invalid env var, AND it makes
+   the health endpoint depend on SDK construction it doesn't need.
+   Lazy-init keeps the module load side-effect-free. */
 
-const anthropic = new Anthropic({
-  apiKey: process.env.ANTHROPIC_API_KEY,
-});
+let _clerkClient;
+function getClerkClient() {
+  if (!_clerkClient) {
+    if (!process.env.CLERK_SECRET_KEY) {
+      throw new Error('CLERK_SECRET_KEY not configured');
+    }
+    _clerkClient = createClerkClient({
+      secretKey: process.env.CLERK_SECRET_KEY,
+    });
+  }
+  return _clerkClient;
+}
+
+let _anthropic;
+function getAnthropic() {
+  if (!_anthropic) {
+    if (!process.env.ANTHROPIC_API_KEY) {
+      throw new Error('ANTHROPIC_API_KEY not configured');
+    }
+    _anthropic = new Anthropic({
+      apiKey: process.env.ANTHROPIC_API_KEY,
+    });
+  }
+  return _anthropic;
+}
 
 /* ----- Route dispatch ----------------------------------------------------- */
 export default async function handler(request) {
@@ -100,7 +124,7 @@ async function handleCompanion(request) {
   //    automatically. userId becomes the rate-limit key in Commit 5.
   let userId;
   try {
-    const auth = await clerkClient.authenticateRequest(request);
+    const auth = await getClerkClient().authenticateRequest(request);
     if (!auth.isAuthenticated) {
       return Response.json({ error: 'unauthenticated' }, { status: 401 });
     }
@@ -131,7 +155,7 @@ async function handleCompanion(request) {
   //    flowing the client can only receive SSE error frames.
   let upstreamStream;
   try {
-    upstreamStream = anthropic.messages.stream({
+    upstreamStream = getAnthropic().messages.stream({
       model: COMPANION_MODEL,
       max_tokens: MAX_TOKENS,
       system: SYSTEM_PROMPT_V0,
