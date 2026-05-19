@@ -23,7 +23,7 @@ export const ICON_MAP = { Eye, Brain, Flame, Leaf, Zap, Building2, Crown };
 export const DAILY_PRACTICES = [
   { n: 1, verb: 'SEE',   practice: 'Today in the Kingdom',
     tradition: 'Awareness · The day as a kingdom day',
-    line: "Today's saint, season, and intention. Where do you expect to meet Christ today?",
+    line: "Today belongs to Christ. Today's saint, season, and intention — where do you expect to meet Him?",
     mode: 'inline',     duration: '1 min',    iconName: 'Eye',        phase: 'preparation' },
   { n: 2, verb: 'KNOW',  practice: 'The Gospel Today',
     tradition: 'Lectio Divina',
