@@ -337,45 +337,80 @@ where possible.
 
 ---
 
-## Current build state (May 18, 2026)
+## Current build state (May 19, 2026)
 
-### Shipped to production
-- Three-tab shell with Clerk auth (Google OAuth + email/verification)
-- Gate (Gospel) with Hero, evidentiary content, signup invitation
-- Course tab with seven-step preview and Day 1 landing for signed-in users
-- Kingdom Hub with liturgical-day eyebrow, 3-1-3 strip, At the Altar
-- Branded icon set + modern PWA meta
-- `public/privacy.html`, `public/terms.html` at clean URLs
-- Footer with copyright + Privacy + Terms + Latin motto
-- L.10 production smoke test passed
+### Shipped — FINAL_CONTENT_REVISION_PLAN
 
-### Pending — Tier 0 urgent factual fixes (per FINAL_CONTENT_REVISION_PLAN)
-- Pope Francis → Pope Leo XIV across all surfaces
-- Blessed Carlo Acutis → Saint Carlo Acutis (and Pier Giorgio Frassati)
+- **Tier 0** (urgent factual corrections) — Pope Francis → Leo XIV
+  across all surfaces; Saint Carlo Acutis and Saint Pier Giorgio
+  Frassati canonized; monthly papal intentions refreshed to Leo XIV's
+  2026 list
+- **Tier 1** (12 structural revisions) — Hero promoted "The Kingdom
+  of Eternal Life" to lead display headline (ink) + italic gold-3
+  reframing; Living Evidence section with verified 2025 conversion
+  statistics (France, US, UK); reader-types 3-column responsive
+  grid; Day 2+ signup gate (Day 1 stays free); reading-container
+  720px; step card polish; Earth as 5th House across all five
+  consumer surfaces; "Seven Steps" standardized as canonical frame
+  (Seven Keys retired)
+- **Tier 2** (Hub) — BUILD day-of-week rotation; Marian Saturday
+  surfaces; gentle 35-day Confession prompt
+- **Tier 3** (vocabulary lock-list compliance) — "Fifty days" never
+  "forty-nine days"; no "Seven Keys" in consumer copy; broader
+  lock-list audit clean
+- **Tier 4 §4.2** known-issues table closed (Hub SEE "kingdom day"
+  first-time gloss landed)
+- **Tier 4 §4.3** AI disclosure footer on every Day reading,
+  linking to /methodology
+- **Tier 4 §4.4** methodology mark in chrome footer — *two beats only*
+  (*"AI-presented · Magisterium-grounded"*). *"Citation-verified"* and
+  *"Theologically reviewed"* are deferred until the receipts exist;
+  restoration conditions logged inline in Footer.jsx
+- **Tier 5 §5.1** static `/methodology` page from Appendix D, adapted
+  for credentialing honesty + "What we're working toward" section
+  that explicitly names the engineered citation verification and
+  theological advisory board as forthcoming
 
-### Pending — Tier 1 structural revisions (per FINAL_CONTENT_REVISION_PLAN)
-- Hero headline "most important" replacement
-- Tagline subhead promotion
-- Kingdom of Eternal Life reinforcement
-- Opening paragraph tightening
-- Living Evidence section (with verified statistics)
-- Trail/Course wording cleanup
-- Reader-types 3-column responsive grid
-- Authentication gating at Day 2 (Day 1 free)
-- Step button height reduction
-- Course content reading width to 720px
-- Earth-as-5th-House bug fix
-- Seven Steps terminology standardization
+### Shipped — mobile, chrome, and date-resolution infrastructure
 
-### Pending — Tier 2+ (per FINAL_CONTENT_REVISION_PLAN and STRATEGIC_ARCHITECTURE)
-- Hub daily tasks audit and Marian dimension
-- BUILD rotation logic (family/community/civilization by day of week)
-- Confession affordance
-- Methodology page (`/methodology`)
-- AI disclosure footers on all consumer surfaces
-- Methodology mark in chrome footer
-- Vocabulary audit (Gate, DTS, REST, Peace, Benedict)
-- Grammar polish pass
+- Mobile nav fits at 320–375px CSS pixels (label hiding + tightened
+  padding across three rounds: icon-only actions, "The " prefix drop,
+  outer padding/gap compaction)
+- Mobile horizontal-scroll bug fixed (global `overflow-x: hidden` +
+  per-section `overflow: hidden` on every Gospel-page surface)
+- Floating Companion (FAB) retired in production — redundant with the
+  nav's "Ask" button on every tab; component itself preserved
+  (icon-only mobile + iOS safe-area-aware) for re-enable when the
+  nav simplifies
+- Hub date resolution: season-aware fallback in `liturgical.js`
+  (Easter / Pentecost computed from Gauss's algorithm); `CHURCH_TODAY`
+  converted to a Proxy so every property access re-resolves today's
+  date (no module-load staleness on stale tabs)
+
+### Open — Tier 4 §4.1 (queued for dedicated pre-launch read-through)
+
+Sentence-level prose audit: 35-word sentences, hedging phrases,
+throat-clearing openings ("It is important to note that…"), adverb
+stacking, passive voice in apologetic content, em-dash discipline,
+smart quotes, capitalization (Kingdom/Mass/Confession/Eucharist),
+hyphenation (Mass-anchored, 50-day, AI-assisted), ellipses (`…`
+vs `...`).
+
+This is sentence-level prose attention — a different muscle than
+the structural / credibility work that closed Tiers 0–3 and the
+rest of Tier 4. Best done as a continuous-flow read-through of
+every surface with fresh eyes in a dedicated session, not
+piecewise category sweeps mid-build. The diminishing-returns curve
+bends. Not launch-blocking.
+
+### Verify state
+
+Latest commit `01466b7` (Hub SEE gloss, single-line content edit)
+is pushed-but-not-yet-verified on real iPhone. The four commits
+before it — Day-reading disclosure footer, chrome methodology mark,
+the `/methodology` page, and the gloss itself's predecessor — were
+operator-verified on real iPhone. Risk of regression on `01466b7`
+is low (one-string content change).
 
 ### Pending — Tier 3+ (per STRATEGIC_ARCHITECTURE Part VIII sequencing)
 
