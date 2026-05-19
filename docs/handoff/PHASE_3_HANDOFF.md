@@ -1,7 +1,12 @@
-# Kingdom Course — Phase 3 Handoff (Pre-Launch Polish Complete)
+# Kingdom Course — Phase 3 Handoff (Companion Build, Pre-Soft-Launch)
 
-**Date of handoff:** 2026-05-17 (Sidney BC)
-**Status:** All pre-launch polish work complete. Soft launch is the next action.
+**Date of handoff:** 2026-05-19 (Sidney BC)
+**Status:** FINAL_CONTENT_REVISION_PLAN substantially complete
+(Tiers 0–3, §4.2, §4.3, §4.4, §5.1 shipped; only §4.1 sentence-level
+audit remains, queued for a fresh-eyes session). Soft-launch
+sequencing deliberately revised: the Companion AI backend builds
+BEFORE the three-reviewer soft launch begins, because the reviewers
+will focus their feedback on Companion behavior.
 
 ---
 
@@ -74,6 +79,75 @@ two weeks, and bring the feedback to the next development cycle.
   not React buttons — these are full-page navigations to static HTML,
   not tab routing).
 
+### FINAL_CONTENT_REVISION_PLAN execution — May 18–19, 2026
+
+`docs/execution/FINAL_CONTENT_REVISION_PLAN.md` was executed in tier
+order over twenty-plus commits.
+
+**Tier 0** (factual corrections) — Pope Francis → Leo XIV across all
+surfaces; Saint Carlo Acutis and Saint Pier Giorgio Frassati canonized;
+monthly papal intentions refreshed to Leo XIV's 2026 list.
+
+**Tier 1** (12 structural revisions) — Hero promoted "The Kingdom of
+Eternal Life" to lead display headline (ink) + italic gold-3 reframing
+pattern; Living Evidence section with verified 2025 conversion
+statistics; reader-types 3-column responsive grid; Day 2+ signup gate;
+reading-container 720px; step card polish; Earth as 5th House across
+all five consumer surfaces; "Seven Steps" standardized as canonical
+frame ("Seven Keys" retired).
+
+**Tier 2** (Hub) — BUILD day-of-week rotation; Marian Saturday
+surfaces; gentle 35-day Confession prompt.
+
+**Tier 3** (vocabulary lock-list compliance) — "Fifty days" never
+"forty-nine days"; broader lock-list audit clean.
+
+**Tier 4** —
+  - §4.2 known-issues table closed (Hub SEE "kingdom day" first-time
+    gloss landed, `01466b7`)
+  - §4.3 AI disclosure footer on every Day reading, linking to
+    `/methodology` (`992de46`)
+  - §4.4 methodology mark in chrome footer — **two beats only**
+    (*"AI-presented · Magisterium-grounded"*, `a36397d`). The
+    Appendix E full mark's other two beats are deferred per the
+    Credentialing-discipline policy added to CLAUDE.md this commit.
+  - §4.1 sentence-level prose audit — **deferred** to a dedicated
+    pre-launch read-through session. Different muscle than the
+    structural work; not launch-blocking.
+
+**Tier 5 §5.1** — static `/methodology` page at
+`public/methodology.html` (`f638ddf`), adapted from
+STRATEGIC_ARCHITECTURE Appendix D for credentialing honesty. The
+verbatim source asserted "every citation is verified," "reviewed by
+a named theological advisory," and "with verified citation" — all
+three were dropped because the engineering and institutional
+structures that justify them aren't in place. A new "What we're
+working toward" section names the gaps explicitly.
+
+**Mobile chrome + date-resolution infrastructure** (parallel work):
+  - Mobile nav fits at 320–375px CSS pixels after three rounds of
+    label-hiding and padding compaction
+  - Mobile horizontal-scroll bug fixed (global `overflow-x: hidden` +
+    per-section containment on every Gospel-page surface)
+  - Floating Companion (FAB) retired in production — redundant with
+    the nav's "Ask" button on every tab; component preserved for
+    re-enable when the nav simplifies
+  - Hub date resolution: season-aware fallback in `liturgical.js`
+    (Easter/Pentecost from Gauss's algorithm); CHURCH_TODAY converted
+    to Proxy so every property access re-resolves today's date (no
+    module-load staleness on stale tabs)
+
+**Footer.jsx working-tree drift** (May 19) — observed `<a"p` typo in
+working tree only; HEAD always clean (`git show HEAD` confirmed);
+Vercel builds from HEAD so production was never affected. Edit reverted
+working tree to match HEAD. `git stash list` empty, `git reflog` shows
+clean linear history; no stranded stash or rebase to explain. Not
+opened for deeper investigation.
+
+**Verify state on real iPhone:** every commit in this run except
+`01466b7` (Hub SEE gloss, single-line content edit) is
+operator-verified. Risk on `01466b7` is low.
+
 ### Verification gates passed
 - ✅ L.10 — production smoke test on `kingdomcourse.org` (Phase 2, 12 May)
 - ✅ Browser console clean except for the expected Clerk dev-keys notice
@@ -102,20 +176,72 @@ two weeks, and bring the feedback to the next development cycle.
 
 ## What's pending
 
-### Immediate (next 1–2 weeks) — soft launch loop
+### Immediate — Companion AI backend (CRITICAL PATH, revised)
 
-**This is the only thing on the critical path. Do not start Phase 3+ work
-before completing this.**
+**Sequencing revision (deliberate, not an abandonment of the prior
+discipline).** The original "do not start Phase 3+ work before soft
+launch" rule still holds for SEO library, audio podcast, YouTube,
+short-form video, native app wrapper, MCP server, voice surfaces,
+and multilingual — none of those begin until soft-launch feedback is
+digested. But the **Companion AI backend is moved into critical path
+BEFORE the three-reviewer soft launch**: the three reviewers will
+specifically evaluate Companion behavior, and shipping a stub would
+collapse their feedback to "AI not ready" — losing the harder
+feedback we can't predict.
 
-1. Send a personal note (not a mass email) to **three** whitelisted Gmail
-   testers from the trust circle. Three, not five-to-ten — engaged feedback
-   from three people is more useful than polite acknowledgment from ten.
-   Already whitelisted in Google Cloud test users list.
-2. Ask each: "What felt true? What felt off? What stopped you?"
-3. Wait two weeks before drawing conclusions. First-day clicks are noise;
-   day-7 returns are signal; day-14 abide-in-practice is the actual question.
-4. Do not open the codebase between sending the link and receiving feedback
-   unless someone reports a bug.
+Build order (per MASTER_SPECIFICATION §5 + §3.8):
+
+1. Backend infrastructure — ANTHROPIC_API_KEY and CLERK_SECRET_KEY
+   in Vercel env vars (Production + Preview, Sensitive); Vercel KV
+   provisioned; `@anthropic-ai/sdk` installed
+2. `api/companion.js` Edge Function — Clerk session auth, SSE
+   streaming from Anthropic, `GET /api/companion/health`,
+   placeholder system prompt; model per CLAUDE.md (Sonnet default,
+   `claude-sonnet-4-6` pinned)
+3. System prompt v1 at `api/companion/system-prompt.js`, versioned,
+   incorporating §5.2 identity / grounding / tone / vocabulary
+   lock / limits / parish bridge
+4. Crisis detection per §5.3 — pattern pre-filter, crisis-response
+   template (988 for US/CA), short-circuit before the Anthropic
+   call. QA against §5.3 test inputs before merge. Safety-critical;
+   not abbreviated.
+5. Rate limiting via Vercel KV per §5.4 (30/hr, 100/day per user;
+   5/hr per IP for unauthenticated)
+6. Per-tab context awareness per §5.5
+7. Wire `src/components/Companion.jsx` to the live backend (SSE
+   streaming, loading states, graceful degradation)
+8. Sentry free tier on the Edge function
+
+**Hard merge constraint.** Commit 7 (wire `Companion.jsx` to the live
+backend) cannot merge until BOTH Commit 4 (crisis detection) AND
+Commit 5 (rate limiting) are landed. Before Commit 7 the endpoint
+exists but is not user-exposed; either gate held open during that
+window is fine. After Commit 7, both gates are user-exposed and
+must be operational. This is a hard constraint, not a guideline.
+
+After Companion ships and is operator-verified, the three-reviewer
+soft launch begins. Reviewer prompt focuses on Companion:
+*"Engage the Companion. Tell me what felt true, what felt off, what
+stopped you."* Then the original soft-launch loop resumes:
+
+  - Three reviewers receive personal-note invites
+  - Two-week feedback window
+  - First-day clicks are noise; day-7 returns are signal; day-14
+    abide-in-practice is the actual question
+  - Codebase closed during the feedback window unless someone reports
+    a bug
+
+**Methodology-mark policy when Companion ships:** the chrome footer
+mark stays at two beats (*"AI-presented · Magisterium-grounded"*).
+The three-reviewer soft launch is *usability testing*, not the named
+ongoing theological-review structure that the "Theologically
+reviewed" restoration condition requires. The "Citation-verified"
+beat lifts when engineered citation verification (MASTER_SPEC §1.6 /
+CLAUDE.md feature 6) is operating — which by spec gates Companion
+responses, so the natural sequencing is the verification system
+immediately after Companion's text path is live. See the
+Credentialing-discipline section in CLAUDE.md for the canonical
+statement of this policy.
 
 ### Pre-broad-launch (before Tier 2 / removing the whitelist)
 - **Have a BC lawyer review** `privacy.html` and `terms.html`. They are

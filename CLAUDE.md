@@ -114,8 +114,17 @@ what and how).
 - **Sentry** — error monitoring (planned; not yet installed)
 - **Vercel Edge Functions** — Companion AI backend (`api/companion.js`,
   not yet built — see MASTER_SPEC §5.x)
-- **Anthropic API** — Companion model provider (Sonnet 4.6 default, Opus 4.7
-  escalation, Haiku 4.5 utility)
+- **Anthropic API** — Companion model provider. Defaults pinned by
+  exact version string:
+  - Default: `claude-sonnet-4-6` (low first-token latency; primary
+    production model for Companion)
+  - Maximum reasoning: `claude-opus-4-7` (explicit upgrade path for
+    queries requiring it; do not default-route)
+  - Utility: `claude-haiku-4-5`
+  **Pin versioned model strings in production code; never use alias
+  strings (e.g. `claude-sonnet-latest`).** Aliases ship silent model
+  rotations; pinning means model changes are intentional code
+  changes, surfaced in diff, reviewable.
 
 ### Content and naming
 
@@ -211,9 +220,69 @@ sufficient.
 6. **All AI-generated content is versioned and correctable.** No "set and
    forget"; every piece is part of a living, accountable corpus
 
-Methodology mark in chrome footer: *AI-presented · Magisterium-grounded ·
-Citation-verified · Theologically reviewed* (or short Latin form:
-*Per machinas, per Magisterium*)
+Methodology mark in chrome footer (currently deployed): **two beats only**
+— *AI-presented · Magisterium-grounded*. The other two beats from
+STRATEGIC_ARCHITECTURE Appendix E (*Citation-verified*, *Theologically
+reviewed*) are deferred per the Credentialing discipline below. Short
+Latin form: *Per machinas, per Magisterium*.
+
+### Credentialing discipline (canonical methodology decision)
+
+**Principle.** Credentialing claims are not made until the engineering
+or institutional structure that justifies them is in place. **Beats
+are only added back with the receipts.** False credentialing claims,
+if discovered, retroactively undermine the surviving beats — the
+methodology of the project depends on the methodology page being
+truthful in the present tense.
+
+This applies to:
+
+- The chrome-footer methodology mark
+- The `/methodology` page body text
+- AI disclosure footers on Day readings / Field Guide / Academy
+- Companion system-prompt language
+- Marketing copy, press materials, OG/social meta
+
+**Restoration-condition registry.** The deferred beats lift only when
+the conditions below are met:
+
+| Deferred beat | Restoration condition |
+|---|---|
+| *Citation-verified* | AI methodology feature 6 (engineered citation verification — reference databases for CCC, Scripture, conciliar docs, encyclicals, Doctors; automated lookup + semantic similarity check; manual spot check) is operating in the publication pipeline AND in the Companion response path. Per MASTER_SPEC §1.6 this gates Companion responses (Layer 2 automated check), so it ships in close sequence with the Companion backend itself. |
+| *Theologically reviewed* | AI methodology feature 3 (named theological advisory — initially 3 members: priest/religious, academic theologian, lay catechist) is in place AND has signed off on the corpus per the §6.4 quarterly review cadence. The three-reviewer soft-launch loop does **not** satisfy this — soft-launch reviewers are usability testers, not the named ongoing theological-review structure. |
+
+When a beat is restored: lift it from the chrome-footer mark in
+`src/components/Footer.jsx`, lift it from the `/methodology` page's
+intro paragraph and Hard Line #2 (the *"with cited attribution"* /
+*"with verified citation"* phrasing), and remove the corresponding
+line from the `/methodology` page's "What we're working toward"
+section. The inline TODO adjacent to the mark in Footer.jsx logs
+these conditions in code where future-self will see them.
+
+### Companion-before-soft-launch (sequencing revision)
+
+`docs/handoff/PHASE_3_HANDOFF.md` originally established that no
+Phase 3+ work begins before soft launch closes. This is **deliberately
+revised** for the Companion build only: the Companion AI backend
+ships before the three-reviewer soft launch, because the three
+reviewers will focus their feedback on Companion behavior. Shipping
+a stub Companion would collapse their feedback to "AI not ready" —
+forfeiting the harder feedback we can't predict.
+
+The revision is **narrow**. SEO question-page library, daily audio
+podcast, YouTube, short-form video, native app wrapper, MCP server,
+voice-first surfaces, multilingual expansion — all still wait for
+soft-launch feedback per the original surface-priority sequencing
+above. The Companion is the single Phase-3+ surface promoted into
+the pre-launch sequence, and it is promoted because of a specific
+empirical concern: reviewer-attention focus.
+
+**User-exposure gate.** Within the Companion build, frontend wiring
+(`Companion.jsx` → live backend) does not merge until both crisis
+detection (MASTER_SPEC §5.3) and rate limiting (§5.4) are landed.
+The endpoint can exist server-side without either gate operational;
+what cannot ship is a user-exposed Companion missing either safety
+floor. This is a hard constraint, not a guideline.
 
 ### Aesthetic — the iconographic frame
 
