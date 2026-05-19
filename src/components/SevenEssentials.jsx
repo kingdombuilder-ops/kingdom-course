@@ -45,6 +45,8 @@ import {
   TODAY_FAMILY,
   TODAY_COMMUNITY,
   TODAY_CIVILIZATION,
+  TODAY_BUILD,
+  IS_SATURDAY,
 } from '@data';
 import { toRoman } from '@shared/utils';
 import CopyButton from '@shared/CopyButton';
@@ -742,91 +744,96 @@ export default function SevenEssentials({
     );
   };
 
-  /* BUILD block — preview of three modes. */
-  const BuildContent = () => (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-      <div
-        style={{
-          padding: '0.875rem 1rem',
-          background: 'rgba(246,239,222,0.03)',
-          border: '1px solid rgba(246,239,222,0.10)',
-        }}
-      >
-        <div
-          className="sc-bold"
-          style={{
-            fontSize: 9,
-            color: '#B8915C',
-            marginBottom: '0.25rem',
-            letterSpacing: '0.18em',
-          }}
-        >
-          Family
-        </div>
-        <p
-          className="body"
-          style={{ fontSize: '0.88rem', lineHeight: 1.45, color: 'rgba(246,239,222,0.7)' }}
-        >
-          <strong style={{ color: 'var(--paper)', fontWeight: 500 }}>{TODAY_FAMILY.name}.</strong>{' '}
-          {TODAY_FAMILY.do}
-        </p>
+  /* BUILD block — three dimensions visible every day; the day's emphasis
+     rotates per FINAL_CONTENT_REVISION_PLAN §2.2. Saturday and Sunday
+     show a banner instead of an emphasis on a single dimension; Friday
+     emphasizes Community with the penitential framing. */
+  const BuildContent = () => {
+    const dimensions = [
+      { key: 'family',       label: 'Family',                              data: TODAY_FAMILY },
+      { key: 'community',    label: `Community · ${TODAY_COMMUNITY.kind}`, data: TODAY_COMMUNITY },
+      { key: 'civilization', label: 'Civilization',                        data: TODAY_CIVILIZATION },
+    ];
+    return (
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+        {TODAY_BUILD.banner && (
+          <div
+            className="sc-bold"
+            style={{
+              fontSize: 9,
+              letterSpacing: '0.18em',
+              color: 'var(--gold-2)',
+              padding: '0.75rem 1rem',
+              background: 'rgba(215,177,105,0.06)',
+              border: '1px solid rgba(215,177,105,0.20)',
+            }}
+          >
+            {TODAY_BUILD.banner}
+          </div>
+        )}
+        {dimensions.map((d) => {
+          const isEmphasized = TODAY_BUILD.emphasis === d.key;
+          return (
+            <div
+              key={d.key}
+              style={{
+                position: 'relative',
+                padding: '0.875rem 1rem',
+                paddingLeft: isEmphasized ? 'calc(1rem + 2px)' : '1rem',
+                background: isEmphasized ? 'rgba(215,177,105,0.07)' : 'rgba(246,239,222,0.03)',
+                border: '1px solid ' + (isEmphasized ? 'rgba(215,177,105,0.32)' : 'rgba(246,239,222,0.10)'),
+              }}
+            >
+              {isEmphasized && (
+                <div
+                  aria-hidden
+                  style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: 0,
+                    bottom: 0,
+                    width: 2,
+                    background: 'var(--gold)',
+                  }}
+                />
+              )}
+              <div
+                className="sc-bold"
+                style={{
+                  fontSize: 9,
+                  color: isEmphasized ? 'var(--gold-2)' : '#B8915C',
+                  marginBottom: '0.25rem',
+                  letterSpacing: '0.18em',
+                  display: 'flex',
+                  alignItems: 'center',
+                  flexWrap: 'wrap',
+                  columnGap: '0.5rem',
+                }}
+              >
+                <span>{d.label}</span>
+                {isEmphasized && (
+                  <span style={{ color: 'var(--gold-2)', opacity: 0.85 }}>
+                    · Today's focus
+                  </span>
+                )}
+              </div>
+              <p
+                className="body"
+                style={{
+                  fontSize: '0.88rem',
+                  lineHeight: 1.45,
+                  color: isEmphasized ? 'rgba(246,239,222,0.82)' : 'rgba(246,239,222,0.7)',
+                }}
+              >
+                <strong style={{ color: 'var(--paper)', fontWeight: 500 }}>{d.data.name}.</strong>{' '}
+                {d.data.do}
+              </p>
+            </div>
+          );
+        })}
       </div>
-      <div
-        style={{
-          padding: '0.875rem 1rem',
-          background: 'rgba(246,239,222,0.03)',
-          border: '1px solid rgba(246,239,222,0.10)',
-        }}
-      >
-        <div
-          className="sc-bold"
-          style={{
-            fontSize: 9,
-            color: '#B8915C',
-            marginBottom: '0.25rem',
-            letterSpacing: '0.18em',
-          }}
-        >
-          Community · {TODAY_COMMUNITY.kind}
-        </div>
-        <p
-          className="body"
-          style={{ fontSize: '0.88rem', lineHeight: 1.45, color: 'rgba(246,239,222,0.7)' }}
-        >
-          <strong style={{ color: 'var(--paper)', fontWeight: 500 }}>{TODAY_COMMUNITY.name}.</strong>{' '}
-          {TODAY_COMMUNITY.do}
-        </p>
-      </div>
-      <div
-        style={{
-          padding: '0.875rem 1rem',
-          background: 'rgba(246,239,222,0.03)',
-          border: '1px solid rgba(246,239,222,0.10)',
-        }}
-      >
-        <div
-          className="sc-bold"
-          style={{
-            fontSize: 9,
-            color: '#B8915C',
-            marginBottom: '0.25rem',
-            letterSpacing: '0.18em',
-          }}
-        >
-          Civilization
-        </div>
-        <p
-          className="body"
-          style={{ fontSize: '0.88rem', lineHeight: 1.45, color: 'rgba(246,239,222,0.7)' }}
-        >
-          <strong style={{ color: 'var(--paper)', fontWeight: 500 }}>
-            {TODAY_CIVILIZATION.name}.
-          </strong>{' '}
-          {TODAY_CIVILIZATION.do}
-        </p>
-      </div>
-    </div>
-  );
+    );
+  };
 
   /* SEND block — the Rosary, prayed for souls. SEND remains universal —
      Mary is the Mother of the whole Church, not the patroness of one
@@ -853,7 +860,7 @@ export default function SevenEssentials({
               letterSpacing: '0.18em',
             }}
           >
-            Mary, Mother of every House
+            {IS_SATURDAY ? 'Marian Saturday · Mother of every House' : 'Mary, Mother of every House'}
           </div>
           <p
             className="body"

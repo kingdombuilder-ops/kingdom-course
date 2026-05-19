@@ -22,7 +22,7 @@
    ============================================================================= */
 
 import { ArrowRight } from 'lucide-react';
-import { CHURCH_TODAY, HOUSES_HUB } from '@data';
+import { CHURCH_TODAY, HOUSES_HUB, IS_SATURDAY } from '@data';
 
 export default function HubHero({ houseKey }) {
   const h = houseKey ? HOUSES_HUB[houseKey] : null;
@@ -35,6 +35,22 @@ export default function HubHero({ houseKey }) {
             {CHURCH_TODAY.weekday} · {CHURCH_TODAY.date}
           </span>
         </div>
+        {/* Marian Saturday eyebrow — per FINAL_CONTENT_REVISION_PLAN §2.3,
+            no day passes without a Marian moment, and Saturday carries
+            explicit Marian emphasis. */}
+        {IS_SATURDAY && (
+          <div
+            className="sc-bold"
+            style={{
+              fontSize: 10,
+              letterSpacing: '0.18em',
+              color: 'var(--wine)',
+              marginBottom: '1.25rem',
+            }}
+          >
+            Marian Saturday · The Day of Our Lady
+          </div>
+        )}
         <h1
           className="display-strong"
           style={{ fontSize: 'clamp(2rem, 5vw, 3.2rem)', fontWeight: 600, lineHeight: 1.0 }}

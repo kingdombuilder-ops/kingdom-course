@@ -109,3 +109,38 @@ export const TODAY_GO = GO_PROMPTS[todayGoIndex];
    correct under the new semantics. */
 export const SEND_PROMPTS = GO_PROMPTS;
 export const TODAY_SEND = TODAY_GO;
+
+/* BUILD day-of-week rotation per FINAL_CONTENT_REVISION_PLAN §2.2.
+   All three dimensions (family, community, civilization) remain visible
+   every day; the daily emphasis rotates so the user is drawn deeper
+   into one each day. Indexed by Date.getDay() (0=Sunday..6=Saturday).
+
+   Saturday's slot carries the Marian frame (§2.3) — Mary as Mother
+   of family, community, and civilization holds the three together.
+   Sunday's slot defers to the Mass — the three are gathered there.
+
+   Liturgical-feast overrides (e.g. Christ the King → civilization)
+   are not yet wired; this is day-of-week-only. */
+const BUILD_ROTATION = [
+  // 0 Sunday — the day is whole; the three are gathered at Mass.
+  { emphasis: null,           banner: 'Sunday · All three gathered at Mass' },
+  // 1 Monday — the week begins at home.
+  { emphasis: 'family',       banner: null },
+  // 2 Tuesday — parish, neighborhood.
+  { emphasis: 'community',    banner: null },
+  // 3 Wednesday — work, culture, public good.
+  { emphasis: 'civilization', banner: null },
+  // 4 Thursday — family again.
+  { emphasis: 'family',       banner: null },
+  // 5 Friday — community in suffering (penitential).
+  { emphasis: 'community',    banner: 'Friday · Community in suffering' },
+  // 6 Saturday — Marian Saturday holds the three together.
+  { emphasis: null,           banner: 'Marian Saturday · Mary, Mother of family, community, and civilization' },
+];
+export const TODAY_BUILD = BUILD_ROTATION[(new Date()).getDay()];
+
+/* Lightweight day flags used across the Hub for liturgical chrome
+   (Marian Saturday eyebrow, Friday penitential framing, etc.). */
+export const IS_SATURDAY = (new Date()).getDay() === 6;
+export const IS_FRIDAY   = (new Date()).getDay() === 5;
+export const IS_SUNDAY   = (new Date()).getDay() === 0;
