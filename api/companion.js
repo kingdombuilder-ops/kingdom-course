@@ -139,16 +139,35 @@ async function handleCompanion(request) {
   // 1. Auth via Clerk Bearer header (Authorization: Bearer <jwt>).
   //    @clerk/backend's authenticateRequest reads the header
   //    automatically. userId becomes the rate-limit key in Commit 5.
+  //    authorizedParties is required to verify cross-origin tokens.
+  //
+  //    TEMP DIAGNOSTIC LOGGING (this block) — surfaces the auth
+  //    rejection `reason`/`message` in Vercel function logs so we can
+  //    distinguish token-invalid (key-instance mismatch) from
+  //    jwk-failed-to-resolve (network/JWKS) from a thrown config error.
+  //    Remove the console.* lines once auth is confirmed working.
   let userId;
   try {
-    const auth = await getClerkClient().authenticateRequest(request);
-    if (!auth.isAuthenticated) {
+    const requestState = await getClerkClient().authenticateRequest(request, {
+      authorizedParties: ['https://kingdomcourse.org'],
+    });
+    console.log('[companion] auth state:', {
+      isAuthenticated: requestState.isAuthenticated,
+      reason: requestState.reason,
+      message: requestState.message,
+    });
+    if (!requestState.isAuthenticated) {
       return Response.json({ error: 'unauthenticated' }, { status: 401 });
     }
-    userId = auth.toAuth().userId;
+    userId = requestState.toAuth().userId;
   } catch (err) {
-    console.error('[companion] auth error:', err);
-    return Response.json({ error: 'auth_error' }, { status: 401 });
+    console.error('[companion] authenticateRequest threw:', {
+      message: err?.message,
+      reason: err?.reason,
+      name: err?.name,
+      stack: err?.stack,
+    });
+    return Response.json({ error: 'unauthenticated' }, { status: 401 });
   }
 
   // 2. Parse request body. Expected shape:
