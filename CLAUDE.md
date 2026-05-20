@@ -108,7 +108,16 @@ what and how).
 ### Hosting and services
 
 - **Vercel** — hosting, auto-deploys from `main`
-- **Clerk** — auth (email + verification code, Google OAuth, Apple deferred)
+- **Clerk** — auth (email + verification code, Google OAuth, Apple deferred).
+  **Backend `createClerkClient()` requires BOTH `secretKey` AND
+  `publishableKey`.** The publishable key is not optional server-side —
+  it identifies which Clerk instance issued the JWT, so token
+  verification can't proceed without it. Server-side reads
+  `process.env.VITE_CLERK_PUBLISHABLE_KEY` (the existing Phase-2 env
+  var; the `VITE_` prefix only governs frontend bundling, not
+  server-side `process.env` access — no separate backend var needed).
+  `authenticateRequest()` also takes `authorizedParties:
+  ['https://kingdomcourse.org']` for cross-origin token verification.
 - **Plausible** — analytics (planned; not yet installed)
 - **Resend** — email (planned; not yet installed)
 - **Sentry** — error monitoring (planned; not yet installed)
