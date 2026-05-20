@@ -313,13 +313,33 @@ are live-verified — Commit 4 (crisis detection §5.3) and Commit 5 (rate
 limiting §5.4). The user-exposure gate is therefore satisfied; Commit 7
 (frontend wiring) is unblocked.
 
-**§5.5 acceptance note:** per-tab differentiation (Commit 6) is
-acceptance-checked with the **Gospel-vs-Course** pair, substituted for the
-originally-approved Gospel-vs-Academy. `academy` mode is backend-wired and
-unit-tested (99/99) but has no UI surface yet (the Day-50 reader is
-unbuilt), so it is not browser-reachable; Academy live-verification waits
-on that surface. The four browser-reachable tabs (gospel/course/hub/
-field-guide) map from `productionTab` + `kingdomView` in App.jsx.
+**§5.5 acceptance — VERIFIED, Commit 6 closed.** Per-tab differentiation
+was acceptance-checked with the **Gospel-vs-Course** pair (substituted at
+deploy time for the originally-approved Gospel-vs-Academy — and it proved
+more diagnostic, since Gospel-vs-Course separates audience *and* behavior,
+not just citation depth). Two probes run across both tabs — "What is the
+Eucharist?" and "What does the Church teach about Mary?" — confirmed:
+substantive (not stylistic) mode distinction; all base invariants intact in
+every response (Real Presence never "the bread/wine"; CCC/Scripture/
+conciliar citations named not gestured; parish bridge present, varied by
+mode; ABIDE / Seven Steps / fifty days); Commit-3 catechetical baseline
+preserved through per-tab layering (Course Eucharist still anchors on
+*Lumen Gentium* §11).
+
+- `academy` mode is backend-wired and unit-tested (99/99) but has no UI
+  surface yet (Day-50 reader unbuilt), so it is not browser-reachable;
+  Academy live-verification waits on that surface. The four reachable tabs
+  (gospel/course/hub/field-guide) map from `productionTab` + `kingdomView`
+  in App.jsx.
+- **Per-tab eval methodology:** isolating mode behavior requires a FRESH
+  conversation context. Within-session repeats correctly trigger the
+  Companion's "what's the angle?" continuity response (not a bug) — refresh
+  between tab tests.
+- **Observed cross-pollination (no code change):** the Academy delta's
+  Marian discipline (dogmatically defined / theologically held /
+  devotionally proposed) surfaces naturally in Course mode too — the
+  co-redemptrix question was correctly held "at the level of theological
+  discussion rather than defined dogma" from the Course tab.
 
 ### Companion post-soft-launch backlog (§5.6+)
 
@@ -335,10 +355,12 @@ Tracked deferrals from the Companion build. None block soft launch.
 2. **Locale-aware crisis numbers.** 988 is US/Canada-specific. Add a
    locale matrix (UK Samaritans 116 123, etc.) layered over the category
    arrays. Pairs with §5.6 multilingual.
-3. **Marian-language + confession-handling verification.** The Commit 3
-   system-prompt additions (Marian reverence; "you are not their
-   confessor") were never exercised by the Eucharist-focused smoke test.
-   Verify with targeted prompts before broad launch.
+3. **Confession-handling verification.** Marian-reverence is now CLOSED —
+   verified live (Commit 6 §5.5 check) via "What does the Church teach about
+   Mary?" across both tabs: canonical titles only, no bare "Mary" in
+   catechesis, properly cited. Still untested: the Commit 3 "you are not
+   their confessor" handling — exercise with a sin-disclosure prompt before
+   broad launch.
 4. **Citation-engineering verification system (MASTER_SPEC §1.6).** The
    restoration condition for the *Citation-verified* methodology beat (see
    the Credentialing discipline restoration registry). Gates that beat's
