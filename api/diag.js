@@ -1,36 +1,30 @@
 /* =============================================================================
-   api/diag.js — DIAGNOSTIC Edge function with NO SDK imports.
+   api/diag.js — DIAGNOSTIC Node serverless function (classic req/res).
 
-   Created to isolate the Companion Commit 2 FUNCTION_INVOCATION_FAILED
-   crash. If `/api/diag` returns 200 while `/api/companion/health` still
-   returns 500, the crash is at SDK import time (either @anthropic-ai/sdk
-   or @clerk/backend is incompatible with Vercel Edge runtime as
-   imported).
+   Confirms Node serverless works after the Edge premise was invalidated
+   by @anthropic-ai/sdk + @clerk/backend Node-only module dependencies.
+   Uses the classic (req, res) signature — unambiguous for Node
+   serverless — to give a definitive runtime signal. (api/companion.js
+   uses the Web Request/Response shape, which modern Vercel Node
+   serverless also supports; if that ever times out, this file's classic
+   shape is the proven fallback pattern.)
 
-   Once root cause is identified, this file deletes.
+   No `export const config = { runtime: 'edge' }` → Node serverless
+   default. Deletes once the Companion endpoint is verified working.
 
    Returns env-presence booleans only (no values, no leak).
    ============================================================================= */
 
-// Canonical Edge runtime declaration — see api/companion.js for
-// the explanation. `vercel.json` functions block does not support
-// Edge; in-file `config` object is the way.
-export const config = { runtime: 'edge' };
-
-export default function handler() {
-  return new Response(
-    JSON.stringify({
-      status: 'diag_ok',
-      timestamp: new Date().toISOString(),
-      env_visible: {
-        ANTHROPIC_API_KEY: !!process.env.ANTHROPIC_API_KEY,
-        CLERK_SECRET_KEY: !!process.env.CLERK_SECRET_KEY,
-        KV_URL: !!process.env.KV_URL,
-        VITE_CLERK_PUBLISHABLE_KEY: !!process.env.VITE_CLERK_PUBLISHABLE_KEY,
-      },
-    }),
-    {
-      headers: { 'Content-Type': 'application/json' },
+export default function handler(req, res) {
+  res.status(200).json({
+    status: 'diag_ok',
+    runtime: 'node-serverless',
+    timestamp: new Date().toISOString(),
+    env_visible: {
+      ANTHROPIC_API_KEY: !!process.env.ANTHROPIC_API_KEY,
+      CLERK_SECRET_KEY: !!process.env.CLERK_SECRET_KEY,
+      KV_URL: !!process.env.KV_URL,
+      VITE_CLERK_PUBLISHABLE_KEY: !!process.env.VITE_CLERK_PUBLISHABLE_KEY,
     },
-  );
+  });
 }

@@ -37,12 +37,16 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { createClerkClient } from '@clerk/backend';
 
-// Canonical Edge runtime declaration for pure Vercel API routes
-// (non-Next.js). The `vercel.json` functions block does NOT support
-// `"runtime": "edge"` — that block is for Node serverless versioned
-// runtime strings only. Edge is declared in-file via this config
-// object, per Vercel's documented Edge Function setup.
-export const config = { runtime: 'edge' };
+// Runs as a Vercel NODE SERVERLESS function (NOT Edge). The Edge
+// premise from MASTER_SPECIFICATION §5.1 is invalidated: both
+// @anthropic-ai/sdk and @clerk/backend import Node-only built-ins
+// (node:fs, node:crypto, node:child_process, ...) that don't exist
+// in V8 isolates, so the Edge build is rejected. Node serverless
+// adds ~200-300ms cold-start vs Edge — invisible at soft-launch
+// scale. Edge migration is post-soft-launch work, contingent on
+// fetch-based SDK replacements. No `runtime` config = Node serverless
+// default. Handler uses the Web Request/Response shape, which modern
+// Vercel Node serverless functions support natively.
 
 const COMPANION_MODEL = 'claude-sonnet-4-6';
 const MAX_TOKENS = 2048;
