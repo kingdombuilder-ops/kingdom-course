@@ -36,6 +36,7 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 import { createClerkClient } from '@clerk/backend';
+import { SYSTEM_PROMPT } from '../lib/companion-system-prompt.js';
 
 // Runs as a Vercel NODE SERVERLESS function (NOT Edge). The Edge
 // premise from MASTER_SPECIFICATION §5.1 is invalidated: both
@@ -51,21 +52,8 @@ import { createClerkClient } from '@clerk/backend';
 const COMPANION_MODEL = 'claude-sonnet-4-6';
 const MAX_TOKENS = 2048;
 
-/* Placeholder system prompt — Commit 3 replaces this with the full
-   v1 prompt per MASTER_SPECIFICATION §5.2 (identity, theological
-   grounding, tone, vocabulary lock, limits, parish bridge, crisis
-   protocol reference, multilingual). At that point the prompt moves
-   to its own file (location decision deferred to Commit 3: either
-   `api/_companion-system-prompt.js` with underscore prefix per the
-   Vercel "not routed" convention, OR `lib/companion-system-prompt.js`
-   moved outside the api/ tree entirely).
-
-   For Commit 2 the prompt is inline to keep the file count at one. */
-const SYSTEM_PROMPT_V0 =
-  "You are a Catholic Companion in early development. You will be " +
-  "replaced with the full system prompt in the next commit. Respond " +
-  "briefly; refer users to a priest for any catechetical or pastoral " +
-  "question.";
+// System prompt v1 lives in lib/companion-system-prompt.js (outside
+// api/ so Vercel doesn't route it). Imported above.
 
 /* Lazy-init clients inside handlers (NOT at module top-level). Top-level
    construction causes FUNCTION_INVOCATION_FAILED at module load if either
@@ -188,7 +176,7 @@ async function handleCompanion(request) {
     upstreamStream = getAnthropic().messages.stream({
       model: COMPANION_MODEL,
       max_tokens: MAX_TOKENS,
-      system: SYSTEM_PROMPT_V0,
+      system: SYSTEM_PROMPT,
       messages,
     });
   } catch (err) {
