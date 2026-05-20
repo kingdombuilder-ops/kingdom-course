@@ -120,7 +120,11 @@ what and how).
   ['https://kingdomcourse.org']` for cross-origin token verification.
 - **Plausible** — analytics (planned; not yet installed)
 - **Resend** — email (planned; not yet installed)
-- **Sentry** — error monitoring (planned; not yet installed)
+- **Sentry** — error monitoring (installed, backend Companion only;
+  `@sentry/node` via `lib/companion-sentry.js`, errors-only, PII-stripped
+  via `beforeSend` + tag allowlist; `SENTRY_DSN` set in Vercel). Captures
+  rate-limit fail-open + Anthropic upstream + auth-throw; normal traffic and
+  crisis frames are never captured. Frontend Sentry not yet added.
 - **Vercel Node Serverless Functions** — Companion AI backend
   (`api/companion.js`). Runs as a Node Serverless Function, **not Edge**.
   MASTER_SPECIFICATION §5.1's Edge premise is invalidated:
