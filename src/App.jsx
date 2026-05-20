@@ -539,10 +539,10 @@ export default function App() {
             }
             onRequestSignIn={() => setSignupOpen(true)}
           />
-          {/* Mobile launcher. The nav "Ask" button is the desktop entry
-              point; at ≤768px it's hidden (via .companion-nav-ask) and this
-              FAB takes over (via .companion-fab). Hidden while the panel is
-              open — no redundant entry point. */}
+          {/* Persistent "Ask" pill, both viewports — present during scroll,
+              complementary to the nav "Ask" button (which is the first-load
+              entry point and hides at ≤768px via .companion-nav-ask). Hidden
+              while the panel is open. */}
           {!companionOpen && (
             <FloatingCompanion onClick={() => setCompanionOpen(true)} />
           )}

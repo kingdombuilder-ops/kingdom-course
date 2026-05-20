@@ -1360,19 +1360,18 @@ a { color: inherit; text-decoration: none; }
 }
 
 /* =============================================================================
-   COMPANION launcher — desktop nav button vs mobile FAB.
+   COMPANION launcher.
 
-   One logical launcher, switched by viewport (single open/close state in
-   App.jsx). Desktop: the nav "Ask" button (.companion-nav-ask). Mobile
-   (≤768px): the bottom-right FAB (.companion-fab), since the nav row is too
-   crowded for "Ask" to be found. `display` is owned here (not inline) so
-   these rules can flip them.
+   The persistent bottom-right "Ask" pill (FloatingCompanion) is shown on
+   BOTH viewports (its display is set inline). The top-nav "Ask" button
+   (.companion-nav-ask) is the desktop first-load entry point; it is hidden
+   at ≤768px, where the nav row is too crowded for it to be found and the
+   pill carries the load. `display` is owned here (not inline) so this rule
+   can hide it.
    ============================================================================= */
 .companion-nav-ask { display: inline-flex; }
-.companion-fab { display: none; }
 @media (max-width: 768px) {
   .companion-nav-ask { display: none; }
-  .companion-fab { display: inline-flex; }
 }
 
 /* =============================================================================
