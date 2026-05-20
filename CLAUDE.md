@@ -304,6 +304,34 @@ The endpoint can exist server-side without either gate operational;
 what cannot ship is a user-exposed Companion missing either safety
 floor. This is a hard constraint, not a guideline.
 
+**Gate status (as of this build):** both safety floors have landed and
+are live-verified — Commit 4 (crisis detection §5.3) and Commit 5 (rate
+limiting §5.4). The user-exposure gate is therefore satisfied; Commit 7
+(frontend wiring) is unblocked.
+
+### Companion post-soft-launch backlog (§5.6+)
+
+Tracked deferrals from the Companion build. None block soft launch.
+
+1. **Category-specific crisis routing.** The §5.3 crisis template is a
+   single suicide-framed template firing for all categories. Post-launch,
+   route by category: 1-800-799-SAFE (National DV Hotline) for `abuse`,
+   RAINN 1-800-656-HOPE for sexual assault if the classifier distinguishes
+   it, 988 retained for `suicidal`/`selfHarm`/`psychotic` (consider adding
+   "call your psychiatrist/therapist now too" for psychotic). Rationale
+   and the full list are logged inline in `lib/companion-crisis.js`.
+2. **Locale-aware crisis numbers.** 988 is US/Canada-specific. Add a
+   locale matrix (UK Samaritans 116 123, etc.) layered over the category
+   arrays. Pairs with §5.6 multilingual.
+3. **Marian-language + confession-handling verification.** The Commit 3
+   system-prompt additions (Marian reverence; "you are not their
+   confessor") were never exercised by the Eucharist-focused smoke test.
+   Verify with targeted prompts before broad launch.
+4. **Citation-engineering verification system (MASTER_SPEC §1.6).** The
+   restoration condition for the *Citation-verified* methodology beat (see
+   the Credentialing discipline restoration registry). Gates that beat's
+   return AND the §1.6 Layer-2 Companion response check.
+
 ### Aesthetic — the iconographic frame
 
 AI-generated visuals operate in the iconographic tradition. Stylized,
