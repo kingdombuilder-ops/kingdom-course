@@ -38,6 +38,7 @@ import Anthropic from '@anthropic-ai/sdk';
 import { createClerkClient } from '@clerk/backend';
 import { SYSTEM_PROMPT } from '../lib/companion-system-prompt.js';
 import { detectCrisis, CRISIS_RESPONSE } from '../lib/companion-crisis.js';
+import { checkIpLimit, checkUserLimit } from '../lib/companion-ratelimit.js';
 
 // Runs as a Vercel NODE SERVERLESS function (NOT Edge). The Edge
 // premise from MASTER_SPECIFICATION §5.1 is invalidated: both
@@ -182,23 +183,68 @@ function crisisResponse(category) {
   });
 }
 
+/* ----- Rate-limit helpers (§5.4) ----------------------------------------- */
+
+/* Best-effort client IP. Behind Vercel the real client is the first hop in
+   x-forwarded-for; x-real-ip is the fallback. 'unknown' if neither is
+   present (all such requests then share one bucket — acceptable, since this
+   limiter only gates the unauthenticated path). */
+function clientIp(request) {
+  const xff = request.headers.get('x-forwarded-for');
+  if (xff) return xff.split(',')[0].trim();
+  return request.headers.get('x-real-ip') || 'unknown';
+}
+
+/* 429 with Retry-After (seconds). `scope` is 'ip' | 'hour' | 'day' — which
+   limit was hit, echoed in the body for the client/telemetry. */
+function rateLimited(retryAfter, scope) {
+  return Response.json(
+    { error: 'rate_limited', scope, retry_after: retryAfter },
+    { status: 429, headers: { 'Retry-After': String(retryAfter) } }
+  );
+}
+
 /* ----- Companion (auth + streaming) -------------------------------------- */
 async function handleCompanion(request) {
   // 1. Auth via Clerk Bearer header (Authorization: Bearer <jwt>).
   //    @clerk/backend's authenticateRequest reads the header
-  //    automatically. userId becomes the rate-limit key in Commit 5.
-  //    authorizedParties is required to verify cross-origin tokens.
+  //    automatically. authorizedParties is required to verify
+  //    cross-origin tokens.
   let userId;
   try {
     const requestState = await getClerkClient().authenticateRequest(request, {
       authorizedParties: ['https://kingdomcourse.org'],
     });
-    if (!requestState.isAuthenticated) {
-      return Response.json({ error: 'unauthenticated' }, { status: 401 });
+    if (requestState.isAuthenticated) {
+      userId = requestState.toAuth().userId;
     }
-    userId = requestState.toAuth().userId;
   } catch (err) {
     console.error('[companion] auth error:', err);
+    // fall through to the unauthenticated path below
+  }
+
+  // 1a. IP RATE LIMIT (§5.4) — guards the UNAUTHENTICATED surface only.
+  //     The credential-spray / brute-force floor: requests that did not
+  //     authenticate are throttled per IP+UA (5/hr) so an attacker can't
+  //     hammer the auth path. Applied ONLY here, not to all traffic,
+  //     because many legitimate users share one NAT egress IP (parish
+  //     lab, RCIA group, office) — a blanket per-IP cap would throttle
+  //     them; an unauthenticated-only cap does not. Fail-open on KV error
+  //     (a KV outage must not take down the endpoint; Sentry/Commit 8
+  //     surfaces the failure).
+  if (!userId) {
+    const ip = clientIp(request);
+    const ua = request.headers.get('user-agent') || '';
+    try {
+      const ipLimit = await checkIpLimit(ip, ua);
+      if (!ipLimit.allowed) {
+        console.warn(`[companion] ip rate limit hit (ip=${ip}); 429`);
+        return rateLimited(ipLimit.retryAfter, 'ip');
+      }
+    } catch (err) {
+      // TODO(Commit 8): Sentry-capture — fail-open must not be silent.
+      console.error('[companion] ip rate-limit check failed (fail-open):', err);
+    }
     return Response.json({ error: 'unauthenticated' }, { status: 401 });
   }
 
@@ -232,7 +278,25 @@ async function handleCompanion(request) {
     return crisisResponse(category);
   }
 
-  // 4. Open Anthropic streaming connection. Errors BEFORE the stream
+  // 4. USER RATE LIMIT (§5.4) — single-user runaway-cost guard (30/hr AND
+  //    100/day, keyed by Clerk user ID). Placed AFTER the crisis short-
+  //    circuit deliberately: a person in crisis must never be rate-limited
+  //    out of the resources. The crisis path is free (it never calls
+  //    Anthropic), so it costs nothing to exempt it, and this limiter
+  //    exists to cap Anthropic spend — exactly the call the crisis path
+  //    skips. Fail-open on KV error for the same reason as the IP limiter.
+  try {
+    const userLimit = await checkUserLimit(userId);
+    if (!userLimit.allowed) {
+      console.warn(`[companion] user rate limit hit (user=${userId}, scope=${userLimit.scope}); 429`);
+      return rateLimited(userLimit.retryAfter, userLimit.scope);
+    }
+  } catch (err) {
+    // TODO(Commit 8): Sentry-capture — fail-open must not be silent.
+    console.error('[companion] user rate-limit check failed (fail-open):', err);
+  }
+
+  // 5. Open Anthropic streaming connection. Errors BEFORE the stream
   //    opens must be surfaced as structured JSON. Once SSE bytes are
   //    flowing the client can only receive SSE error frames.
   let upstreamStream;
@@ -252,7 +316,7 @@ async function handleCompanion(request) {
     );
   }
 
-  // 5. Forward Anthropic SSE events raw to the client. Each upstream
+  // 6. Forward Anthropic SSE events raw to the client. Each upstream
   //    event becomes one SSE frame: `event: <type>\ndata: <json>\n\n`.
   //    Client disconnect aborts the upstream to stop paying for
   //    tokens nobody is reading.
