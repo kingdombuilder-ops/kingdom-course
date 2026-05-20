@@ -327,10 +327,16 @@ preserved through per-tab layering (Course Eucharist still anchors on
 *Lumen Gentium* §11).
 
 - `academy` mode is backend-wired and unit-tested (99/99) but has no UI
-  surface yet (Day-50 reader unbuilt), so it is not browser-reachable;
-  Academy live-verification waits on that surface. The four reachable tabs
-  (gospel/course/hub/field-guide) map from `productionTab` + `kingdomView`
-  in App.jsx.
+  surface yet, so it is not browser-reachable. The Academy is rendered only
+  as a **visible-but-locked, non-interactive card** (KingdomMoreGrid +
+  Footer, with a Lock icon — "opens to those who complete the 50-day
+  Course"); there is no Academy page and **no UI path sends `tab:'academy'`**
+  to the Companion (the frontend tab map only produces gospel/course/hub/
+  field-guide). So `academy` is **backend-only until the Day-50 reader
+  ships** (post-soft-launch) — not even reachable via the Companion. The
+  locked card sets the right "coming soon" expectation, so a tester won't
+  hit a mode-without-a-page. The four reachable tabs map from `productionTab`
+  + `kingdomView` in App.jsx.
 - **Per-tab eval methodology:** isolating mode behavior requires a FRESH
   conversation context. Within-session repeats correctly trigger the
   Companion's "what's the angle?" continuity response (not a bug) — refresh
@@ -340,6 +346,22 @@ preserved through per-tab layering (Course Eucharist still anchors on
   devotionally proposed) surfaces naturally in Course mode too — the
   co-redemptrix question was correctly held "at the level of theological
   discussion rather than defined dogma" from the Course tab.
+
+### Navigation model + harness-consistency note
+
+The production app has **no router** — top-level navigation is component
+state: `productionTab` (gate/course/kingdom, localStorage-backed) +
+`kingdomView` (hub/practices/practice). Top-level navigation must go through
+`goToTab(id)` in App.jsx, which resets the Kingdom sub-view so a tab/footer
+click (or "Back to the Course") never lands on a stale Field Guide view
+(fixed in `e767930`). Deliberate sub-view deep-links (`onOpenFieldGuide` /
+`goToFieldGuide` / `goToPractice`) intentionally set their sub-view.
+
+**Harness-consistency cleanup (no action now):** the dev-only harness path
+(`previewMode==='hub'`, dead-code-eliminated from production builds) still
+wires `FieldGuideHub.onToCourse={goToHub}` — a latent inconsistency vs. the
+live path's `goToTab('course')`. Harmless in production; fix it the next
+time the harness path is touched.
 
 ### Companion post-soft-launch backlog (§5.6+)
 
