@@ -36,7 +36,7 @@
 
 import Anthropic from '@anthropic-ai/sdk';
 import { createClerkClient } from '@clerk/backend';
-import { SYSTEM_PROMPT } from '../lib/companion-system-prompt.js';
+import { systemPromptForTab } from '../lib/companion-system-prompt.js';
 import { detectCrisis, CRISIS_RESPONSE } from '../lib/companion-crisis.js';
 import { checkIpLimit, checkUserLimit } from '../lib/companion-ratelimit.js';
 import { initSentry, captureError, captureWarning, flush } from '../lib/companion-sentry.js';
@@ -258,17 +258,18 @@ async function handleCompanion(request) {
   }
 
   // 2. Parse request body. Expected shape:
-  //    { messages: [{role, content}, ...], context: {...} }
-  //    `context` (currentTab, currentDay, userHouse, locale) is
-  //    accepted but ignored at this stage — Commit 6 wires it into
-  //    the system prompt or message envelope.
+  //    { messages: [{role, content}, ...], tab }
+  //    `tab` (§5.5) selects the per-tab mode delta in systemPromptForTab()
+  //    below; an absent/unknown tab falls back to the base prompt. Other
+  //    context (currentDay, userHouse, locale) is not yet sent or used —
+  //    future plumbing if soft-launch feedback shows demand.
   let body;
   try {
     body = await request.json();
   } catch {
     return Response.json({ error: 'invalid_json' }, { status: 400 });
   }
-  const { messages } = body;
+  const { messages, tab } = body;
   if (!Array.isArray(messages) || messages.length === 0) {
     return Response.json({ error: 'messages_required' }, { status: 400 });
   }
@@ -316,7 +317,7 @@ async function handleCompanion(request) {
     upstreamStream = getAnthropic().messages.stream({
       model: COMPANION_MODEL,
       max_tokens: MAX_TOKENS,
-      system: SYSTEM_PROMPT,
+      system: systemPromptForTab(tab), // §5.5 per-tab mode; base + delta (or base alone)
       messages,
     });
   } catch (err) {
