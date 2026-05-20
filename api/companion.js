@@ -99,22 +99,30 @@ function getAnthropic() {
   return _anthropic;
 }
 
-/* ----- Route dispatch ----------------------------------------------------- */
-export default async function handler(request) {
-  const url = new URL(request.url);
+/* ----- Route dispatch — NAMED METHOD EXPORTS ------------------------------
 
+   Named exports (GET / POST) trigger Vercel's Web-standard request/
+   response handling: `request` is a real Web Request with an ABSOLUTE
+   `.url`. A single default export — `export default function(request)` —
+   is interpreted by Vercel Node serverless as the classic Node
+   (req, res) signature, where the first arg is a Node IncomingMessage
+   whose `.url` is RELATIVE ("/api/companion/health"). `new URL()` on a
+   relative path throws → FUNCTION_INVOCATION_FAILED. (Confirmed via
+   api/diag.js, which uses the classic (req, res) shape and returns 200.)
+   ------------------------------------------------------------------------- */
+
+export async function GET(request) {
+  const url = new URL(request.url);
   // Health endpoint — public, no auth. Reached via vercel.json rewrite
   // mapping /api/companion/health → /api/companion?_route=health.
-  if (request.method === 'GET' && url.searchParams.get('_route') === 'health') {
+  if (url.searchParams.get('_route') === 'health') {
     return handleHealth();
   }
-
-  // Main chat endpoint — requires Clerk auth.
-  if (request.method === 'POST') {
-    return handleCompanion(request);
-  }
-
   return new Response('Not Found', { status: 404 });
+}
+
+export async function POST(request) {
+  return handleCompanion(request);
 }
 
 /* ----- Health (public, no auth) ------------------------------------------ */
