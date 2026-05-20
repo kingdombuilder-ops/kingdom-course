@@ -39,6 +39,7 @@ import { createClerkClient } from '@clerk/backend';
 import { SYSTEM_PROMPT } from '../lib/companion-system-prompt.js';
 import { detectCrisis, CRISIS_RESPONSE } from '../lib/companion-crisis.js';
 import { checkIpLimit, checkUserLimit } from '../lib/companion-ratelimit.js';
+import { initSentry, captureError, captureWarning, flush } from '../lib/companion-sentry.js';
 
 // Runs as a Vercel NODE SERVERLESS function (NOT Edge). The Edge
 // premise from MASTER_SPECIFICATION §5.1 is invalidated: both
@@ -206,6 +207,8 @@ function rateLimited(retryAfter, scope) {
 
 /* ----- Companion (auth + streaming) -------------------------------------- */
 async function handleCompanion(request) {
+  initSentry(); // idempotent; no-op without SENTRY_DSN
+
   // 1. Auth via Clerk Bearer header (Authorization: Bearer <jwt>).
   //    @clerk/backend's authenticateRequest reads the header
   //    automatically. authorizedParties is required to verify
@@ -219,8 +222,11 @@ async function handleCompanion(request) {
       userId = requestState.toAuth().userId;
     }
   } catch (err) {
+    // A THROW here is unexpected (Clerk down/misconfigured), not a normal
+    // bad token — those return isAuthenticated:false without throwing. Warn,
+    // then fall through to the unauthenticated path below.
     console.error('[companion] auth error:', err);
-    // fall through to the unauthenticated path below
+    captureWarning(err, { area: 'auth' });
   }
 
   // 1a. IP RATE LIMIT (§5.4) — guards the UNAUTHENTICATED surface only.
@@ -239,12 +245,15 @@ async function handleCompanion(request) {
       const ipLimit = await checkIpLimit(ip, ua);
       if (!ipLimit.allowed) {
         console.warn(`[companion] ip rate limit hit (ip=${ip}); 429`);
+        await flush(); // send any auth-warning captured above before freeze
         return rateLimited(ipLimit.retryAfter, 'ip');
       }
     } catch (err) {
-      // TODO(Commit 8): Sentry-capture — fail-open must not be silent.
+      // Fail-open (Commit 5) — capture so a KV outage isn't silent.
       console.error('[companion] ip rate-limit check failed (fail-open):', err);
+      captureError(err, { area: 'ratelimit', limiter: 'ip' });
     }
+    await flush(); // send auth-warning and/or ip fail-open before returning
     return Response.json({ error: 'unauthenticated' }, { status: 401 });
   }
 
@@ -292,8 +301,11 @@ async function handleCompanion(request) {
       return rateLimited(userLimit.retryAfter, userLimit.scope);
     }
   } catch (err) {
-    // TODO(Commit 8): Sentry-capture — fail-open must not be silent.
+    // Fail-open (Commit 5) — capture so a KV outage isn't silent. No blocking
+    // flush: this path continues into the streaming Response below, which
+    // keeps the function alive long enough for the async send to complete.
     console.error('[companion] user rate-limit check failed (fail-open):', err);
+    captureError(err, { area: 'ratelimit', limiter: 'user' });
   }
 
   // 5. Open Anthropic streaming connection. Errors BEFORE the stream
@@ -309,7 +321,9 @@ async function handleCompanion(request) {
     });
   } catch (err) {
     console.error('[companion] upstream pre-stream error:', err);
+    captureError(err, { area: 'upstream', stage: 'pre_stream' });
     const status = err.status || 502;
+    await flush(); // immediate return — send before the function freezes
     return Response.json(
       { error: 'upstream_error', message: err.message },
       { status }
@@ -330,17 +344,19 @@ async function handleCompanion(request) {
         }
         controller.close();
       } catch (err) {
-        // Mid-stream upstream error. Log before closing — Sentry
-        // (Commit 8) will pick this up. Mid-stream errors are
-        // invisible to user-facing error paths; telemetry is the
-        // only way we'll know they're happening.
+        // Mid-stream upstream error. Invisible to the user-facing error
+        // paths (SSE bytes are already flowing), so telemetry is the only
+        // way we learn it happened. Capture + flush while the stream is
+        // still alive, before closing.
         console.error('[companion] mid-stream error:', err);
+        captureError(err, { area: 'upstream', stage: 'mid_stream' });
         try {
           const errFrame = `event: error\ndata: ${JSON.stringify({ message: err.message })}\n\n`;
           controller.enqueue(encoder.encode(errFrame));
         } catch {
           // Controller may already be closed; ignore.
         }
+        await flush();
         controller.close();
       }
     },
