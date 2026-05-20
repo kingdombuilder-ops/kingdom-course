@@ -313,6 +313,14 @@ are live-verified — Commit 4 (crisis detection §5.3) and Commit 5 (rate
 limiting §5.4). The user-exposure gate is therefore satisfied; Commit 7
 (frontend wiring) is unblocked.
 
+**§5.5 acceptance note:** per-tab differentiation (Commit 6) is
+acceptance-checked with the **Gospel-vs-Course** pair, substituted for the
+originally-approved Gospel-vs-Academy. `academy` mode is backend-wired and
+unit-tested (99/99) but has no UI surface yet (the Day-50 reader is
+unbuilt), so it is not browser-reachable; Academy live-verification waits
+on that surface. The four browser-reachable tabs (gospel/course/hub/
+field-guide) map from `productionTab` + `kingdomView` in App.jsx.
+
 ### Companion post-soft-launch backlog (§5.6+)
 
 Tracked deferrals from the Companion build. None block soft launch.
