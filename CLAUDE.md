@@ -112,8 +112,19 @@ what and how).
 - **Plausible** — analytics (planned; not yet installed)
 - **Resend** — email (planned; not yet installed)
 - **Sentry** — error monitoring (planned; not yet installed)
-- **Vercel Edge Functions** — Companion AI backend (`api/companion.js`,
-  not yet built — see MASTER_SPEC §5.x)
+- **Vercel Node Serverless Functions** — Companion AI backend
+  (`api/companion.js`). Runs as a Node Serverless Function, **not Edge**.
+  MASTER_SPECIFICATION §5.1's Edge premise is invalidated:
+  `@anthropic-ai/sdk` and `@clerk/backend` import Node-only built-ins
+  (`node:fs`, `node:crypto`, `node:child_process`, `node:stream`, …)
+  that don't exist in V8 isolates, so the Edge build is rejected. Edge
+  migration is post-soft-launch work, contingent on writing fetch-based
+  Anthropic and Clerk clients. The function uses **named method exports**
+  (`export async function GET` / `POST`) for Vercel's Web-standard
+  request/response handling — a single default export is read as the
+  classic Node `(req, res)` signature, where `req.url` is relative and
+  `new URL()` throws. `/api/companion/health` reaches the GET export via
+  a `vercel.json` rewrite to `?_route=health`.
 - **Anthropic API** — Companion model provider. Defaults pinned by
   exact version string:
   - Default: `claude-sonnet-4-6` (low first-token latency; primary
