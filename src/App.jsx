@@ -282,6 +282,17 @@ export default function App() {
     setKingdomView('practice');
     if (typeof window !== 'undefined') window.scrollTo(0, 0);
   };
+  // Top-level tab navigation is authoritative: switching tabs (or "Back to
+  // the Course") clears any Kingdom sub-view so the destination shows its
+  // default, never a stale Field Guide / practice view. Use this for
+  // top-nav and footer tab links; deliberate sub-view deep-links
+  // (goToFieldGuide / goToPractice) intentionally do NOT reset.
+  const goToTab = (id) => {
+    setProductionTab(id);
+    setKingdomView('hub');
+    setActivePractice(null);
+    if (typeof window !== 'undefined') window.scrollTo(0, 0);
+  };
 
   // ---- Course routing — minimal state only --------------------------------
   // CourseTabView owns the day-navigation logic and labels. App holds
@@ -360,10 +371,7 @@ export default function App() {
         <>
           <KingdomTabNav
             tab={productionTab}
-            onTab={(id) => {
-              setProductionTab(id);
-              if (typeof window !== 'undefined') window.scrollTo(0, 0);
-            }}
+            onTab={goToTab}
             currentUser={currentUser}
             onSignOut={handleSignOut}
             onShare={() => setPassItOnOpen(true)}
@@ -440,10 +448,7 @@ export default function App() {
               kingdomView === 'practices' ? (
                 <FieldGuideHub
                   onOpenPractice={goToPractice}
-                  onToCourse={() => {
-                    setProductionTab('course');
-                    if (typeof window !== 'undefined') window.scrollTo(0, 0);
-                  }}
+                  onToCourse={() => goToTab('course')}
                 />
               ) : kingdomView === 'practice' && activePractice ? (
                 <PracticeGuide
@@ -484,10 +489,7 @@ export default function App() {
             )}
           </main>
           <Footer
-            onTab={(id) => {
-              setProductionTab(id);
-              if (typeof window !== 'undefined') window.scrollTo(0, 0);
-            }}
+            onTab={goToTab}
             onOpenFieldGuide={() => {
               setProductionTab('kingdom');
               setKingdomView('practices');
