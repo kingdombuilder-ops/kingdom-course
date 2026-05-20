@@ -37,6 +37,7 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useAuth } from '@clerk/clerk-react';
+import ReactMarkdown from 'react-markdown';
 import { Send, X } from 'lucide-react';
 
 const STUB_REPLY =
@@ -417,7 +418,11 @@ export default function Companion({ open, onClose, apiEndpoint, tab, onRequestSi
                     padding: '0.75rem 1rem',
                     fontSize: '0.96rem',
                     lineHeight: 1.6,
-                    whiteSpace: 'pre-wrap',
+                    // User text is plain — preserve their newlines. Assistant
+                    // text is markdown (the model emits ##, **, lists, etc.),
+                    // rendered via ReactMarkdown so block structure carries
+                    // its own spacing (no pre-wrap, which would double it).
+                    whiteSpace: m.role === 'user' ? 'pre-wrap' : 'normal',
                     ...(m.role === 'user'
                       ? { color: 'var(--ink)' }
                       : {
@@ -427,7 +432,13 @@ export default function Companion({ open, onClose, apiEndpoint, tab, onRequestSi
                         }),
                   }}
                 >
-                  {m.content}
+                  {m.role === 'user' ? (
+                    m.content
+                  ) : (
+                    <div className="companion-md">
+                      <ReactMarkdown>{m.content}</ReactMarkdown>
+                    </div>
+                  )}
                 </div>
               </div>
             );

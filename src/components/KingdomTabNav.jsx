@@ -186,12 +186,14 @@ export default function KingdomTabNav({
           )}
           <button
             onClick={onOpenCompanion}
-            className="btn-gold sc nav-action"
+            className="btn-gold sc nav-action companion-nav-ask"
             aria-label="Ask the Companion"
             title="Ask"
             style={{
+              // `display` lives in .companion-nav-ask (index.css) so the
+              // ≤768px media query can hide this desktop launcher in favour
+              // of the mobile FAB; an inline display would override it.
               fontSize: 10,
-              display: 'inline-flex',
               alignItems: 'center',
               gap: '0.5rem',
               fontFamily: 'inherit',

@@ -1358,3 +1358,63 @@ a { color: inherit; text-decoration: none; }
   .nav-tab { padding: 0.5rem 0.375rem; }
   .nav-action { padding: 0.5rem 0.375rem; }
 }
+
+/* =============================================================================
+   COMPANION launcher — desktop nav button vs mobile FAB.
+
+   One logical launcher, switched by viewport (single open/close state in
+   App.jsx). Desktop: the nav "Ask" button (.companion-nav-ask). Mobile
+   (≤768px): the bottom-right FAB (.companion-fab), since the nav row is too
+   crowded for "Ask" to be found. `display` is owned here (not inline) so
+   these rules can flip them.
+   ============================================================================= */
+.companion-nav-ask { display: inline-flex; }
+.companion-fab { display: none; }
+@media (max-width: 768px) {
+  .companion-nav-ask { display: none; }
+  .companion-fab { display: inline-flex; }
+}
+
+/* =============================================================================
+   COMPANION markdown — assistant replies are markdown (## headers, **bold**,
+   lists, etc.); ReactMarkdown renders them inside .companion-md. Styles are
+   tuned tight for the chat bubble (modest header sizes, compact margins) and
+   stay inside the brand palette.
+   ============================================================================= */
+.companion-md > :first-child { margin-top: 0; }
+.companion-md > :last-child { margin-bottom: 0; }
+.companion-md p { margin: 0 0 0.6rem; line-height: 1.6; }
+.companion-md h1,
+.companion-md h2,
+.companion-md h3,
+.companion-md h4 {
+  margin: 0.85rem 0 0.4rem;
+  line-height: 1.25;
+  font-weight: 700;
+  color: var(--ink);
+}
+.companion-md h1 { font-size: 1.15rem; }
+.companion-md h2 { font-size: 1.08rem; }
+.companion-md h3 { font-size: 1rem; }
+.companion-md h4 { font-size: 0.95rem; }
+.companion-md ul,
+.companion-md ol { margin: 0 0 0.6rem; padding-left: 1.25rem; }
+.companion-md li { margin: 0.2rem 0; line-height: 1.55; }
+.companion-md strong { font-weight: 700; }
+.companion-md em { font-style: italic; }
+.companion-md a { color: var(--gold-3); text-decoration: underline; }
+.companion-md blockquote {
+  margin: 0.6rem 0;
+  padding-left: 0.8rem;
+  border-left: 3px solid var(--line);
+  color: var(--mute);
+  font-style: italic;
+}
+.companion-md code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.88em;
+  background: var(--paper-3);
+  padding: 0.05rem 0.3rem;
+  border-radius: 3px;
+}
+.companion-md hr { border: 0; border-top: 1px solid var(--line); margin: 0.85rem 0; }

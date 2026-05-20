@@ -539,12 +539,13 @@ export default function App() {
             }
             onRequestSignIn={() => setSignupOpen(true)}
           />
-          {/* FloatingCompanion intentionally not rendered here: the
-              KingdomTabNav's right-actions already exposes "Ask" on every
-              production tab, so the FAB is redundant and was overlapping
-              content cards on mobile. Restore this render if the nav is
-              ever simplified to drop "Ask" — the component itself remains
-              imported and ready (icon-only on mobile + iOS safe-area-aware). */}
+          {/* Mobile launcher. The nav "Ask" button is the desktop entry
+              point; at ≤768px it's hidden (via .companion-nav-ask) and this
+              FAB takes over (via .companion-fab). Hidden while the panel is
+              open — no redundant entry point. */}
+          {!companionOpen && (
+            <FloatingCompanion onClick={() => setCompanionOpen(true)} />
+          )}
         </>
       ) : previewMode === 'gate' ? (
         <Suspense
