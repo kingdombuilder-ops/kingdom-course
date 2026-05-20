@@ -527,9 +527,17 @@ export default function App() {
           <Companion
             open={companionOpen}
             onClose={() => setCompanionOpen(false)}
-            currentTab={productionTab}
-            // No apiEndpoint — runs in stub mode (returns the placeholder
-            // reply). Wire to a backend proxy when ready.
+            apiEndpoint="/api/companion"
+            // §5.5 tab vocabulary, derived from the production tab + kingdom
+            // sub-view. The backend already accepts this field; Commit 6
+            // (per-tab context) consumes it without any frontend change.
+            tab={
+              productionTab === 'gate' ? 'gospel'
+                : productionTab === 'course' ? 'course'
+                : kingdomView === 'hub' ? 'hub'
+                : 'field-guide'
+            }
+            onRequestSignIn={() => setSignupOpen(true)}
           />
           {/* FloatingCompanion intentionally not rendered here: the
               KingdomTabNav's right-actions already exposes "Ask" on every
