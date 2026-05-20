@@ -79,8 +79,18 @@ function getClerkClient() {
     if (!process.env.CLERK_SECRET_KEY) {
       throw new Error('CLERK_SECRET_KEY not configured');
     }
+    if (!process.env.VITE_CLERK_PUBLISHABLE_KEY) {
+      throw new Error('VITE_CLERK_PUBLISHABLE_KEY not configured');
+    }
+    // BOTH keys are required on the backend. The publishable key is not
+    // optional — it identifies which Clerk instance issued the JWT, so
+    // token verification can't proceed without it. Reusing the existing
+    // Phase-2 VITE_CLERK_PUBLISHABLE_KEY env var: the VITE_ prefix only
+    // matters for frontend bundling; server-side process.env reads the
+    // same value fine.
     _clerkClient = createClerkClient({
       secretKey: process.env.CLERK_SECRET_KEY,
+      publishableKey: process.env.VITE_CLERK_PUBLISHABLE_KEY,
     });
   }
   return _clerkClient;
