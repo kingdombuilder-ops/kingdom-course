@@ -1,4 +1,6 @@
 {
+  "buildCommand": "vite build --mode production",
+  "outputDirectory": "dist",
   "cleanUrls": true,
   "trailingSlash": false,
   "rewrites": [
