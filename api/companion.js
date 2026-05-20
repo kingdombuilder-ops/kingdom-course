@@ -37,6 +37,7 @@
 import Anthropic from '@anthropic-ai/sdk';
 import { createClerkClient } from '@clerk/backend';
 import { SYSTEM_PROMPT } from '../lib/companion-system-prompt.js';
+import { detectCrisis, CRISIS_RESPONSE } from '../lib/companion-crisis.js';
 
 // Runs as a Vercel NODE SERVERLESS function (NOT Edge). The Edge
 // premise from MASTER_SPECIFICATION §5.1 is invalidated: both
@@ -132,6 +133,55 @@ function handleHealth() {
   });
 }
 
+/* ----- Crisis helpers (§5.3) --------------------------------------------- */
+
+/* Extract the latest user message's text. The crisis pre-filter runs on
+   the user's most recent turn only (§5.3: "runs on the user's latest
+   message"). Content may be a plain string (the frontend shape) or an
+   Anthropic content-block array ([{type:'text', text}, ...]); both are
+   flattened to a single string. Returns '' if there is no user turn. */
+function latestUserText(messages) {
+  for (let i = messages.length - 1; i >= 0; i--) {
+    const m = messages[i];
+    if (!m || m.role !== 'user') continue;
+    if (typeof m.content === 'string') return m.content;
+    if (Array.isArray(m.content)) {
+      return m.content
+        .filter((b) => b && b.type === 'text' && typeof b.text === 'string')
+        .map((b) => b.text)
+        .join(' ');
+    }
+    return '';
+  }
+  return '';
+}
+
+/* Build the crisis short-circuit response. Emits ONE dedicated SSE frame
+   (`event: crisis`) carrying the static template text and the matched
+   category, then closes — it never opens an Anthropic connection. The
+   distinct event type (not the usual content_block_delta passthrough)
+   lets the frontend (Commit 7) render crisis resources prominently rather
+   than as an ordinary chat bubble. Same text/event-stream envelope as the
+   normal path so the client's SSE reader is identical. */
+function crisisResponse(category) {
+  const encoder = new TextEncoder();
+  const stream = new ReadableStream({
+    start(controller) {
+      const payload = JSON.stringify({ category, text: CRISIS_RESPONSE });
+      controller.enqueue(encoder.encode(`event: crisis\ndata: ${payload}\n\n`));
+      controller.close();
+    },
+  });
+  return new Response(stream, {
+    headers: {
+      'Content-Type': 'text/event-stream',
+      'Cache-Control': 'no-cache, no-transform',
+      'Connection': 'keep-alive',
+      'X-Accel-Buffering': 'no',
+    },
+  });
+}
+
 /* ----- Companion (auth + streaming) -------------------------------------- */
 async function handleCompanion(request) {
   // 1. Auth via Clerk Bearer header (Authorization: Bearer <jwt>).
@@ -168,7 +218,21 @@ async function handleCompanion(request) {
     return Response.json({ error: 'messages_required' }, { status: 400 });
   }
 
-  // 3. Open Anthropic streaming connection. Errors BEFORE the stream
+  // 3. CRISIS PRE-FILTER (§5.3) — SAFETY-CRITICAL. Runs on the latest
+  //    user message BEFORE any Anthropic call. On detection the Companion
+  //    short-circuits: it returns the static crisis-response template and
+  //    NEVER proceeds to a normal model response (§5.3: "Never proceed to
+  //    normal Companion response after crisis detection without human
+  //    override"). This is the PRIMARY crisis mechanism; the system
+  //    prompt's crisis line is defense-in-depth for implicit ideation
+  //    that slips past the keyword filter.
+  const { crisis, category } = detectCrisis(latestUserText(messages));
+  if (crisis) {
+    console.warn(`[companion] crisis detected (category=${category}, user=${userId}); short-circuiting`);
+    return crisisResponse(category);
+  }
+
+  // 4. Open Anthropic streaming connection. Errors BEFORE the stream
   //    opens must be surfaced as structured JSON. Once SSE bytes are
   //    flowing the client can only receive SSE error frames.
   let upstreamStream;
@@ -188,7 +252,7 @@ async function handleCompanion(request) {
     );
   }
 
-  // 4. Forward Anthropic SSE events raw to the client. Each upstream
+  // 5. Forward Anthropic SSE events raw to the client. Each upstream
   //    event becomes one SSE frame: `event: <type>\ndata: <json>\n\n`.
   //    Client disconnect aborts the upstream to stop paying for
   //    tokens nobody is reading.
