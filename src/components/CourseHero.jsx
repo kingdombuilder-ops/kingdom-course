@@ -126,18 +126,22 @@ export default function CourseHero({
               fontSize: 'clamp(2.4rem, 5.6vw, 3.8rem)',
               lineHeight: 1.0,
               fontWeight: 600,
+              textWrap: 'balance',
             }}
           >
             The Kingdom Course
           </div>
+          {/* Subtitle floor dropped 1.3rem -> 1.2rem to restore clear
+              hierarchy vs the title at mobile widths (~1.85x -> ~2x ratio). */}
           <div
             className="display"
             style={{
               fontStyle: 'italic',
               lineHeight: 1.2,
               marginTop: '0.5rem',
-              fontSize: 'clamp(1.3rem, 3vw, 1.85rem)',
+              fontSize: 'clamp(1.2rem, 3vw, 1.85rem)',
               color: 'var(--gold-3)',
+              textWrap: 'balance',
             }}
           >
             Seven Steps of the Kingdom of Heaven
@@ -305,6 +309,7 @@ export default function CourseHero({
                 letterSpacing: '-0.01em',
                 marginTop: '3.5rem',
                 fontWeight: 600,
+                textWrap: 'balance',
               }}
             >
               The path the saints walked.
@@ -323,9 +328,9 @@ export default function CourseHero({
                 color: 'var(--ink-2)',
               }}
             >
-              Two thousand years of Catholic formation, distilled to seven steps,
-              one each week. One short reading each day. Fifty days from where you
-              are to where the Spirit makes you new.
+              Drawn from two thousand years of saints — more than ten thousand men and
+              women whom the Church has declared to be with Christ in glory. The living
+              shape of the Catholic life, distilled to seven steps, walkable in fifty days.
             </p>
 
             <p

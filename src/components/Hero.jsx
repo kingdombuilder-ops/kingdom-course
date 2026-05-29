@@ -105,7 +105,9 @@ export default function Hero({ onEnter }) {
           style={{ maxWidth: '18rem', marginBottom: 'clamp(2.5rem, 4vw, 3rem)' }}
         />
 
-        {/* Line 2 — the naming. Display-size ink, regular (not italic). */}
+        {/* Line 2 — the naming. Display-size ink, regular (not italic).
+            text-wrap: balance distributes the break across the title cleanly
+            on narrow viewports (avoids the "Life." orphan on mobile). */}
         <h1
           className="display-strong rise d-2"
           style={{
@@ -115,6 +117,7 @@ export default function Hero({ onEnter }) {
             fontWeight: 600,
             letterSpacing: '-0.01em',
             margin: 0,
+            textWrap: 'balance',
           }}
         >
           The Kingdom of Eternal Life.
@@ -130,9 +133,10 @@ export default function Hero({ onEnter }) {
             lineHeight: 1.2,
             color: 'var(--gold-3)',
             marginTop: '0.75rem',
+            textWrap: 'balance',
           }}
         >
-          The single most important announcement in history.
+          The great design for humanity.
         </p>
 
         {/* Line 4 — the grounding. Medium ink, weight 300 — the visually
@@ -146,10 +150,31 @@ export default function Hero({ onEnter }) {
             color: 'var(--ink)',
             fontWeight: 300,
             marginTop: '0.5rem',
+            textWrap: 'balance',
           }}
         >
-          And the most rigorously verified.
+          Made known in Christ.
+          <br />
+          Borne witness by two thousand years of miracles, saints, and signs.
         </p>
+
+        {/* Line 5 — thin gold band: small-caps subhead carrying the
+            previous "most important / most rigorously verified" beat.
+            Mirrors the Course hero's "Seven Weeks · Fifty Days ·…" band. */}
+        <div className="rise d-3" style={{ marginTop: '1.5rem' }}>
+          <div style={{ height: 1, maxWidth: '5rem', background: 'var(--gold)' }} />
+          <div
+            className="sc-bold"
+            style={{
+              fontSize: 10,
+              marginTop: '1rem',
+              color: 'var(--gold-3)',
+              letterSpacing: '0.14em',
+            }}
+          >
+            The most important announcement in history · The most rigorously verified
+          </div>
+        </div>
 
         {/* BEGIN — left-aligned with the text block (no flex centering);
             generous top margin (48-64px) creates breathing room between
