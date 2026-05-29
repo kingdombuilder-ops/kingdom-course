@@ -1037,24 +1037,33 @@ export function inferSeason(date) {
   return "Ordinary Time";
 }
 
+/* Fallback used for days that aren't in LITURGICAL_DAYS. Designed to read
+   as an honest doorway to authoritative sources (Universalis, parish
+   missal, Cloud of Witnesses) rather than as placeholder content — every
+   field that would otherwise be a generic stub either: (a) is omitted so
+   getLiturgicalDay() synthesizes a date-specific value (`weekday`,
+   `liturgicalDate`), or (b) names what the user should open. */
 export const LITURGICAL_FALLBACK = {
-  weekday: "Today",
-  liturgicalDate: "An ordinary day in the Church's year",
-  season: "Ordinary Time", rank: "Ferial",
+  // weekday + liturgicalDate are intentionally omitted so getLiturgicalDay
+  // synthesizes "Thursday" and "Thursday in Ordinary Time" from today's
+  // date, instead of rendering the generic "Today" / "An ordinary day in
+  // the Church's year" placeholders.
+  season: "Ordinary Time",
+  rank: "Ferial",
   feast: {
-    name: "The Saint of the Day",
-    years: "—",
-    feastDay: "Today",
-    line: "Today the Church remembers a saint who walked this path before you. Open the Hub's Cloud of Witnesses to meet them, or pray for the courage to live today as faithfully as they did.",
+    name: "Today's saint",
+    years: "",
+    feastDay: "Ordinary Time",
+    line: "The Church keeps the memory of a saint on every day of the year. Open today's Mass at universalis.com for the saint the Church names today — or open the Cloud of Witnesses below to walk with one of the twenty who shape the Hub.",
     verse: "Be faithful in small things, for it is in them that your strength lies.",
     verseRef: "St. Mother Teresa",
   },
   readings: {
-    first:  { ref: "From today's Mass",      blurb: "The first reading of today's Mass — open Universalis or your missal for the full text." },
-    psalm:  { ref: "From today's Mass",      blurb: "Today's responsorial psalm." },
-    gospel: { ref: "From today's Mass",
+    first:  { ref: "Today's Mass · universalis.com",  blurb: "Today's first reading. Open Universalis or your parish missal for the full text." },
+    psalm:  { ref: "Today's Mass · universalis.com",  blurb: "Today's responsorial psalm." },
+    gospel: { ref: "Today's Mass · universalis.com",
               blurb: "Open today's Gospel with Lectio Divina. Read slowly. Where does it pause you?",
-              text:  "Open today's Gospel passage in your missal, your Bible, or at universalis.com. Read it slowly. Notice where it pauses you. Speak to Christ from there." },
+              text:  "Today's Gospel passage lives in your parish missal, your Bible, or at universalis.com. Read it slowly. Notice where it pauses you. Speak to Christ from there." },
   },
 };
 

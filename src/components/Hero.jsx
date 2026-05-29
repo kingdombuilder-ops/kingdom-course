@@ -111,7 +111,11 @@ export default function Hero({ onEnter }) {
         <h1
           className="display-strong rise d-2"
           style={{
-            fontSize: 'clamp(2rem, 5.2vw, 4.2rem)',
+            // Bumped from clamp(2rem, 5.2vw, 4.2rem) — 32px floor felt
+            // modest in the hero vs the under-title (24px). 38.4px floor
+            // sharpens the hierarchy to ~1.6× while keeping the balanced
+            // two-line break on iPhone widths.
+            fontSize: 'clamp(2.4rem, 5.4vw, 4.4rem)',
             lineHeight: 0.95,
             color: 'var(--ink)',
             fontWeight: 600,
